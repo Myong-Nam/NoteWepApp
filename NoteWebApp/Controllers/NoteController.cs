@@ -36,9 +36,6 @@ namespace NoteWebApp.Controllers
 
         public ActionResult Create(String title, String contents)
         {
-            int number = NoteManager.GetNewNoteId();
-            ViewBag.number = number;
-
             return View();
         }
 

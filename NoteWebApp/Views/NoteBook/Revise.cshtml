@@ -1,0 +1,21 @@
+﻿@using NoteWebApp.Models
+@{
+    ViewBag.Title = "Revise";
+    NoteBook noteBook = ViewBag.noteBook;
+}
+
+<h2>Revise</h2>
+
+@using (Html.BeginForm("Update", "NoteBook"))
+{
+    @Html.Hidden("noteBookId", noteBook.NoteBookId)
+
+    <div id="title">
+        <b>이름 :</b> <br />
+        @Html.TextBox("name", noteBook.Name)
+
+    </div>
+   
+    <input type="submit" value="수정" />
+}
+

@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>새 노트북</h2>
+
+
+@using (Html.BeginForm("Insert", "NoteBook"))
+{
+    <div>
+        이름: <br />
+        @Html.TextBox("name", "")
+    </div>
+
+    <input type="submit" value="저장" />
+}
+
+@Html.ActionLink("노트 리스트로 돌아가기", "index")
+

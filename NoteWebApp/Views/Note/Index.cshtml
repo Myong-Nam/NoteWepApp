@@ -9,11 +9,19 @@
 
 @foreach (var item in notelist)
 {
-    <li>
+<ul>
 
-        @item.Title @Html.ActionLink("Detail", "Detail", new { id = item.NoteId })
 
-    </li>
+
+    @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
+
+    @using (Html.BeginForm("preDelete", "Note"))
+    {
+        @Html.Hidden("noteId", item.NoteId)
+        <input type="submit" value="삭제" />
+    }
+    <hr />
+</ul>
 }
 
 <div>

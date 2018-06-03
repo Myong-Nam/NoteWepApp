@@ -42,16 +42,42 @@ namespace NoteWebApp.Models
             return noteBooks;
         }
 
-        // 노트북 아이디로 노트 불러오기 : /detail
-        public static NoteBook GetNotebyId(int noteBookId)
+        // 노트북 아이디로 노트리스트 불러오기 : /List
+        public static List<Note> NotesInNoteBook(int id)
         {
-            
+            List<Note> noteList = new List<Note>();
 
-            return null;
+            OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+
+            conn.Open();
+
+            String sql = $"select * from Note where isdeleted = {0} and notebookid = {id}";
+
+            OracleCommand cmd = new OracleCommand
+            {
+                Connection = conn,
+                CommandText = sql
+            };
+
+            OracleDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Note note = new Note
+                {
+                    NoteId = int.Parse(reader["NOTEID"].ToString()),
+                    Title = reader["TITLE"].ToString(),
+                };
+
+                noteList.Add(note);
+            }
+            reader.Close();
+            conn.Close();
+
+            return noteList;
         }
 
         // 새 노트북 생성 : /create
-        public static void Create(String Name)
+        public static int Create(String Name)
         {
             int NewNoteBookId = GetNewNoteBookId();
 
@@ -71,7 +97,7 @@ namespace NoteWebApp.Models
 
             };
 
-
+            return NewNoteBookId;
         }
 
         // 새 노트 생성 시, 새 노트북 아이디 구하기
@@ -105,7 +131,41 @@ namespace NoteWebApp.Models
 
         }
 
-  
+        // 노트 아이디로 노트 불러오기
+        public static NoteBook GetNoteBookbyId(int noteBookId)
+        {
+            NoteBook noteBook = new NoteBook();
+
+            OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+
+            conn.Open();
+
+            String sql = $"select * from NoteBook where noteBookId = {noteBookId}";
+
+            OracleCommand cmd = new OracleCommand
+            {
+                Connection = conn,
+                CommandText = sql
+            };
+
+            OracleDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                noteBook = new NoteBook
+                {
+                    NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString()),
+                    Name = reader["NAME"].ToString(),
+                };
+
+            }
+            reader.Close();
+            conn.Close();
+
+
+            return noteBook;
+        }
+
+
 
         //노트북 완전 삭제 : /detail
         public static void Delete(int noteBookId)
@@ -113,6 +173,17 @@ namespace NoteWebApp.Models
             using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
             {
                 conn.Open();
+
+                String NoteSql = $"UPDATE note SET notebookid = {1} WHERE notebookid = {noteBookId}";
+
+                OracleCommand NoteCmd = new OracleCommand
+                {
+                    Connection = conn,
+                    CommandText = NoteSql
+                };
+
+                NoteCmd.ExecuteNonQuery();
+
 
                 String sql = $"Delete FROM notebook WHERE noteBookId = {noteBookId}";
 
@@ -123,6 +194,7 @@ namespace NoteWebApp.Models
                 };
 
                 cmd.ExecuteNonQuery();
+
             }
 
         }
@@ -134,7 +206,7 @@ namespace NoteWebApp.Models
             {
                 conn.Open();
 
-                String sql = $"UPDATE notebook SET name = '{name}', WHERE notebookid = {noteBookId}";
+                String sql = $"UPDATE notebook SET name = '{name}' WHERE notebookid = {noteBookId}";
 
                 OracleCommand cmd = new OracleCommand
                 {
