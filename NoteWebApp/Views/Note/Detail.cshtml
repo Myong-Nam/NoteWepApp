@@ -1,0 +1,65 @@
+﻿@using NoteWebApp.Models
+@{
+    ViewBag.Title = "Detail";
+    Note note = ViewBag.noteDetail;
+}
+@{
+    var DeleteButton = "";
+    var DeleteText = "";
+    var UpdateOrRecover = "";
+    var UpdateOrRecoverText = "";
+    var NoteListText = "";
+    var NoteList = "";
+
+    if (note.IsDeleted == 0)
+    {
+        DeleteButton = "preDelete";
+        DeleteText = "휴지통";
+        UpdateOrRecover = "Update";
+        UpdateOrRecoverText = "수정";
+        NoteList = "Index";
+        NoteListText = "<< 노트 리스트로 돌아가기";
+
+
+
+    } else if (note.IsDeleted == 1)
+    {
+        DeleteButton = "Delete";
+        DeleteText = "영구삭제";
+        UpdateOrRecover = "RecoverNote";
+        UpdateOrRecoverText = "복원";
+        NoteList = "Deleted";
+        NoteListText = "<< 휴지통 리스트로 돌아가기";
+    }
+}
+
+<h2>노트 보기</h2>
+
+<body>
+           @using (Html.BeginForm(UpdateOrRecover, "Note"))
+            {
+                @Html.Hidden("noteId", note.NoteId)
+
+                <div>
+                    <b>생성시간 :</b> @note.NoteDate
+                </div>
+                <div id="title">
+                    <b>제목 :</b> <br />
+                    @Html.TextBox("title", note.Title)
+
+                </div>
+                <div>
+                    <b>내용 :</b> <br />
+                    @Html.TextArea("contents", note.Contents)
+                </div>
+                <input type="submit" value=@UpdateOrRecoverText />
+            }
+
+            @using (Html.BeginForm(@DeleteButton, "Note"))
+            {
+                @Html.Hidden("noteId", note.NoteId)
+                <input type="submit" value="@DeleteText" />
+            }
+
+    @Html.ActionLink(NoteListText, NoteList)
+</body>

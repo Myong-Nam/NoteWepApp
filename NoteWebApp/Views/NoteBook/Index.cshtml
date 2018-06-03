@@ -1,0 +1,18 @@
+﻿@using NoteWebApp.Models
+@{
+    ViewBag.Title = "Index";
+    List<NoteBook> noteBookList = ViewBag.noteBookList;
+}
+
+
+<h2>노트북리스트</h2>
+
+
+@foreach (var item in noteBookList)
+{
+    <li>
+
+        @item.NoteBookId
+
+    </li>
+}

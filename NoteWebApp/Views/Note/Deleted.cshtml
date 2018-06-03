@@ -1,0 +1,17 @@
+﻿@using NoteWebApp.Models
+@{
+    ViewBag.Title = "Delete";
+    List<Note> deletedList = ViewBag.DeletedNoteList;
+}
+
+<h2>휴지통</h2>
+
+
+@foreach (var item in deletedList)
+{
+    <li>
+        @item.Title @Html.ActionLink("Detail", "Detail", new { id = item.NoteId})
+
+    </li>
+}
+@Html.ActionLink("노트 리스트로 돌아가기", "index")
