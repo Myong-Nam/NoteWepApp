@@ -10,16 +10,23 @@
 @foreach (var item in notelist)
 {
     <li>
-        
+
         @item.Title @Html.ActionLink("Detail", "Detail", new { id = item.NoteId })
 
     </li>
 }
 
-    <div>
-        @Html.ActionLink("새 노트", "Create")
-    </div>
-    <div>
-        @Html.ActionLink("휴지통", "Deleted")
-    </div>
+<div>
+    @Html.ActionLink("새 노트", "Create")
+</div>
+<div>
+    @Html.ActionLink("휴지통", "Deleted")
+</div>
+<div>
+    @Html.ActionLink("노트북", "../Notebook")
+</div>
+
+
+
+
 
