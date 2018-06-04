@@ -14,7 +14,7 @@
     if (note.IsDeleted == 0)
     {
         DeleteButton = "preDelete";
-        DeleteText = "휴지통";
+        DeleteText = "삭제";
         UpdateOrRecover = "Update";
         UpdateOrRecoverText = "수정";
         NoteList = "Index";
@@ -36,30 +36,33 @@
 <h2>노트 보기</h2>
 
 <body>
-           @using (Html.BeginForm(UpdateOrRecover, "Note"))
-            {
-                @Html.Hidden("noteId", note.NoteId)
+    @using (Html.BeginForm(UpdateOrRecover, "Note"))
+    {
+        @Html.Hidden("noteId", note.NoteId)
+        <div>
+            <b>노트북 :</b> @note.NoteBookId
+        </div>
 
-                <div>
-                    <b>생성시간 :</b> @note.NoteDate
-                </div>
-                <div id="title">
-                    <b>제목 :</b> <br />
-                    @Html.TextBox("title", note.Title)
+        <div>
+            <b>생성시간 :</b> @note.NoteDate
+        </div>
+        <div id="title">
+            <b>제목 :</b> <br />
+            @Html.TextBox("title", note.Title)
 
-                </div>
-                <div>
-                    <b>내용 :</b> <br />
-                    @Html.TextArea("contents", note.Contents)
-                </div>
-                <input type="submit" value=@UpdateOrRecoverText />
-            }
+        </div>
+        <div>
+            <b>내용 :</b> <br />
+            @Html.TextArea("contents", note.Contents)
+        </div>
+        <input type="submit" value=@UpdateOrRecoverText />
+    }
 
-            @using (Html.BeginForm(@DeleteButton, "Note"))
-            {
-                @Html.Hidden("noteId", note.NoteId)
-                <input type="submit" value="@DeleteText" />
-            }
+    @using (Html.BeginForm(@DeleteButton, "Note"))
+    {
+        @Html.Hidden("noteId", note.NoteId)
+        <input type="submit" value="@DeleteText" />
+    }
 
     @Html.ActionLink(NoteListText, NoteList)
 </body>

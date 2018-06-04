@@ -140,7 +140,7 @@ namespace NoteWebApp.Models
 
             conn.Open();
 
-            String sql = $"select * from NoteBook where noteBookId = {noteBookId}";
+            String sql = $"select * from NoteBook where noteBookId = {noteBookId} AND IsDeleted = {1}";
 
             OracleCommand cmd = new OracleCommand
             {

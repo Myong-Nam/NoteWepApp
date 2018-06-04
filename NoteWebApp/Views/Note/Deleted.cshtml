@@ -9,10 +9,13 @@
 
 @foreach (var item in deletedList)
 {
-<li>
-    @item.Title @Html.ActionLink("보기", "Detail", new { id = item.NoteId })
-    @Html.ActionLink("영구삭제", "Delete", new { id = item.NoteId })
-
-</li>
+    <ul>
+        @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
+        @using (Html.BeginForm("Delete", "Note"))
+        {
+            @Html.Hidden("noteId", item.NoteId)
+            <input type="submit" value="영구삭제" />
+        }
+    </ul>
+    <hr />
 }
-@Html.ActionLink("노트 리스트로 돌아가기", "index")

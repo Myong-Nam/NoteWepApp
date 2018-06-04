@@ -7,26 +7,30 @@
 
 <h2>노트북리스트</h2>
 @Html.ActionLink("새 노트북", "Create")
+<div>
+    @Html.ActionLink("휴지통", "../note/Deleted")
+</div>
+<hr />
 
 @foreach (var item in noteBookList)
 {
-<ul>
+    <ul>
 
-    @Html.ActionLink(item.Name, "List", new { id = item.NoteBookId })
+        @Html.ActionLink(item.Name, "List", new { id = item.NoteBookId })
 
 
         <br />
         @Html.ActionLink("수정", "Revise", new { id = item.NoteBookId })
 
 
-    @using (Html.BeginForm("Delete", "NoteBook"))
-    {
-        @Html.Hidden("id", item.NoteBookId)
-        <input type="submit" value="삭제" />
-    }
-    <hr />
+        @using (Html.BeginForm("Delete", "NoteBook"))
+        {
+            @Html.Hidden("id", item.NoteBookId)
+            <input type="submit" value="삭제" />
+        }
+        <hr />
 
-</ul>
+    </ul>
 }
-@Html.ActionLink("<<노트로 돌아가기", "../note")
+
 

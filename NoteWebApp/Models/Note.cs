@@ -12,5 +12,6 @@ namespace NoteWebApp.Models
         public string Contents;
         public string NoteDate;
         public int IsDeleted;
+        public int NoteBookId;
     }
 }

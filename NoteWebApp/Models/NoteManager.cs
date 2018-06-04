@@ -71,8 +71,8 @@ namespace NoteWebApp.Models
                     Title = reader["TITLE"].ToString(),
                     IsDeleted = int.Parse(reader["ISDELETED"].ToString()),
                     Contents = reader["CONTENTS"] as String,
-                    NoteDate = reader["NOTEDATE"].ToString()
-                    
+                    NoteDate = reader["NOTEDATE"].ToString(),
+                    NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString())
                 };
 
                 note = newNote;
