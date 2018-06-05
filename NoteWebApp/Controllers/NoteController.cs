@@ -23,6 +23,44 @@ namespace NoteWebApp.Controllers
             Note note = NoteManager.GetNotebyId(id);
             ViewBag.noteDetail = note;
 
+            int noteBookId = note.NoteBookId;
+            NoteBook notebook = NoteBookManager.GetNoteBookbyId(noteBookId);
+            int NoteBookId = notebook.NoteBookId;
+            String name = notebook.Name;         
+            ViewBag.name = name;
+
+            SelectNoteBook(id);
+
+            return View();
+        }
+
+        public ActionResult SelectNoteBook(int noteid)
+        {
+            var allBooks = NoteBookManager.GetNoteBookList(); //노트북 전체 불러오기
+            List<SelectListItem> items = new List<SelectListItem>(); //select list item 초기화
+
+            String noteBookId = NoteManager.GetNotebyId(noteid).NoteBookId.ToString(); //노트의 노트북아이디
+
+
+            foreach (var noteBook in allBooks)
+            {
+                items.Add(new SelectListItem()
+                {
+                    Text = noteBook.Name,
+                    Value = noteBook.NoteBookId.ToString(),
+                    Selected = false
+                });
+            }
+
+            foreach (var item in items)
+            {
+                if (item.Value == noteBookId)
+                {
+                    item.Selected = true;
+                }
+            }
+
+            ViewBag.noteBookId = items;
 
             return View();
         }
@@ -54,9 +92,10 @@ namespace NoteWebApp.Controllers
             return RedirectToAction("deleted");
         }
 
-        public ActionResult Update(int noteId, String title, String contents)
+        //노트 수정
+        public ActionResult Update(int noteId, String title, String contents, string noteBookId)
         {
-            NoteManager.Update(noteId, title, contents);
+            NoteManager.Update(noteId, title, contents, noteBookId);
 
             return RedirectToAction("index");
         }

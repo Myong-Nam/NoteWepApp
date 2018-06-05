@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Detail";
     Note note = ViewBag.noteDetail;
+    String name = ViewBag.name;
+    var noteBookList = ViewBag.noteBookList;
+    var noteBookId = ViewBag.noteBookId;
 }
 @{
     var DeleteButton = "";
@@ -18,6 +21,9 @@
         UpdateOrRecover = "Update";
         UpdateOrRecoverText = "수정";
         NoteList = "Index";
+
+
+
         NoteListText = "<< 노트 리스트로 돌아가기";
 
 
@@ -39,9 +45,11 @@
     @using (Html.BeginForm(UpdateOrRecover, "Note"))
     {
         @Html.Hidden("noteId", note.NoteId)
-        <div>
-            <b>노트북 :</b> @note.NoteBookId
-        </div>
+    <div>
+        <b>노트북 :</b>
+        @Html.DropDownList("noteBookId")
+
+    </div>
 
         <div>
             <b>생성시간 :</b> @note.NoteDate

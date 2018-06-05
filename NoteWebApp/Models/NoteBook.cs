@@ -12,4 +12,5 @@ namespace NoteWebApp.Models
         public string CreatedDate;
         public int IsDeleted;
     }
+
 }

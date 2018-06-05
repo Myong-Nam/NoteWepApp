@@ -179,13 +179,15 @@ namespace NoteWebApp.Models
         }
 
         // 노트 수정 : /detail
-        public static void Update(int noteId, string title, string contents)
+        public static void Update(int noteId, string title, string contents, string noteBookId)
         {
+            int id = int.Parse(noteBookId);
+
             using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
             {
                 conn.Open();
 
-                String sql = $"UPDATE note SET title = '{title}', contents = '{contents}' WHERE noteid = {noteId}";
+                String sql = $"UPDATE note SET title = '{title}', contents = '{contents}', notebookid = {id} WHERE noteid = {noteId}";
 
                 OracleCommand cmd = new OracleCommand
                 {

@@ -131,7 +131,7 @@ namespace NoteWebApp.Models
 
         }
 
-        // 노트 아이디로 노트 불러오기
+        // 아이디로 노트북 불러오기
         public static NoteBook GetNoteBookbyId(int noteBookId)
         {
             NoteBook noteBook = new NoteBook();
@@ -140,7 +140,7 @@ namespace NoteWebApp.Models
 
             conn.Open();
 
-            String sql = $"select * from NoteBook where noteBookId = {noteBookId} AND IsDeleted = {1}";
+            String sql = $"select * from NoteBook where noteBookId = {noteBookId}";
 
             OracleCommand cmd = new OracleCommand
             {
@@ -151,12 +151,8 @@ namespace NoteWebApp.Models
             OracleDataReader reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                noteBook = new NoteBook
-                {
-                    NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString()),
-                    Name = reader["NAME"].ToString(),
-                };
-
+                noteBook.NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString());
+                noteBook.Name = reader["NAME"].ToString();
             }
             reader.Close();
             conn.Close();
