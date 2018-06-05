@@ -10,6 +10,7 @@ namespace NoteWebApp.Controllers
     public class NoteController : Controller
     {
         // GET: Note
+
         public ActionResult Index()
         { 
             var noteList = NoteManager.GetNoteList().ToList();

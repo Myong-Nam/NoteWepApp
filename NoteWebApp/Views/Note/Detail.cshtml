@@ -14,7 +14,7 @@
     var NoteListText = "";
     var NoteList = "";
 
-    if (note.IsDeleted == 0)
+    if (note.IsDeleted == 0) //삭제된 노트가 아닐경우
     {
         DeleteButton = "preDelete";
         DeleteText = "삭제";
@@ -28,7 +28,7 @@
 
 
 
-    } else if (note.IsDeleted == 1)
+    } else if (note.IsDeleted == 1) //삭제된 노트일 경우
     {
         DeleteButton = "Delete";
         DeleteText = "영구삭제";
