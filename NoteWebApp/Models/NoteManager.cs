@@ -106,16 +106,17 @@ namespace NoteWebApp.Models
          (2) 새노트 아이디, 제목, 본문, 작성일자를 db로 insert해줌.
 
              */
-        public static int Create(String Title, String Contents)
+        public static int Create(String Title, String Contents, string notebookid)
         {
             int NewNoteId = GetNewNoteId();
-            int defaultNoteBook = NoteBookManager.DefaultNoteBook();
+            int NewBookId = int.Parse(notebookid);
+            
 
             using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
             {
                 conn.Open();
 
-                String sql = $"Insert into note (noteid, title, contents, notedate, notebookid) values ( {NewNoteId}, '{Title}', '{Contents}', sysdate, {defaultNoteBook})";
+                String sql = $"Insert into note (noteid, title, contents, notedate, notebookid) values ( {NewNoteId}, '{Title}', '{Contents}', sysdate, {NewBookId})";
 
                 OracleCommand cmd = new OracleCommand
                 {

@@ -35,7 +35,38 @@ namespace NoteWebApp.Controllers
             return View();
         }
 
-        public ActionResult SelectNoteBook(int noteid)
+        //새노트에서 노트북 선택하는 selectitem
+        public ActionResult SelectNewNoteBook()
+        {
+            var allBooks = NoteBookManager.GetNoteBookList(); //노트북 전체 불러오기
+            List<SelectListItem> items = new List<SelectListItem>(); //select list item 초기화
+
+            foreach (var noteBook in allBooks)
+            {
+                items.Add(new SelectListItem()
+                {
+                    Text = noteBook.Name,
+                    Value = noteBook.NoteBookId.ToString(),
+                    Selected = false
+                });
+            }
+
+            foreach (var item in items)
+            {
+                if (item.Value == NoteBookManager.DefaultNoteBook().ToString())
+                {
+                    item.Selected = true;
+                }
+            }
+
+            ViewBag.noteBookId = items;
+
+            return View();
+        }
+
+
+            //노트 디테일에서 노트북 선택하는 함수
+            public ActionResult SelectNoteBook(int noteid)
         {
             var allBooks = NoteBookManager.GetNoteBookList(); //노트북 전체 불러오기
             List<SelectListItem> items = new List<SelectListItem>(); //select list item 초기화
@@ -66,15 +97,17 @@ namespace NoteWebApp.Controllers
             return View();
         }
 
-        public ActionResult Insert(String title, String contents)
+        public ActionResult Insert(String title, String contents, string noteBookId)
         {
-            int newNoteId = NoteManager.Create(title, contents);
+            int newNoteId = NoteManager.Create(title, contents, noteBookId);
 
             return RedirectToAction("index");
         }
 
         public ActionResult Create(String title, String contents)
         {
+            SelectNewNoteBook();
+
             return View();
         }
 
