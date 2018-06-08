@@ -109,12 +109,13 @@ namespace NoteWebApp.Models
         public static int Create(String Title, String Contents)
         {
             int NewNoteId = GetNewNoteId();
+            int defaultNoteBook = NoteBookManager.DefaultNoteBook();
 
             using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
             {
                 conn.Open();
 
-                String sql = $"Insert into note (noteid, title, contents, notedate) values ( {NewNoteId}, '{Title}', '{Contents}', sysdate)";
+                String sql = $"Insert into note (noteid, title, contents, notedate, notebookid) values ( {NewNoteId}, '{Title}', '{Contents}', sysdate, {defaultNoteBook})";
 
                 OracleCommand cmd = new OracleCommand
                 {

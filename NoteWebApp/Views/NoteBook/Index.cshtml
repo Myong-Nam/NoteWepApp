@@ -17,10 +17,7 @@
     <ul>
 
         @Html.ActionLink(item.Name, "List", new { id = item.NoteBookId })
-
-
         <br />
-        @Html.ActionLink("수정", "Revise", new { id = item.NoteBookId })
 
 
         @using (Html.BeginForm("Delete", "NoteBook"))

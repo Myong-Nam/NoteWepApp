@@ -1,0 +1,46 @@
+﻿@using NoteWebApp.Models
+@{
+    ViewBag.Title = "Info";
+    NoteBook noteBook = ViewBag.noteBook;
+    Boolean isdefault = ViewBag.isDefault;
+}
+
+<h2>노트북 정보</h2>
+
+기본노트북 설정
+<br />
+삭제
+<br />
+@using (Html.BeginForm("Update", "NoteBook"))
+{
+    @Html.Hidden("noteBookId", noteBook.NoteBookId)
+
+    <div id="title">
+        <b>노트북 이름 :</b> <br />
+        @Html.TextBox("name", noteBook.Name)
+    </div>
+
+
+    if (isdefault == false)
+    {
+        @Html.CheckBox("isdefault", false) <b> 기본 노트북으로 설정</b>
+    }
+    else
+    {
+        <b>노트북이 지정되지 않은 노트는 여기에 저장됩니다.</b>
+        @Html.Hidden("isdefault", true)
+    }
+
+
+    <br />
+
+
+
+    <input type="submit" value="저장" />
+}
+
+@using (Html.BeginForm("Delete", "NoteBook"))
+{
+    @Html.Hidden("id", noteBook.NoteBookId)
+    <input type="submit" value="노트북 삭제하기" />
+}

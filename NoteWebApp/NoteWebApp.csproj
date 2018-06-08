@@ -136,6 +136,7 @@
     <Content Include="Views\NoteBook\List.cshtml" />
     <Content Include="Views\NoteBook\Create.cshtml" />
     <Content Include="Views\NoteBook\Revise.cshtml" />
+    <Content Include="Views\NoteBook\Info.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

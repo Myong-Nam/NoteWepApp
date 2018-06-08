@@ -185,6 +185,7 @@ namespace NoteWebApp.Models
             {
                 noteBook.NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString());
                 noteBook.Name = reader["NAME"].ToString();
+                noteBook.IsDefault = int.Parse(reader["ISDEFAULT"].ToString());
             }
             reader.Close();
             conn.Close();
@@ -204,11 +205,13 @@ namespace NoteWebApp.Models
              */
         public static void Delete(int noteBookId)
         {
+            int defaultNoteBook = DefaultNoteBook();
+
             using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
             {
                 conn.Open();
 
-                String NoteSql = $"UPDATE note SET notebookid = {1}, isdeleted = {1} WHERE notebookid = {noteBookId}";
+                String NoteSql = $"UPDATE note SET notebookid = {defaultNoteBook}, isdeleted = {1} WHERE notebookid = {noteBookId}";
 
                 OracleCommand NoteCmd = new OracleCommand
                 {
@@ -217,7 +220,6 @@ namespace NoteWebApp.Models
                 };
 
                 NoteCmd.ExecuteNonQuery();
-
 
                 String sql = $"Delete FROM notebook WHERE noteBookId = {noteBookId}";
 
@@ -233,19 +235,55 @@ namespace NoteWebApp.Models
 
         }
 
-        // 노트북 수정 : /detail
+        // 노트북 수정 : /Info
         /*
          목적 : 노트북 이름 수정
          준비물 : 노트북아이디, 이름
          (1) 해당 아이디를 가진 노트북을 선택하여 이름을 바꿈 */
 
-        public static void Update(int noteBookId, string name)
+        public static void Update(int noteBookId, string name, int isdefault)
         {
             using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
             {
                 conn.Open();
 
-                String sql = $"UPDATE notebook SET name = '{name}' WHERE notebookid = {noteBookId}";
+                string nameSql = $"UPDATE notebook SET name = '{name}' WHERE notebookid = {noteBookId}";
+                string sql = "";
+
+                if (isdefault == 1)
+                {
+                    sql = $"UPDATE NOTEBOOK SET ISDEFAULT = case when notebookid != {noteBookId} then 0 when notebookid = {noteBookId} then 1 end";                   
+
+                    OracleCommand defaultCommand = new OracleCommand
+                    {
+                        Connection = conn,
+                        CommandText = sql
+                    };
+
+                    defaultCommand.ExecuteNonQuery();
+
+                } 
+
+                OracleCommand cmd = new OracleCommand
+                {
+                    Connection = conn,
+                    CommandText = nameSql
+                };
+
+                cmd.ExecuteNonQuery();
+            };
+        }
+
+
+        //기본 노트북 id 찾는 함수
+        public static int DefaultNoteBook()
+        {
+            int defaultNoteBook = 0;
+            using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+            {
+                conn.Open();
+
+                String sql = $"SELECT notebookid FROM notebook WHERE isdefault = {1}";
 
                 OracleCommand cmd = new OracleCommand
                 {
@@ -253,8 +291,54 @@ namespace NoteWebApp.Models
                     CommandText = sql
                 };
 
-                cmd.ExecuteNonQuery();
+                OracleDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    defaultNoteBook = int.Parse(reader["NOTEBOOKID"].ToString());
+                }
+                reader.Close();
+
+                return defaultNoteBook;
+
+            }
+        }
+
+
+            //해당 노트북이 기본 노트북인지 아닌지 판별함
+            private static Boolean IsDefaultNoteBook(int noteBookId)
+        {
+            int isDefault = 0;
+            using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+            {
+                conn.Open();
+
+                String sql = $"SELECT isdefault FROM notebook WHERE notebookid = {noteBookId}";
+
+                OracleCommand cmd = new OracleCommand
+                {
+                    Connection = conn,
+                    CommandText = sql
+                };
+
+                OracleDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    isDefault = int.Parse(reader["ISDEFAULT"].ToString());
+                }
+                reader.Close();
+
+                if (isDefault == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             };
+
+
         }
   
     }

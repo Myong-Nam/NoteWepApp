@@ -2,11 +2,13 @@
 @{
     ViewBag.Title = "List";
     List<Note> noteList = ViewBag.noteList;
-    var name = ViewBag.name;
+    NoteBook noteBook = ViewBag.noteBook;
 
 }
 
-<h2>@name</h2>
+<h2>@noteBook.Name</h2>
+@Html.ActionLink("노트북 정보", "Info", new { id = noteBook.NoteBookId })
+<hr />
 @foreach (var item in noteList)
 {
     <li>
@@ -17,3 +19,4 @@
 <hr />
 
 <br />
+

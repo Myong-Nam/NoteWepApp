@@ -51,10 +51,18 @@ namespace NoteWebApp.Controllers
          준비물 : 노트북 새 이름, 노트북 아이디, 노트북 불러오는 메소드 : NoteBookManager.GetNoteBookbyId(id)
          (1) 노트북 아이디를 이용해 NoteBookManager.GetNoteBookbyId(id)로 노트북 불러옴
         */
-        public ActionResult Revise(int id)
+        public ActionResult Info(int id)
         {
             NoteBook noteBook = NoteBookManager.GetNoteBookbyId(id);
             ViewBag.noteBook = noteBook;
+            int defaultValue = noteBook.IsDefault;
+            Boolean isDefault = false;
+            if (defaultValue == 1)
+            {
+                isDefault = true;
+            }
+
+            ViewBag.isDefault = isDefault;
 
             return View();
         }
@@ -65,11 +73,17 @@ namespace NoteWebApp.Controllers
          (1) 노트북 아이디와 이름으로 노트북을 수정하는 메소드 불러옴(NoteBookManager.Update(noteBookId, name))
          (2) 삭제 후 index페이지로 리다이렉트
            */
-        public ActionResult Update(int noteBookId, string name)
+        public ActionResult Update(int noteBookId, string name, Boolean isdefault)
         {
-            NoteBookManager.Update(noteBookId, name);
+            int Isdefault = 0;
 
-            return RedirectToAction("index");
+            if (isdefault == true)
+            {
+                Isdefault = 1;
+            }
+            NoteBookManager.Update(noteBookId, name, Isdefault);
+
+            return RedirectToAction("List", new { id = noteBookId });
         }
 
 
@@ -96,10 +110,10 @@ namespace NoteWebApp.Controllers
         */
         public ActionResult List(int id)
         {
-            var name = NoteBookManager.GetNoteBookbyId(id).Name; //노트북이름
+            NoteBook noteBook = NoteBookManager.GetNoteBookbyId(id);
             var noteList = NoteBookManager.NotesInNoteBook(id).ToList(); //노트리스트
             ViewBag.noteList = noteList;
-            ViewBag.name = name;
+            ViewBag.noteBook = noteBook;
 
             return View();
         }
