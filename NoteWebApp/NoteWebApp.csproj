@@ -92,6 +92,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\shortcut_stroke.png" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -109,6 +110,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\NoteBookController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
+    <Compile Include="Controllers\ShortcutController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -117,6 +119,7 @@
     <Compile Include="Models\NoteBook.cs" />
     <Compile Include="Models\NoteBookManager.cs" />
     <Compile Include="Models\NoteManager.cs" />
+    <Compile Include="Models\ShortcutManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +140,7 @@
     <Content Include="Views\NoteBook\Create.cshtml" />
     <Content Include="Views\NoteBook\Revise.cshtml" />
     <Content Include="Views\NoteBook\Info.cshtml" />
+    <Content Include="Views\Shortcut\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

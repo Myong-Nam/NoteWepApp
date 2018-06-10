@@ -311,5 +311,41 @@ namespace NoteWebApp.Models
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public static void ToShortCut(int noteid)
+        {
+            using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+            {
+                conn.Open();
+
+                String sql = $"UPDATE note SET ISSHORTCUT = {1} WHERE noteid = {noteid}";
+
+                OracleCommand cmd = new OracleCommand
+                {
+                    Connection = conn,
+                    CommandText = sql
+                };
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void NotToShortCut(int noteid)
+        {
+            using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+            {
+                conn.Open();
+
+                String sql = $"UPDATE note SET ISSHORTCUT = {0} WHERE noteid = {noteid}";
+
+                OracleCommand cmd = new OracleCommand
+                {
+                    Connection = conn,
+                    CommandText = sql
+                };
+
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

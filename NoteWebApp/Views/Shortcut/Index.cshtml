@@ -1,0 +1,31 @@
+﻿@using NoteWebApp.Models
+@{
+    ViewBag.Title = "Index";
+    var shortcuts = ViewBag.shortcuts;
+}
+
+<h2>바로가기</h2>
+
+
+@foreach (var item in shortcuts)
+{
+<li>
+
+    @if (item.GetType().Name == "Note")
+    {
+        String NoteTitle = item.Title;
+        String NoteId = item.NoteId.ToString();
+        @Html.ActionLink(NoteTitle, "../note/Detail", new { id = NoteId })
+
+
+    }
+    @if (item.GetType().Name == "NoteBook")
+    {
+
+        String NoteBookName = item.Name;
+        String NoteBookId = item.NoteBookId.ToString();
+        @Html.ActionLink(NoteBookName, "../notebook/List", new { id = NoteBookId })
+    }
+
+</li>
+}

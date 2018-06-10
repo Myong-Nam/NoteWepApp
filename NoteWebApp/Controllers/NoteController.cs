@@ -97,6 +97,7 @@ namespace NoteWebApp.Controllers
             return View();
         }
 
+        [ValidateInput(false)]
         public ActionResult Insert(String title, String contents, string noteBookId)
         {
             int newNoteId = NoteManager.Create(title, contents, noteBookId);
@@ -127,6 +128,7 @@ namespace NoteWebApp.Controllers
         }
 
         //노트 수정
+        [ValidateInput(false)]
         public ActionResult Update(int noteId, String title, String contents, string noteBookId)
         {
             NoteManager.Update(noteId, title, contents, noteBookId);

@@ -19,3 +19,11 @@
     </div>
     <input type="submit" value="저장" />
 }
+
+<script>
+        ClassicEditor
+            .create(document.querySelector('#contents'))
+            .catch(error => {
+                console.error(error);
+            });
+</script>

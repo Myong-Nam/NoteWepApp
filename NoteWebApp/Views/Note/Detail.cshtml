@@ -28,7 +28,8 @@
 
 
 
-    } else if (note.IsDeleted == 1) //삭제된 노트일 경우
+    }
+    else if (note.IsDeleted == 1) //삭제된 노트일 경우
     {
         DeleteButton = "Delete";
         DeleteText = "영구삭제";
@@ -39,17 +40,25 @@
     }
 }
 
-<h2>노트 보기</h2>
+
 
 <body>
+
+    <!-- <a href="//Url.Action("Index", "Note")" id="1">
+          <img src="~/Content/shortcut_stroke.png" width="25px" />
+      </a>-->
+
     @using (Html.BeginForm(UpdateOrRecover, "Note"))
     {
-        @Html.Hidden("noteId", note.NoteId)
-    <div>
-        <b>노트북 :</b>
-        @Html.DropDownList("noteBookId")
+        <br />
 
-    </div>
+        @Html.Hidden("noteId", note.NoteId)
+        <hr />
+        <div>
+            <b>노트북 :</b>
+            @Html.DropDownList("noteBookId")
+
+        </div>
 
         <div>
             <b>생성시간 :</b> @note.NoteDate
@@ -74,3 +83,11 @@
 
     @Html.ActionLink(NoteListText, NoteList)
 </body>
+
+<script>
+        ClassicEditor
+            .create(document.querySelector('#contents'))
+            .catch(error => {
+                console.error(error);
+            });
+</script>
