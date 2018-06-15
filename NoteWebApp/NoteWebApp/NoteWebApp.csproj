@@ -92,6 +92,12 @@
   <ItemGroup>
     <Content Include="Content\menu\add_fill.png" />
     <Content Include="Content\menu\add_stroke.png" />
+    <Content Include="Content\menu\book_fill.png" />
+    <Content Include="Content\menu\book_stroke.png" />
+    <Content Include="Content\menu\paper_fill.png" />
+    <Content Include="Content\menu\paper_stroke.png" />
+    <Content Include="Content\menu\star_fill.png" />
+    <Content Include="Content\menu\star_stroke.png" />
     <Content Include="Content\shortcut_fill.png" />
     <Content Include="Content\shortcut_stroke.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

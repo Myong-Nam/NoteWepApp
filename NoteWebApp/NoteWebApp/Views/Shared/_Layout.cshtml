@@ -2,15 +2,19 @@
 <html>
 <head>
     <style>
-        .navbar ul{
+        .navbar ul {
             list-style-type: none;
             margin: 0 0 0 0;
-            padding: 30px 0 0 0 ;
+            padding: 30px 0 0 0;
             width: 100px;
-            background-color: #D2D2D2;
+            background-color: #F8F8F8;
             height: 100%; /* Full height */
             position: fixed; /* Make it stick, even on scroll */
             overflow: auto; /* Enable scrolling if the sidenav has too much content */
+        }
+
+        .navbar ul li{
+            margin: 20px 25px auto 25px;
         }
 
         .body-content {
@@ -33,11 +37,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <div class="navbar">
             <ul>
-                <li>@Html.ActionLink("새 노트", "Create", "Note", new { area = "" }, new { @class = "navbar-brand" })</li>
-                <li>@Html.ActionLink("노트", "Index", "Note", new { area = "" }, new { @class = "navbar-brand" })</li>
-                <li>@Html.ActionLink("노트북", "Index", "NoteBook", new { area = "" }, new { @class = "navbar-brand" })</li>
-                <li>@Html.ActionLink("바로가기", "Index", "Shortcut", new { area = "" }, new { @class = "navbar-brand" })</li>
-             </ul>
+                <li>
+                    <a href="http://localhost:7223/Note/Create"><img src="~/Content/menu/add_stroke.png" alt="New Note" /></a>
+                </li>
+                <li>
+                    <a href="http://localhost:7223/Shortcut/Index"><img src="~/Content/menu/star_stroke.png" alt="Shortcut" /></a>
+                </li>
+                <li>
+                    <a href="http://localhost:7223/Note/Index"><img src="~/Content/menu/paper_stroke.png" alt="Note" /></a>
+                </li>
+                <li>
+                    <a href="http://localhost:7223/NoteBook/Index"><img src="~/Content/menu/book_stroke.png" alt="NoteBook" /></a>
+                </li>
+            </ul>
         </div>
         <div class="container body-content">
             @RenderBody()
