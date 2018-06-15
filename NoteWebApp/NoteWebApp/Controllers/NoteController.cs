@@ -35,7 +35,7 @@ namespace NoteWebApp.Controllers
             SelectNoteBook(id);
 
             //바로가기 여부 보여줌
-            ViewBag.isShortCut = ShortcutManager.IsNoteShorcut(id);
+            ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 0);
 
             return View();
         }

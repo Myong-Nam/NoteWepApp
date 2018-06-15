@@ -54,9 +54,9 @@
 
 <body>
     <br />
-    @using (Html.BeginForm("Change", "Shortcut"))
+    @using (Html.BeginForm("ChangeNote", "Shortcut"))
     {
-        @Html.Hidden("noteid", note.NoteId)
+        @Html.Hidden("id", note.NoteId)
         @Html.Hidden("isShortcut", @Save)
         <input type="image" src=@Star alt="Submit" width="25px">
         /*<input class="star" type="image" value=@Save src="" />*/

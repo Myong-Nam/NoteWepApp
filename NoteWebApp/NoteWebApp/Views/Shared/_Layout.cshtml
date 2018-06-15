@@ -1,45 +1,54 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <style>
+        .navbar ul{
+            list-style-type: none;
+            margin: 0 0 0 0;
+            padding: 30px 0 0 0 ;
+            width: 100px;
+            background-color: #D2D2D2;
+            height: 100%; /* Full height */
+            position: fixed; /* Make it stick, even on scroll */
+            overflow: auto; /* Enable scrolling if the sidenav has too much content */
+        }
+
+        .body-content {
+            margin-left: 100px;
+            padding: 1px 16px;
+            height: 100%;
+        }
+        footer {
+            margin-left: 100px;
+            padding: 1px 16px;
+        }
+    </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!--<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/10.0.1/classic/ckeditor.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("NoteWebApp", "Index", "Note", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("새 노트", "Create", "Note", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("노트", "Index", "Note", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("노트북", "Index", "NoteBook", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("바로가기", "Index", "Shortcut", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav"></ul>
-            </div>
+        <div class="navbar">
+            <ul>
+                <li>@Html.ActionLink("새 노트", "Create", "Note", new { area = "" }, new { @class = "navbar-brand" })</li>
+                <li>@Html.ActionLink("노트", "Index", "Note", new { area = "" }, new { @class = "navbar-brand" })</li>
+                <li>@Html.ActionLink("노트북", "Index", "NoteBook", new { area = "" }, new { @class = "navbar-brand" })</li>
+                <li>@Html.ActionLink("바로가기", "Index", "Shortcut", new { area = "" }, new { @class = "navbar-brand" })</li>
+             </ul>
         </div>
-    </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+        </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-</body>
+        <!--      <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+           <script src="~/Scripts/bootstrap.min.js"></script>-->
+</head>
 </html>
+<footer>
+    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+</footer>

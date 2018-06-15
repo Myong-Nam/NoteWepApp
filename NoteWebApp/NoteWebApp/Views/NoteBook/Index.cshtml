@@ -4,30 +4,30 @@
     List<NoteBook> noteBookList = ViewBag.noteBookList;
 }
 
+<body>
+    <h2>노트북리스트</h2>
+    @Html.ActionLink("새 노트북", "Create")
+    <div>
+        @Html.ActionLink("휴지통", "../note/Deleted")
+    </div>
+    <hr />
 
-<h2>노트북리스트</h2>
-@Html.ActionLink("새 노트북", "Create")
-<div>
-    @Html.ActionLink("휴지통", "../note/Deleted")
-</div>
-<hr />
+    @foreach (var item in noteBookList)
+    {
+        <ul>
 
-@foreach (var item in noteBookList)
-{
-    <ul>
-
-        @Html.ActionLink(item.Name, "List", new { id = item.NoteBookId })
-        <br />
+            @Html.ActionLink(item.Name, "List", new { id = item.NoteBookId })
+            <br />
 
 
-        @using (Html.BeginForm("Delete", "NoteBook"))
-        {
-            @Html.Hidden("id", item.NoteBookId)
-            <input type="submit" value="삭제" />
-        }
-        <hr />
+            @using (Html.BeginForm("Delete", "NoteBook"))
+            {
+                @Html.Hidden("id", item.NoteBookId)
+                <input type="submit" value="삭제" />
+            }
+            <hr />
 
-    </ul>
-}
-
+        </ul>
+    }
+</body>
 

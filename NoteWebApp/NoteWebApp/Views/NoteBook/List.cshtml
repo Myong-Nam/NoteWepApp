@@ -3,20 +3,43 @@
     ViewBag.Title = "List";
     List<Note> noteList = ViewBag.noteList;
     NoteBook noteBook = ViewBag.noteBook;
+    var isShortcut = ViewBag.isShortCut;
+    var Star = "";
+    var Save = "true";
 
+    if (isShortcut == "false")
+    {
+        Star = "../../Content/shortcut_stroke.png";
+        Save = "true";
+
+    }
+    else if (isShortcut == "true")
+    {
+        Star = "../../Content/shortcut_fill.png";
+        Save = "false";
+    }
 }
 
-<h2>@noteBook.Name</h2>
-@Html.ActionLink("노트북 정보", "Info", new { id = noteBook.NoteBookId })
-<hr />
-@foreach (var item in noteList)
-{
-    <li>
-        @Html.ActionLink(item.Title, "../note/Detail", new { id = item.NoteId })
+<body>
 
-    </li>
-}
-<hr />
+    <h2>@noteBook.Name</h2>
+    @Html.ActionLink("노트북 정보", "Info", new { id = noteBook.NoteBookId })
+    <br />
+    @using (Html.BeginForm("ChangeBook", "Shortcut"))
+    {
+        @Html.Hidden("id", noteBook.NoteBookId)
+        @Html.Hidden("isShortcut", @Save)
+        <input type="image" src=@Star alt="Submit" width="25px">
+        /*<input class="star" type="image" value=@Save src="" />*/
+    }
+    <hr />
+    @foreach (var item in noteList)
+    {
+        <li>
+            @Html.ActionLink(item.Title, "../note/Detail", new { id = item.NoteId })
 
-<br />
+        </li>
+    }
+    <hr />
 
+</body>

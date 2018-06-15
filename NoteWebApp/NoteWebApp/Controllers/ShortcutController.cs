@@ -7,24 +7,30 @@ using NoteWebApp.Models;
 
 namespace NoteWebApp.Controllers
 {
-    public class ShortcutController : Controller
-    {
-        // GET: Shortcut
-        public ActionResult Index()
-        {
-            List<object> shortcuts = ShortcutManager.GetShorcutList();
-            ViewBag.shortcuts = shortcuts;
+	public class ShortcutController : Controller
+	{
+		// GET: Shortcut
+		public ActionResult Index()
+		{
+			List<object> shortcuts = ShortcutManager.GetShorcutList();
+			ViewBag.shortcuts = shortcuts;
 
-            return View();
-        }
+			return View();
+		}
 
-        public ActionResult Change(int noteid, string isShortcut)
-        {
+		public ActionResult ChangeBook(int id, string isShortcut)
+		{
+			ShortcutManager.ChangeShortcut(id, isShortcut, 1);
 
-            ShortcutManager.ChangeNoteShortcut(noteid, isShortcut);
+			return RedirectToAction("../NoteBook/List/" + id);
+		}
 
-            return RedirectToAction("../note/detail/" + noteid);
-        }
+		public ActionResult ChangeNote(int id, string isShortcut)
+		{
+			ShortcutManager.ChangeShortcut(id, isShortcut, 0);
 
-    }
+			return RedirectToAction("../Note/Detail/" + id);
+		}
+
+	}
 }

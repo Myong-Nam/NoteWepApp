@@ -4,18 +4,20 @@
     NoteBook noteBook = ViewBag.noteBook;
 }
 
-<h2>Revise</h2>
+<body>
+    <h2>Revise</h2>
 
-@using (Html.BeginForm("Update", "NoteBook"))
-{
-    @Html.Hidden("noteBookId", noteBook.NoteBookId)
+    @using (Html.BeginForm("Update", "NoteBook"))
+    {
+        @Html.Hidden("noteBookId", noteBook.NoteBookId)
 
-    <div id="title">
-        <b>이름 :</b> <br />
-        @Html.TextBox("name", noteBook.Name)
+        <div id="title">
+            <b>이름 :</b> <br />
+            @Html.TextBox("name", noteBook.Name)
 
-    </div>
-   
-    <input type="submit" value="수정" />
-}
+        </div>
 
+        <input type="submit" value="수정" />
+    }
+
+</body>

@@ -115,7 +115,10 @@ namespace NoteWebApp.Controllers
             ViewBag.noteList = noteList;
             ViewBag.noteBook = noteBook;
 
-            return View();
+			//바로가기 여부 보여줌
+			ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);
+
+			return View();
         }
     }
 }

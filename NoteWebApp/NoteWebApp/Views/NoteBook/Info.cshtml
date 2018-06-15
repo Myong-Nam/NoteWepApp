@@ -5,36 +5,38 @@
     Boolean isdefault = ViewBag.isDefault;
 }
 
-<h2>노트북 정보</h2>
+<body>
+    <h2>노트북 정보</h2>
 
-@using (Html.BeginForm("Update", "NoteBook"))
-{
-    @Html.Hidden("noteBookId", noteBook.NoteBookId)
+    @using (Html.BeginForm("Update", "NoteBook"))
+    {
+        @Html.Hidden("noteBookId", noteBook.NoteBookId)
 
-<div id="title">
-    <hr /> 
-    <b>노트북 이름 :</b> <br />
-    @Html.TextBox("name", noteBook.Name)
-</div>
+        <div id="title">
+            <hr />
+            <b>노트북 이름 :</b> <br />
+            @Html.TextBox("name", noteBook.Name)
+        </div>
 
+        <br />
+        if (isdefault == false)
+        {
+            @Html.CheckBox("isdefault", false) <b> 기본 노트북으로 설정</b>
+        }
+        else
+        {
+            <b>노트북이 지정되지 않은 노트는 여기에 저장됩니다.</b>
+            @Html.Hidden("isdefault", true)
+        }
+
+        <br /> <br />
+
+        <input type="submit" value="저장" />
+    }
     <br />
-    if (isdefault == false)
+    @using (Html.BeginForm("Delete", "NoteBook"))
     {
-        @Html.CheckBox("isdefault", false) <b> 기본 노트북으로 설정</b>
+        @Html.Hidden("id", noteBook.NoteBookId)
+        <input type="submit" value="노트북 삭제하기" />
     }
-    else
-    {
-        <b>노트북이 지정되지 않은 노트는 여기에 저장됩니다.</b>
-        @Html.Hidden("isdefault", true)
-    }
-
-    <br /> <br />
-
-    <input type="submit" value="저장" />
-}
-<br />
-@using (Html.BeginForm("Delete", "NoteBook"))
-{
-    @Html.Hidden("id", noteBook.NoteBookId)
-    <input type="submit" value="노트북 삭제하기" />
-}
+</body>

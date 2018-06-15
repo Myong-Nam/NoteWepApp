@@ -4,18 +4,21 @@
     List<Note> deletedList = ViewBag.DeletedNoteList;
 }
 
-<h2>휴지통</h2>
+<body>
+
+    <h2>휴지통</h2>
 
 
-@foreach (var item in deletedList)
-{
-    <ul>
-        @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
-        @using (Html.BeginForm("Delete", "Note"))
-        {
-            @Html.Hidden("noteId", item.NoteId)
-            <input type="submit" value="영구삭제" />
-        }
-    </ul>
-    <hr />
-}
+    @foreach (var item in deletedList)
+    {
+        <ul>
+            @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
+            @using (Html.BeginForm("Delete", "Note"))
+            {
+                @Html.Hidden("noteId", item.NoteId)
+                <input type="submit" value="영구삭제" />
+            }
+        </ul>
+        <hr />
+    }
+</body>

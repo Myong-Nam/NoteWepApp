@@ -4,25 +4,27 @@
     List<Note> notelist = ViewBag.noteList;
 }
 
-<h2>노트 리스트</h2>
 
+<body>
+    <h2>노트 리스트</h2>
 
-@foreach (var item in notelist)
-{
-<ul>
-
-
-
-    @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
-
-    @using (Html.BeginForm("preDelete", "Note"))
+    @foreach (var item in notelist)
     {
-        @Html.Hidden("noteId", item.NoteId)
-        <input type="submit" value="삭제" />
+        <ul>
+
+
+
+            @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
+
+            @using (Html.BeginForm("preDelete", "Note"))
+            {
+                @Html.Hidden("noteId", item.NoteId)
+                <input type="submit" value="삭제" />
+            }
+            <hr />
+        </ul>
     }
-    <hr />
-</ul>
-}
+</body>
 
 
 

@@ -3,18 +3,19 @@
     ViewBag.Title = "Create";
 }
 
-<h2>새 노트북</h2>
+<body>
+    <h2>새 노트북</h2>
 
 
-@using (Html.BeginForm("Insert", "NoteBook"))
-{
-    <div>
-        이름: <br />
-        @Html.TextBox("name", "")
-    </div>
+    @using (Html.BeginForm("Insert", "NoteBook"))
+    {
+        <div>
+            이름: <br />
+            @Html.TextBox("name", "")
+        </div>
 
-    <input type="submit" value="저장" />
-}
+        <input type="submit" value="저장" />
+    }
 
-
+</body>
 
