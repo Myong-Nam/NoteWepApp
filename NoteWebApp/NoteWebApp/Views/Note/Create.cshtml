@@ -22,10 +22,6 @@
     }
 
     <script>
-        ClassicEditor
-            .create(document.querySelector('#contents'))
-            .catch(error => {
-                console.error(error);
-            });
+        CKEDITOR.replace('contents');
     </script>
 </body>

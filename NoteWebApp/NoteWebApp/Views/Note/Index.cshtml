@@ -2,33 +2,39 @@
 @{
     ViewBag.Title = "Index";
     List<Note> notelist = ViewBag.noteList;
+    
 }
 
 
-<body>
-    <h2>노트 리스트</h2>
-
-    @foreach (var item in notelist)
-    {
-        <ul>
-
-
-
-            @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
-
-            @using (Html.BeginForm("preDelete", "Note"))
-            {
-                @Html.Hidden("noteId", item.NoteId)
-                <input type="submit" value="삭제" />
-            }
+<h2>노트</h2>
+<div class="notelist">
+@foreach (var item in notelist)
+{
+    <ul>
+        <li>
+            <button id="list" onclick="notedetail(@item.NoteId)" value="@item.NoteId">@item.Title</button>
             <hr />
-        </ul>
+        </li>
+    </ul>
+
+}
+
+</div>
+
+<div id="noteDetail">
+    
+</div>
+    
+<script>
+    var url = '@Url.Action("Detail", "Note")';
+    document.getElementById("noteDetail").innerHTML = initDetail(); 
+
+    function notedetail(noteid){
+        $('#noteDetail').load(url, { selectedNoteid: noteid });
     }
-</body>
-
-
-
-
-
-
+    function initDetail() {
+        $('#noteDetail').load(url, { selectedNoteid: @notelist[0].NoteId });
+    }
+    
+</script>
 

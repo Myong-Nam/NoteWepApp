@@ -29,7 +29,7 @@ namespace NoteWebApp.Controllers
 		{
 			ShortcutManager.ChangeShortcut(id, isShortcut, 0);
 
-			return RedirectToAction("../Note/Detail/" + id);
+			return RedirectToAction("../Note");
 		}
 
 	}

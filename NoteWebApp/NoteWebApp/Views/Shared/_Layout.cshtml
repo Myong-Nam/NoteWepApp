@@ -3,7 +3,6 @@
 <head>
     <style>
         .navbar ul {
-            list-style-type: none;
             margin: 0 0 0 0;
             padding: 30px 0 0 0;
             width: 100px;
@@ -13,19 +12,63 @@
             overflow: auto; /* Enable scrolling if the sidenav has too much content */
         }
 
-        .navbar ul li{
-            margin: 20px 25px auto 25px;
+            .navbar ul li {
+                margin: 20px 0px auto 25px;
+            }
+
+        ul li {
+            list-style-type: none;
         }
 
         .body-content {
             margin-left: 100px;
-            padding: 1px 16px;
+            padding: 1px 1px;
             height: 100%;
         }
+
         footer {
             margin-left: 100px;
             padding: 1px 16px;
         }
+
+        .notelist {
+            margin: 0;
+            width: 20%;
+            height: 100%;
+            position: absolute;
+        }
+
+        #noteDetail {
+            margin-left: 5%;
+            float: right;
+            width: 70%;
+        }
+        .noteHeader {
+            display:inline;
+        }
+        #title {
+            background: none;
+            border: none;
+            outline: none;
+            padding: 0;
+            width: 100%;
+            color: #2dbe60;
+            line-height: 35px;
+            outline: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: caecilia, times, serif;
+            font-size: 28px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-weight: 300;
+            height: 35px;
+            top: 0;
+            left: 0;
+            margin-top: -1px;
+        }
+    </style>
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,34 +76,30 @@
 
     <!--<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/10.0.1/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <div class="navbar">
-            <ul>
-                <li>
-                    <a href="http://localhost:7223/Note/Create"><img src="~/Content/menu/add_stroke.png" alt="New Note" /></a>
-                </li>
-                <li>
-                    <a href="http://localhost:7223/Shortcut/Index"><img src="~/Content/menu/star_stroke.png" alt="Shortcut" /></a>
-                </li>
-                <li>
-                    <a href="http://localhost:7223/Note/Index"><img src="~/Content/menu/paper_stroke.png" alt="Note" /></a>
-                </li>
-                <li>
-                    <a href="http://localhost:7223/NoteBook/Index"><img src="~/Content/menu/book_stroke.png" alt="NoteBook" /></a>
-                </li>
-            </ul>
-        </div>
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
+    <div class="navbar">
+        <ul>
+            <li>
+                <a href="http://localhost:7223/Note/Create"><img src="~/Content/menu/add_stroke.png" alt="New Note" /></a>
+            </li>
+            <li>
+                <a href="http://localhost:7223/Shortcut/Index"><img src="~/Content/menu/star_stroke.png" alt="Shortcut" /></a>
+            </li>
+            <li>
+                <a href="http://localhost:7223/Note/Index"><img src="~/Content/menu/paper_stroke.png" alt="Note" /></a>
+            </li>
+            <li>
+                <a href="http://localhost:7223/NoteBook/Index"><img src="~/Content/menu/book_stroke.png" alt="NoteBook" /></a>
+            </li>
+        </ul>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
 
-        </div>
-
-        <!--      <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-           <script src="~/Scripts/bootstrap.min.js"></script>-->
+    </div>
+    </div>
+      <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 </head>
 </html>
-<footer>
-    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-</footer>

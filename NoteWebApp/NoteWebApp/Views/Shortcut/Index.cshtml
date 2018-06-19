@@ -6,26 +6,41 @@
 
 <h2>바로가기</h2>
 
-
-@foreach (var item in shortcuts)
-{
-<li>
-
-    @if (item.GetType().Name == "Note")
+<div class="notelist">
+    @foreach (var item in shortcuts)
     {
-        String NoteTitle = item.Title;
-        String NoteId = item.NoteId.ToString();
-        @Html.ActionLink(NoteTitle, "../note/Detail", new { id = NoteId })
+        <ul>
+            <li>
 
+                @if (item.GetType().Name == "Note")
+                {
+                    <button id="list" onclick="notedetail(@item.NoteId)" value="@item.NoteId">@item.Title</button>
+                }
 
+                @if (item.GetType().Name == "NoteBook")
+                {
+
+                    String NoteBookName = item.Name;
+                    String NoteBookId = item.NoteBookId.ToString();
+                    @Html.ActionLink(NoteBookName, "../notebook/List", new { id = NoteBookId })
+
+                }
+                <hr />
+
+            </li>
+        </ul>
     }
-    @if (item.GetType().Name == "NoteBook")
-    {
+</div>
+<div id="noteDetail">
 
-        String NoteBookName = item.Name;
-        String NoteBookId = item.NoteBookId.ToString();
-        @Html.ActionLink(NoteBookName, "../notebook/List", new { id = NoteBookId })
+</div>
+<script>
+    var url = '@Url.Action("Detail", "Note")';
+    document.getElementById("noteDetail").innerHTML = initDetail();
+
+    function notedetail(noteid){
+        $('#noteDetail').load(url, { selectedNoteid: noteid });
     }
 
-</li>
-}
+</script>
+
