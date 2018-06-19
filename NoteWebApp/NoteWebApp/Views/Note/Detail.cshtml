@@ -56,37 +56,52 @@
             <input type="image" src=@Star alt="Submit" width="25px">
         }
     </div>
-    <div class="noteHeader">
-        @Html.DropDownList("noteBookId")
+
+
+    @using (Html.BeginForm(UpdateOrRecover, "Note"))
+    {
+        <div class="noteHeader">
+            @Html.DropDownList("noteBookId")
         </div>
+        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div>
 
-        @using (Html.BeginForm(UpdateOrRecover, "Note"))
-        {
-            <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div>
+        <hr />
 
-            <hr />
+        <div class="title">
 
-            <div id="title">
-                @Html.TextBox("title", Model.Title)
+            @Html.TextBox("title", Model.Title, new { maxlength = 15, onkeyUp = "lengthAlert()" })
+           
+        </div>
+        <div id="msg"></div>
+        <br /> 
+        <div>
+            <br />
+            @Html.TextArea("contents", Model.Contents)
+        </div>
+        <input type="submit" value=@UpdateOrRecoverText />
+    }
 
-            </div>
-            <div>
-                <br />
-                @Html.TextArea("contents", Model.Contents)
-            </div>
-            <input type="submit" value=@UpdateOrRecoverText />
+    @using (Html.BeginForm(@DeleteButton, "Note"))
+    {
+        @Html.Hidden("noteId", Model.NoteId)
+        <input type="submit" value="@DeleteText" />
+    }
+
+    @Html.ActionLink(NoteListText, NoteList)
+    <script>
+        CKEDITOR.replace('contents');
+
+        function lengthAlert() {
+            var length = document.getElementById("title").value.length;
+            if (length == 15) {
+                document.getElementById("msg").innerHTML = "제목은 15자 이내로 작성해주세요.";
+            } else {
+                document.getElementById("msg").innerHTML = "";
+            }
+
         }
 
-        @using (Html.BeginForm(@DeleteButton, "Note"))
-        {
-            @Html.Hidden("noteId", Model.NoteId)
-            <input type="submit" value="@DeleteText" />
-        }
-
-        @Html.ActionLink(NoteListText, NoteList)
-        <script>
-            CKEDITOR.replace('contents');
-        </script>
+    </script>
 
 
 </body>
