@@ -16,6 +16,35 @@ namespace NoteWebApp.Controllers
 			var noteList = NoteManager.GetNoteList().ToList();
 			ViewBag.noteList = noteList;
 
+			//orders
+			List<SelectListItem> orders = new List<SelectListItem>();
+			orders.Add(new SelectListItem()
+			{
+				Text = "만든날짜(오래된 순으로)",
+				Value = "0",
+				Selected = true
+			});
+			orders.Add(new SelectListItem()
+			{
+				Text = "만든날짜(최근 순으로)",
+				Value = "1",
+				Selected = false
+			});
+			orders.Add(new SelectListItem()
+			{
+				Text = "제목(오름차순)",
+				Value = "2",
+				Selected = false
+			});
+			orders.Add(new SelectListItem()
+			{
+				Text = "제목(내림차순)",
+				Value = "3",
+				Selected = false
+			});
+
+			ViewBag.orders = orders;
+
 			return View();
 		}
 
@@ -43,10 +72,30 @@ namespace NoteWebApp.Controllers
 			NoteBook notebook = NoteBookManager.GetNoteBookbyId(noteBookId);
 			int NoteBookId = notebook.NoteBookId;
 			ViewBag.name = notebook.Name;
-			
-			
 
 			return PartialView(selected);
+		}
+
+		public PartialViewResult NoteList(string id)
+		{
+			var noteList = NoteManager.GetNoteList().ToList();
+			
+			if (id == "0")
+			{
+				noteList = noteList.OrderBy(x => x.FullDate).ToList();
+			} else if (id == "1")
+			{
+				noteList = noteList.OrderBy(x => x.FullDate).Reverse().ToList();
+			} else if (id == "2")
+			{
+				noteList = noteList.OrderBy(x => x.Title).ToList();
+			} else
+			{
+				noteList = noteList.OrderBy(x => x.Title).Reverse().ToList();
+			}
+
+			ViewBag.noteList = noteList;
+			return PartialView();
 		}
 
 		//새노트에서 노트북 선택하는 selectitem

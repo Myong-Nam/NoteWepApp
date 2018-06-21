@@ -1,0 +1,24 @@
+﻿@using NoteWebApp.Models
+
+@{
+    ViewBag.Title = "Index";
+    List<Note> noteList = ViewBag.noteList;
+
+
+}
+
+    @foreach (var item in noteList)
+    {
+        <ul>
+            <li>
+                <div class="listTitle" onclick="notedetail(@item.NoteId)">
+                    @item.Title<br /><br />
+                    @item.NoteDate
+                </div>
+                <hr />
+            </li>
+        </ul>
+
+    }
+
+

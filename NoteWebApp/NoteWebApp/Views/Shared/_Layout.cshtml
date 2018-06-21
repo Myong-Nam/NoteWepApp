@@ -43,9 +43,11 @@
             float: right;
             width: 70%;
         }
+
         .noteHeader {
-            display:inline;
+            display: inline;
         }
+
         #title {
             background: none;
             border: none;
@@ -68,6 +70,7 @@
             left: 0;
             margin-top: -1px;
         }
+
         #msg {
             color: orangered;
             font-size: 10px;
@@ -76,6 +79,24 @@
             left: 0;
             margin-top: -1px;
         }
+
+        #listTitle {
+            font-family: gotham, helvetica, arial, sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 17px;
+        }
+
+        #noteListDate {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 100%;
+            font: inherit;
+        }
+        
+
     </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,12 +122,13 @@
             </li>
         </ul>
     </div>
+</head>
     <div class="container body-content">
         @RenderBody()
         <hr />
 
     </div>
-    </div>
-      <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-</head>
 </html>
+      <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+

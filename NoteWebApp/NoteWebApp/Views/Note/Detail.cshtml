@@ -17,6 +17,7 @@
     var NoteList = "";
     var Star = "";
     var Save = "true";
+    var Info = "../../Content/menu/info.png";
 }
 
 @{ 
@@ -43,6 +44,15 @@
         NoteListText = "<< 노트 리스트로 돌아가기";
 
     }
+    else if (Model.IsDeleted == 1) //삭제된 노트일 경우
+    {
+        DeleteButton = "Delete";
+        DeleteText = "영구삭제";
+        UpdateOrRecover = "RecoverNote";
+        UpdateOrRecoverText = "복원";
+        NoteList = "Deleted";
+        NoteListText = "<< 휴지통 리스트로 돌아가기";
+    }
 }
 
 
@@ -54,18 +64,16 @@
             @Html.Hidden("id", Model.NoteId)
             @Html.Hidden("isShortcut", @Save)
             <input type="image" src=@Star alt="Submit" width="25px">
+            <input type="image" src=@Info alt="Submit" width="25px">
         }
+
     </div>
 
 
     @using (Html.BeginForm(UpdateOrRecover, "Note"))
     {
-        <div class="noteHeader">
-            @Html.DropDownList("noteBookId")
-        </div>
-        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div>
-
-        <hr />
+       @Html.DropDownList("noteBookId")
+        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
 
         <div class="title">
 
@@ -73,7 +81,6 @@
            
         </div>
         <div id="msg"></div>
-        <br /> 
         <div>
             <br />
             @Html.TextArea("contents", Model.Contents)
@@ -93,12 +100,11 @@
 
         function lengthAlert() {
             var length = document.getElementById("title").value.length;
-            if (length == 15) {
+            if (length > 15) {
                 document.getElementById("msg").innerHTML = "제목은 15자 이내로 작성해주세요.";
             } else {
                 document.getElementById("msg").innerHTML = "";
             }
-
         }
 
     </script>

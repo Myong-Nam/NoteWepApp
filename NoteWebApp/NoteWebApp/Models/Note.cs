@@ -11,6 +11,7 @@ namespace NoteWebApp.Models
         public string Title;
         public string Contents;
         public string NoteDate;
+		public DateTime FullDate;
         public int IsDeleted;
         public int NoteBookId;
         public int IsShortcut;

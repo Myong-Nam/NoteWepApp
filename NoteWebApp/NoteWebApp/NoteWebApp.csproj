@@ -94,6 +94,7 @@
     <Content Include="Content\menu\add_stroke.png" />
     <Content Include="Content\menu\book_fill.png" />
     <Content Include="Content\menu\book_stroke.png" />
+    <Content Include="Content\menu\info.png" />
     <Content Include="Content\menu\paper_fill.png" />
     <Content Include="Content\menu\paper_stroke.png" />
     <Content Include="Content\menu\star_fill.png" />
@@ -147,6 +148,7 @@
     <Content Include="Views\NoteBook\Info.cshtml" />
     <Content Include="Views\Shortcut\Index.cshtml" />
     <Content Include="Views\Note\Detail.cshtml" />
+    <Content Include="Views\Note\NoteList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

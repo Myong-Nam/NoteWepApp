@@ -2,39 +2,60 @@
 @{
     ViewBag.Title = "Index";
     List<Note> notelist = ViewBag.noteList;
-    
+    int countNotes = notelist.Count;
+
 }
 
 
 <h2>노트</h2>
-<div class="notelist">
-@foreach (var item in notelist)
+<h4>@countNotes 개의 노트</h4>
+@using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
 {
-    <ul>
-        <li>
-            <button id="list" onclick="notedetail(@item.NoteId)" value="@item.NoteId">@item.Title</button>
-            <hr />
-        </li>
-    </ul>
-
+    @Html.DropDownList("orders", new SelectListItem[]{
+    new SelectListItem() { Text = "설정", Value = ""},
+    new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "0"},
+    new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "1"},
+    new SelectListItem() { Text = "제목(오름차순)", Value = "2"},
+    new SelectListItem() { Text = "제목(내림차순)", Value = "3"}
+   }, new { onchange="Callfunc(this.value)" })
 }
+<div id="noteOrderBy">
 
 </div>
+<div id="test">
+    <div class="notelist">
+        @foreach (var item in notelist)
+        {
+            <ul>
+                <li>
+                    <div class="listTitle" onclick="notedetail(@item.NoteId)">
+                        @item.Title<br /><br />
+                        @item.NoteDate
+                    </div>
+                    <hr />
+                </li>
+            </ul>
 
-<div id="noteDetail">
-    
+        }
+
+    </div>
 </div>
-    
+
+<div id="noteDetail"></div>
+
 <script>
-    var url = '@Url.Action("Detail", "Note")';
-    document.getElementById("noteDetail").innerHTML = initDetail(); 
+        var url = '@Url.Action("Detail", "Note")';
+        var listurl = '@Url.Action("NoteList", "Note")';
+        document.getElementById("noteDetail").innerHTML = initDetail();
 
-    function notedetail(noteid){
-        $('#noteDetail').load(url, { selectedNoteid: noteid });
+        function notedetail(noteid){
+            $('#noteDetail').load(url, { selectedNoteid: noteid });
+        }
+        function initDetail() {
+            $('#noteDetail').load(url, { selectedNoteid: @notelist[0].NoteId });
+        }
+    function Callfunc(val) {
+        $('.notelist').load("/Note/NoteList?id=", { id: val });
     }
-    function initDetail() {
-        $('#noteDetail').load(url, { selectedNoteid: @notelist[0].NoteId });
-    }
-    
 </script>
 
