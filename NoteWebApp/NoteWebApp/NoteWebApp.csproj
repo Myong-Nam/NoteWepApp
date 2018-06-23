@@ -92,6 +92,7 @@
   <ItemGroup>
     <Content Include="Content\menu\add_fill.png" />
     <Content Include="Content\menu\add_stroke.png" />
+    <Content Include="Content\menu\bin.png" />
     <Content Include="Content\menu\book_fill.png" />
     <Content Include="Content\menu\book_stroke.png" />
     <Content Include="Content\menu\info.png" />

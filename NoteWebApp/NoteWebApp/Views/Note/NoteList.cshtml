@@ -2,23 +2,24 @@
 
 @{
     ViewBag.Title = "Index";
-    List<Note> noteList = ViewBag.noteList;
+    List<Note> notelist = ViewBag.noteList;
 
 
 }
 
-    @foreach (var item in noteList)
-    {
-        <ul>
-            <li>
-                <div class="listTitle" onclick="notedetail(@item.NoteId)">
-                    @item.Title<br /><br />
-                    @item.NoteDate
-                </div>
-                <hr />
-            </li>
-        </ul>
+@foreach (var item in notelist)
+{
+    <div class="list" onclick="notedetail(@item.NoteId)">
+    <ul>
+        <li>
 
-    }
+            <div class="listTitle">@item.Title<br /><br /></div>
+            <div class="listDate">@item.NoteDate</div>
+            <hr />
+        </li>
+    </ul>
+    </div>
+
+}
 
 
