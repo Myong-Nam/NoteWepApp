@@ -8,62 +8,54 @@
 
 
 <h2>노트</h2>
+<h4>@countNotes 개의 노트</h4>
+@using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
+{
+    @Html.DropDownList("orders", new SelectListItem[]{
+    new SelectListItem() { Text = "설정", Value = ""},
+    new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "0"},
+    new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "1"},
+    new SelectListItem() { Text = "제목(오름차순)", Value = "2"},
+    new SelectListItem() { Text = "제목(내림차순)", Value = "3"}
+   }, new { onchange="Callfunc(this.value)" })
+}
+<div id="noteOrderBy">
 
-<div id="noteCount"><b>@countNotes 개의 노트</b></div>
-<p id="selectlist">
-    @using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
-    {
-        @Html.DropDownList("orders", new SelectListItem[]{
-        new SelectListItem() { Text = "설정", Value = ""},
-        new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "0"},
-        new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "1"},
-        new SelectListItem() { Text = "제목(오름차순)", Value = "2"},
-        new SelectListItem() { Text = "제목(내림차순)", Value = "3"}
-       }, new { onchange="Callfunc(this.value)" })
-    }
-</p>
-
-
-<div class="notelist">
-    @foreach (var item in notelist)
-    {
-        <div class="list" onclick="notedetail(@item.NoteId)">
+</div>
+<div id="test">
+    <div class="notelist">
+        @foreach (var item in notelist)
+        {
             <ul>
                 <li>
-
-                    <div class="listTitle">@item.Title<br /><br /></div>
-                    <div class="listDate">@item.NoteDate</div>
+                    <div class="listTitle" onclick="notedetail(@item.NoteId)">
+                        @item.Title<br /><br />
+                        @item.NoteDate
+                    </div>
                     <hr />
                 </li>
             </ul>
-        </div>
 
-    }
+        }
 
+    </div>
 </div>
 
-@*노트본문*@
 <div id="noteDetail"></div>
 
 <script>
-    var url = '@Url.Action("Detail", "Note")';
-    var listurl = '@Url.Action("NoteList", "Note")';
-    document.getElementById("noteDetail").innerHTML = initDetail();
-    window.preview();
-    
-    function notedetail(noteid){
-        $('#noteDetail').load(url, { selectedNoteid: noteid });
-    }
-    function initDetail() {
-        $('#noteDetail').load(url, { selectedNoteid: @notelist[0].NoteId });
-    }
+        var url = '@Url.Action("Detail", "Note")';
+        var listurl = '@Url.Action("NoteList", "Note")';
+        document.getElementById("noteDetail").innerHTML = initDetail();
+
+        function notedetail(noteid){
+            $('#noteDetail').load(url, { selectedNoteid: noteid });
+        }
+        function initDetail() {
+            $('#noteDetail').load(url, { selectedNoteid: @notelist[0].NoteId });
+        }
     function Callfunc(val) {
-        $('.notelist').load("/Note/NoteList?order=", { order: val, noteBookid: 0 });
-    }
-    function preview() {
-        var element = document.getElementById('NoteContents');
-        var text = element.innerText || element.textContent;
-        document.getElementById('NoteContents').innerText = text;
+        $('.notelist').load("/Note/NoteList?id=", { id: val });
     }
 </script>
 

@@ -3,7 +3,6 @@
     ViewBag.Title = "List";
     List<Note> noteList = ViewBag.noteList;
     NoteBook noteBook = ViewBag.noteBook;
-    int countNotes = noteList.Count;
     var isShortcut = ViewBag.isShortCut;
     var Star = "";
     var Save = "true";
@@ -24,54 +23,23 @@
 <body>
 
     <h2>@noteBook.Name</h2>
-
-    <div id="noteCount">
-        @Html.ActionLink("노트북 정보", "Info", new { id = noteBook.NoteBookId })
-        <br /><b>@countNotes 개의 노트</b>
-    </div>
+    @Html.ActionLink("노트북 정보", "Info", new { id = noteBook.NoteBookId })
     <br />
-    <p id="selectlist">
-        @using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
-        {
-            @Html.DropDownList("orders", new SelectListItem[]{
-            new SelectListItem() { Text = "설정", Value = ""},
-            new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "0"},
-            new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "1"},
-            new SelectListItem() { Text = "제목(오름차순)", Value = "2"},
-            new SelectListItem() { Text = "제목(내림차순)", Value = "3"}
-           }, new { onchange="Callfunc(this.value)" })
-        }
-    </p>
+    @using (Html.BeginForm("ChangeBook", "Shortcut"))
+    {
+        @Html.Hidden("id", noteBook.NoteBookId)
+        @Html.Hidden("isShortcut", @Save)
+        <input type="image" src=@Star alt="Submit" width="25px">
+        /*<input class="star" type="image" value=@Save src="" />*/
+    }
+    <hr />
+    @foreach (var item in noteList)
+    {
+        <li>
+            @Html.ActionLink(item.Title, "../note/Detail", new { id = item.NoteId })
 
-    <div class="notelist">
-        @foreach (var item in noteList)
-        {
-            <div class="list" onclick="notedetail(@item.NoteId)">
-                <ul>
-                    <li>
-
-                        <div class="listTitle">@item.Title<br /><br /></div>
-
-
-                        <div class="listDate">@item.NoteDate</div>
-                        <hr />
-                    </li>
-                </ul>
-            </div>
-
-        }
-
-    </div>
-    @*노트본문*@
-    <div id="noteDetail"></div>
+        </li>
+    }
+    <hr />
 
 </body>
-<script>
-    var url = '@Url.Action("Detail", "Note")';
-    function Callfunc(val) {
-        $('.notelist').load("/Note/NoteList?order=", { order: val, noteBookid: @noteBook.NoteBookId });
-    }
-    function notedetail(noteid) {
-        $('#noteDetail').load(url, { selectedNoteid: noteid });
-    }
-</script>

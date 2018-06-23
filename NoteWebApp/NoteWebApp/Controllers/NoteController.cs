@@ -13,7 +13,7 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Index()
 		{ 
-			var noteList = NoteManager.GetNoteList(0).ToList();
+			var noteList = NoteManager.GetNoteList().ToList();
 			ViewBag.noteList = noteList;
 
 			//orders
@@ -44,8 +44,6 @@ namespace NoteWebApp.Controllers
 			});
 
 			ViewBag.orders = orders;
-
-
 
 			return View();
 		}
@@ -78,18 +76,17 @@ namespace NoteWebApp.Controllers
 			return PartialView(selected);
 		}
 
-		//노트리스트 불러오기, 순서별로.
-		public PartialViewResult NoteList(string order, int noteBookid)
+		public PartialViewResult NoteList(string id)
 		{
-			var noteList = NoteManager.GetNoteList(noteBookid).ToList();
+			var noteList = NoteManager.GetNoteList().ToList();
 			
-			if (order == "0")
+			if (id == "0")
 			{
 				noteList = noteList.OrderBy(x => x.FullDate).ToList();
-			} else if (order == "1")
+			} else if (id == "1")
 			{
 				noteList = noteList.OrderBy(x => x.FullDate).Reverse().ToList();
-			} else if (order == "2")
+			} else if (id == "2")
 			{
 				noteList = noteList.OrderBy(x => x.Title).ToList();
 			} else

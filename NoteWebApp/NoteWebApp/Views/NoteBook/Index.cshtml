@@ -7,38 +7,27 @@
 <body>
     <h2>노트북리스트</h2>
     @Html.ActionLink("새 노트북", "Create")
-    <div class="notelist">
-
-        @foreach (var item in noteBookList)
-        {
-            <div class="list" onclick="noteBookDetail(@item.NoteBookId)">
-                <ul>
-                    <li>
-                        <div class="listTitle">@item.Name </div>
-                        <br />
-                        <hr />
-                    </li>
-                </ul>
-            </div>
-         }
-        <div class="list" onclick="Deleted()">
-        <ul>
-            <li>
-                휴지통
-                <br /><br />
-                <hr />
-            </li>
-        </ul>
-        </div>
+    <div>
+        @Html.ActionLink("휴지통", "../note/Deleted")
     </div>
-</body>
-<script>
+    <hr />
 
-    function noteBookDetail(NoteBookId){
-        window.location = '../NoteBook/List/' + NoteBookId;
+    @foreach (var item in noteBookList)
+    {
+        <ul>
+
+            @Html.ActionLink(item.Name, "List", new { id = item.NoteBookId })
+            <br />
+
+
+            @using (Html.BeginForm("Delete", "NoteBook"))
+            {
+                @Html.Hidden("id", item.NoteBookId)
+                <input type="submit" value="삭제" />
+            }
+            <hr />
+
+        </ul>
     }
-    function Deleted() {
-        window.location = '../Note/Deleted/';
-    }
-</script>
+</body>
 

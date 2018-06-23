@@ -6,19 +6,6 @@
 
 <h2>바로가기</h2>
 
-<p id="selectlist">
-    @using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
-    {
-        @Html.DropDownList("orders", new SelectListItem[]{
-        new SelectListItem() { Text = "설정", Value = ""},
-        new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "0"},
-        new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "1"},
-        new SelectListItem() { Text = "제목(오름차순)", Value = "2"},
-        new SelectListItem() { Text = "제목(내림차순)", Value = "3"}
-       }, new { onchange="Callfunc(this.value)" })
-    }
-</p>
-
 <div class="notelist">
     @foreach (var item in shortcuts)
     {
@@ -54,5 +41,6 @@
     function notedetail(noteid){
         $('#noteDetail').load(url, { selectedNoteid: noteid });
     }
+
 </script>
 

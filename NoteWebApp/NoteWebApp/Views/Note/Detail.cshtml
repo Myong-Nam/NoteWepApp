@@ -52,7 +52,6 @@
         UpdateOrRecoverText = "복원";
         NoteList = "Deleted";
         NoteListText = "<< 휴지통 리스트로 돌아가기";
-        Star = "../../Content/bin.png";
     }
 }
 
@@ -64,8 +63,8 @@
         {
             @Html.Hidden("id", Model.NoteId)
             @Html.Hidden("isShortcut", @Save)
-            <input type="image" src=@Star alt="Submit" width="25">
-            <input type="image" src=@Info alt="Submit" width="25">
+            <input type="image" src=@Star alt="Submit" width="25px">
+            <input type="image" src=@Info alt="Submit" width="25px">
         }
 
     </div>
@@ -112,3 +111,112 @@
 
 
 </body>
+
+
+@*@using NoteWebApp.Models
+    @{
+        ViewBag.Title = "Detail";
+        Layout = null;
+    }
+    @{
+        ViewBag.Title = "Detail";
+        Note note = ViewBag.noteDetail;
+        String name = ViewBag.name;
+        var noteBookList = ViewBag.noteBookList;
+        var noteBookId = ViewBag.noteBookId;
+        var isShortcut = ViewBag.isShortCut;
+    }
+    @{
+        var DeleteButton = "";
+        var DeleteText = "";
+        var UpdateOrRecover = "";
+        var UpdateOrRecoverText = "";
+        var NoteListText = "";
+        var NoteList = "";
+        var Star = "";
+        var Save = "true";
+
+        if (note.IsDeleted == 0) //삭제된 노트가 아닐경우
+        {
+            DeleteButton = "preDelete";
+            DeleteText = "삭제";
+            UpdateOrRecover = "Update";
+            UpdateOrRecoverText = "수정";
+            NoteList = "Index";
+            if (isShortcut == "false")
+            {
+                Star = "../../Content/shortcut_stroke.png";
+                Save = "true";
+
+            }
+            else if (isShortcut == "true")
+            {
+                Star = "../../Content/shortcut_fill.png";
+                Save = "false";
+            }
+
+
+            NoteListText = "<< 노트 리스트로 돌아가기";
+
+        }
+
+        else if (note.IsDeleted == 1) //삭제된 노트일 경우
+        {
+            DeleteButton = "Delete";
+            DeleteText = "영구삭제";
+            UpdateOrRecover = "RecoverNote";
+            UpdateOrRecoverText = "복원";
+            NoteList = "Deleted";
+            NoteListText = "<< 휴지통 리스트로 돌아가기";
+        }
+    }
+
+    <body>
+        <br />
+        @using (Html.BeginForm("ChangeNote", "Shortcut"))
+        {
+            @Html.Hidden("id", note.NoteId)
+            @Html.Hidden("isShortcut", @Save)
+            <input type="image" src=@Star alt="Submit" width="25px">
+            /*<input class="star" type="image" value=@Save src="" />*/
+        }
+
+        @using (Html.BeginForm(UpdateOrRecover, "Note"))
+        {
+            <div id="noteid">@Html.Hidden("noteId", note.NoteId)</div>
+
+            <hr />
+            <div>
+                <b>노트북 :</b>
+                @Html.DropDownList("noteBookId")
+
+            </div>
+
+            <div>
+                <b>생성시간 :</b> @note.NoteDate
+            </div>
+            <div id="title">
+                <b>제목 :</b> <br />
+                @Html.TextBox("title", note.Title)
+
+            </div>
+            <div>
+                <b>내용 :</b> <br />
+                @Html.TextArea("contents", note.Contents)
+            </div>
+            <input type="submit" value=@UpdateOrRecoverText />
+        }
+
+        @using (Html.BeginForm(@DeleteButton, "Note"))
+        {
+            @Html.Hidden("noteId", note.NoteId)
+            <input type="submit" value="@DeleteText" />
+        }
+
+        @Html.ActionLink(NoteListText, NoteList)
+        <script>
+            CKEDITOR.replace('contents');
+        </script>
+    </body>*@
+
+

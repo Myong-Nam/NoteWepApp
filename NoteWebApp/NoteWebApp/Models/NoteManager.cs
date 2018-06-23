@@ -18,28 +18,15 @@ namespace NoteWebApp.Models
 		 (2) isdeleted의 값이 0인(삭제되지 않은) 노트를 불러오는 쿼리 작성.
 		 (3) 불러온 노트를 노트리스트에 넣고 커넥션과 reader를 닫아준다.
 			 */
-		public static List<Note> GetNoteList(int noteBookId)
+		public static List<Note> GetNoteList()
 		{
 			List<Note> noteList = new List<Note>();
-
-			string sql = "";
 
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 
 			conn.Open();
 
-			if (noteBookId == 0) //노트북 구분없이 전체
-			{
-				sql = $"select NOTEID, TITLE, CONTENTS, NOTEDATE, TO_CHAR(NOTEDATE, 'YY'), TO_CHAR(NOTEDATE, 'MM'), TO_CHAR(NOTEDATE, 'DD') from Note where isdeleted = {0} ORDER BY notedate desc";
-			}
-			else if (noteBookId == -1)
-			{
-				sql = $"select NOTEID, TITLE, CONTENTS, NOTEDATE, TO_CHAR(NOTEDATE, 'YY'), TO_CHAR(NOTEDATE, 'MM'), TO_CHAR(NOTEDATE, 'DD') from Note where isdeleted = {1} ORDER BY notedate desc";
-			}
-			else
-			{
-				sql = $"select NOTEID, TITLE, CONTENTS, NOTEDATE, TO_CHAR(NOTEDATE, 'YY'), TO_CHAR(NOTEDATE, 'MM'), TO_CHAR(NOTEDATE, 'DD') from Note where isdeleted = {0} AND NOTEBOOKID = {noteBookId} ORDER BY notedate desc";
-			}
+			String sql = $"select NOTEID, TITLE, CONTENTS, NOTEDATE, TO_CHAR(NOTEDATE, 'YY'), TO_CHAR(NOTEDATE, 'MM'), TO_CHAR(NOTEDATE, 'DD') from Note where isdeleted = {0} ORDER BY notedate desc";
 			
 			OracleCommand cmd = new OracleCommand
 			{
@@ -197,7 +184,6 @@ namespace NoteWebApp.Models
 				conn.Open();
 
 				String sql = $"UPDATE note SET IsDeleted = {1}, notebookid = {1} WHERE noteid = {noteId}";
-				string sql2 = $"DELETE FROM shortcut WHERE noteid = {noteId}";
 
 				OracleCommand cmd = new OracleCommand
 				{
@@ -206,14 +192,6 @@ namespace NoteWebApp.Models
 				};
 
 				cmd.ExecuteNonQuery();
-
-				OracleCommand cmd2 = new OracleCommand
-				{
-					Connection = conn,
-					CommandText = sql2
-				};
-
-				cmd2.ExecuteNonQuery();
 			}
 		}
 
@@ -222,8 +200,9 @@ namespace NoteWebApp.Models
 		 목적 : 노트를 휴지통으로 보냄
 		 준비물 : 노트 아이디. db커넥션
 		 (1) db커넥션을 생성하
+		 (2) 해당 노트 아이디를 이용해 삭제여부(isdeleted)을 true(1)로, 노트북을 기본노트북으로 변경.
 		*/
-		public static void Delete(int noteId)
+		public static int Delete(int noteId)
 		{
 			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
 			{
@@ -239,6 +218,8 @@ namespace NoteWebApp.Models
 
 				cmd.ExecuteNonQuery();
 			}
+
+			return noteId;
 		}
 
 		// 노트 수정 : /detail
@@ -368,6 +349,5 @@ namespace NoteWebApp.Models
 				cmd.ExecuteNonQuery();
 			}
 		}
-
 	}
 }
