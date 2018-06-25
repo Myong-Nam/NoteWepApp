@@ -12,8 +12,11 @@ namespace NoteWebApp.Controllers
 		// GET: Shortcut
 		public ActionResult Index()
 		{
-			List<object> shortcuts = ShortcutManager.GetShorcutList();
-			ViewBag.shortcuts = shortcuts;
+			Dictionary<int, object> shortcuts = ShortcutManager.GetShortcuts();
+
+			List<object> shortCutList = new List<object>(shortcuts.Values);
+
+			ViewBag.shortCutList = shortCutList;
 
 			return View();
 		}

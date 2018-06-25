@@ -1,35 +1,28 @@
 ﻿@using NoteWebApp.Models
 @{
     ViewBag.Title = "Index";
-    var shortcuts = ViewBag.shortcuts;
+    var shortCutList =  ViewBag.shortCutList;
 }
 
 <h2>바로가기</h2>
 
 <div class="notelist">
-    @foreach (var item in shortcuts)
+    @foreach (var item in shortCutList)
     {
         <ul>
             <li>
-
                 @if (item.GetType().Name == "Note")
                 {
-                    <button id="list" onclick="notedetail(@item.NoteId)" value="@item.NoteId">@item.Title</button>
+                    <button id="list">@item.Title</button>
                 }
-
-                @if (item.GetType().Name == "NoteBook")
+                else if (item.GetType().Name == "NoteBook")
                 {
-
-                    String NoteBookName = item.Name;
-                    String NoteBookId = item.NoteBookId.ToString();
-                    @Html.ActionLink(NoteBookName, "../notebook/List", new { id = NoteBookId })
-
+                    <button id="list">@item.Name</button>
                 }
-                <hr />
-
             </li>
         </ul>
-    }
+     }
+
 </div>
 <div id="noteDetail">
 

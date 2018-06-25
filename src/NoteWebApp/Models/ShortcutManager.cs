@@ -8,6 +8,78 @@ namespace NoteWebApp.Models
 {
 	public class ShortcutManager
 	{
+
+		public static Dictionary<int, object> GetShortcuts()
+		{
+			Dictionary<int, object> shortcutDic = new Dictionary<int, object>();
+			//키값으론 order를 넣는다. 리스트에는 Note or Notebook을 넣고 각각 id, title을 넣는다. 
+
+			//shortcut에서 orderby order로 모든 데이터를 긁어온 후 order를 키값으로 넣고 type과 id를 해당 value 넣는다.
+			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			{
+				conn.Open();
+
+				String sql = "SELECT * FROM shortcut ORDER BY ORDERS ASC";
+
+				OracleCommand cmd = new OracleCommand
+				{
+					Connection = conn,
+					CommandText = sql
+				};
+
+				OracleDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					int order = int.Parse(reader["orders"].ToString());
+					string type = "";
+					int noteid = 0;
+					int notebookid = 0;
+					if (reader["noteid"] != DBNull.Value)
+					{
+						noteid = int.Parse(reader["noteid"].ToString());
+					} else if (reader["notebookid"] != DBNull.Value)
+					{
+						notebookid = int.Parse(reader["notebookid"].ToString());
+					}
+
+					if ( noteid != 0) //노트일경우
+					{
+						type = "note";
+						Note newNote = new Note()
+						{
+							NoteId = noteid,
+							Title = NoteManager.GetNotebyId(noteid).Title
+						};
+						shortcutDic.Add(order, newNote);
+					}
+					else if (notebookid != 0) //노트북일경우
+					{
+						type = "notebook";
+						NoteBook newNoteBook = new NoteBook()
+						{
+							NoteBookId = notebookid,
+							Name = NoteBookManager.GetNoteBookbyId(notebookid).Name
+						};
+						shortcutDic.Add(order, newNoteBook);
+					}
+
+
+				}
+				reader.Close();
+				return shortcutDic;
+			}
+
+
+
+
+
+		}
+
+
+
+
+
+
 		//노트북 이나 노트가 0이 아닌 것을 찾아서 title을 따온다.
 		public static List<object> GetShorcutList()
 		{
@@ -20,6 +92,7 @@ namespace NoteWebApp.Models
 				String noteSql = "SELECT NOTE.NOTEID, NOTE.TITLE, SHORTCUT.ORDERS, isdeleted FROM NOTE, SHORTCUT WHERE NOTE.NOTEID = SHORTCUT.NOTEID AND ISDELETED = 0";
 				String noteBookSql = "SELECT NOTEBOOK.NOTEBOOKID, NOTEBOOK.NAME, SHORTCUT.ORDERS FROM NOTEBOOK, SHORTCUT WHERE NOTEBOOK.NOTEBOOKID = SHORTCUT.NOTEBOOKID";
 
+				string all = "";
 				OracleCommand cmd = new OracleCommand
 				{
 					Connection = conn,
@@ -70,10 +143,11 @@ namespace NoteWebApp.Models
 			{
 				conn.Open();
 
-				if(type == 0)
+				if (type == 0)
 				{
 					sql = $"SELECT NOTEID FROM SHORTCUT WHERE NOTEID = {id}";
-				} else if (type == 1)
+				}
+				else if (type == 1)
 				{
 					sql = $"SELECT NOTEBOOKID FROM SHORTCUT WHERE NOTEBOOKID = {id}";
 				}

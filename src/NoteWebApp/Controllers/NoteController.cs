@@ -19,6 +19,7 @@ namespace NoteWebApp.Controllers
 			return View();
 		}
 
+
 		public PartialViewResult Detail(int selectedNoteid)
 		{
 			Note selected = new Note();
