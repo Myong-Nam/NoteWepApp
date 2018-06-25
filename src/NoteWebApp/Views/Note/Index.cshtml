@@ -14,53 +14,38 @@
 
 <h2>노트</h2>
 <h4>@countNotes 개의 노트</h4>
-@using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
-{
-    @Html.DropDownList("orders", new SelectListItem[]{
-    new SelectListItem() { Text = "설정", Value = ""},
-    new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "0"},
-    new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "1"},
-    new SelectListItem() { Text = "제목(오름차순)", Value = "2"},
-    new SelectListItem() { Text = "제목(내림차순)", Value = "3"}
-   }, new { onchange="Callfunc(this.value)" })
-}
+
 <div id="noteOrderBy">
-
-</div>
-<div id="test">
-    <div class="notelist">
-        @foreach (var item in notelist)
-        {
-            <ul>
-                <li>
-                    <div class="listTitle" onclick="notedetail(@item.NoteId)">
-                        @item.Title<br /><br />
-                        @item.NoteDate
-                    </div>
-                    <hr />
-                </li>
-            </ul>
-
-        }
-
-    </div>
+    @using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
+    {
+        @Html.DropDownList("orders", new SelectListItem[]{
+        new SelectListItem() { Text = "설정", Value = ""},
+        new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "0"},
+        new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "1"},
+        new SelectListItem() { Text = "제목(내림차순)", Value = "2"},
+        new SelectListItem() { Text = "제목(오름차순)", Value = "3"}
+       }, new { onchange="callList(this.value)" })
+    }
 </div>
 
+<div class="noteList"></div>
 <div id="noteDetail"></div>
 
-<script>
-        var url = '@Url.Action("Detail", "Note")';
-        var listurl = '@Url.Action("NoteList", "Note")';
-        document.getElementById("noteDetail").innerHTML = initDetail();
 
-        function notedetail(noteid){
-            $('#noteDetail').load(url, { selectedNoteid: noteid });
+
+<script>
+    var detailUrl = '@Url.Action("Detail", "Note")';
+    var listUrl = '@Url.Action("NoteList", "Note")';
+    document.getElementById("noteDetail").innerHTML = initDetail();
+    window.callList("0", 0); //첫번째 0 : 최근순 / 둘째0 : 노트북 전체
+
+    function notedetail(noteid) {
+        $('#noteDetail').load(detailUrl, { selectedNoteid: noteid });
+    }
+    function initDetail() {
+        $('#noteDetail').load(detailUrl, { selectedNoteid: @firstNoteId });
         }
-        function initDetail() {
-            $('#noteDetail').load(url, { selectedNoteid: @firstNoteId });
-        }
-    function Callfunc(val) {
-        $('.notelist').load("/Note/NoteList?id=", { id: val });
+    function callList(val) {
+        $('.noteList').load("/Note/NoteList?", { order: val, notebookId : 0 }); 
     }
 </script>
-

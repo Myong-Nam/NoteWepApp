@@ -2,32 +2,38 @@
 @{
     ViewBag.Title = "Index";
     List<NoteBook> noteBookList = ViewBag.noteBookList;
+    int countNotes = noteBookList.Count;
 }
 
-<body>
-    <h2>노트북리스트</h2>
-    @Html.ActionLink("새 노트북", "Create")
-    <div>
-        @Html.ActionLink("휴지통", "../note/Deleted")
-    </div>
-    <hr />
 
-    @foreach (var item in noteBookList)
-    {
-        <ul>
+<h2>노트북리스트</h2>
+@Html.ActionLink("새 노트북", "Create")
+<div>
+    @Html.ActionLink("휴지통", "../note/Deleted")
+</div>
 
-            @Html.ActionLink(item.Name, "List", new { id = item.NoteBookId })
-            <br />
+@foreach (var item in noteBookList)
+{
+    <ul>
+        <li>
+            <div class="listTitle" onclick="showNoteBook(@item.NoteBookId)">
+                @item.Name<br />
+            </div>
+            <div id="noteListDate">노트  @countNotes 개</div><br />
 
-
-            @using (Html.BeginForm("Delete", "NoteBook"))
-            {
-                @Html.Hidden("id", item.NoteBookId)
-                <input type="submit" value="삭제" />
-            }
             <hr />
+        </li>
+    </ul>
 
-        </ul>
+}
+
+<div id="notelist"></div>
+
+<script>
+    var noteListUrl = '@Url.Action("List", "NoteBook")';
+    function showNoteBook(noteBookId) {
+        window.location.href = '/NoteBook/List/' + noteBookId;
     }
-</body>
+
+</script>
 

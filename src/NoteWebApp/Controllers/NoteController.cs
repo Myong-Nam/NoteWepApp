@@ -13,37 +13,8 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Index()
 		{ 
-			var noteList = NoteManager.GetNoteList().ToList();
+			var noteList = NoteManager.GetNoteList(0, 0);
 			ViewBag.noteList = noteList;
-
-			//orders
-			List<SelectListItem> orders = new List<SelectListItem>();
-			orders.Add(new SelectListItem()
-			{
-				Text = "만든날짜(오래된 순으로)",
-				Value = "0",
-				Selected = true
-			});
-			orders.Add(new SelectListItem()
-			{
-				Text = "만든날짜(최근 순으로)",
-				Value = "1",
-				Selected = false
-			});
-			orders.Add(new SelectListItem()
-			{
-				Text = "제목(오름차순)",
-				Value = "2",
-				Selected = false
-			});
-			orders.Add(new SelectListItem()
-			{
-				Text = "제목(내림차순)",
-				Value = "3",
-				Selected = false
-			});
-
-			ViewBag.orders = orders;
 
 			return View();
 		}
@@ -76,26 +47,15 @@ namespace NoteWebApp.Controllers
 			return PartialView(selected);
 		}
 
-		public PartialViewResult NoteList(string id)
+		//노트 리스트 보여주는 partial view
+		public PartialViewResult NoteList(string order, int notebookId)
 		{
-			var noteList = NoteManager.GetNoteList().ToList();
+			int orderId = Int32.Parse(order);
+			//int bookId = Int32.Parse(notebookId);
+			var noteList = NoteManager.GetNoteList(orderId, notebookId);
 			
-			if (id == "0")
-			{
-				noteList = noteList.OrderBy(x => x.FullDate).ToList();
-			} else if (id == "1")
-			{
-				noteList = noteList.OrderBy(x => x.FullDate).Reverse().ToList();
-			} else if (id == "2")
-			{
-				noteList = noteList.OrderBy(x => x.Title).ToList();
-			} else
-			{
-				noteList = noteList.OrderBy(x => x.Title).Reverse().ToList();
-			}
-
 			ViewBag.noteList = noteList;
-			return PartialView();
+			return PartialView(noteList);
 		}
 
 		//새노트에서 노트북 선택하는 selectitem

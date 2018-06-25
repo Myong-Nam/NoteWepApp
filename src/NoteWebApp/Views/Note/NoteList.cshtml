@@ -4,21 +4,29 @@
     ViewBag.Title = "Index";
     List<Note> noteList = ViewBag.noteList;
 
+    int firstNoteId = -1;
+    if (noteList.Count > 0)
+    {
+        firstNoteId = noteList[0].NoteId;
+    }
 
 }
 
-    @foreach (var item in noteList)
-    {
-        <ul>
-            <li>
-                <div class="listTitle" onclick="notedetail(@item.NoteId)">
-                    @item.Title<br /><br />
-                    @item.NoteDate
-                </div>
-                <hr />
-            </li>
-        </ul>
-
+<style>
+    #noteListDate, .listTitle {
+        font-family: 'Montserrat', sans-serif;
     }
+</style>
 
+@foreach (var item in noteList)
+{
+    <ul>
+        <li>
+            <div class="listTitle" onclick="notedetail(@item.NoteId)">@item.Title</div>
+                <br />
+                <div id="noteListDate"> @item.NoteDate</div>
+            <hr />
+        </li>
+    </ul>
 
+}

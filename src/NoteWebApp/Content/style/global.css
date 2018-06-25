@@ -1,0 +1,90 @@
+﻿.navbar ul {
+    margin: 0 0 0 0;
+    padding: 30px 0 0 0;
+    width: 100px;
+    background-color: #F8F8F8;
+    height: 100%; /* Full height */
+    position: fixed; /* Make it stick, even on scroll */
+    overflow: auto; /* Enable scrolling if the sidenav has too much content */
+}
+
+.navbar ul li {
+        margin: 20px 0px auto 25px;
+    }
+
+ul li {
+    list-style-type: none;
+}
+
+.body-content {
+    margin-left: 100px;
+    padding: 1px 1px;
+    height: 100%;
+}
+
+footer {
+    margin-left: 100px;
+    padding: 1px 16px;
+}
+
+.noteList {
+    margin: 0;
+    width: 20%;
+    height: 100%;
+    position: absolute;
+}
+
+#noteDetail {
+    margin-left: 5%;
+    float: right;
+    width: 70%;
+}
+
+.noteHeader {
+    display: inline;
+}
+
+#title {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 100%;
+    color: #2dbe60;
+    line-height: 35px;
+    outline: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: caecilia, times, serif;
+    font-size: 28px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 300;
+    height: 35px;
+    top: 0;
+    left: 0;
+    margin-top: -1px;
+}
+
+#msg {
+    color: orangered;
+    font-size: 10px;
+    font-family: caecilia, times, serif;
+    top: 0;
+    left: 0;
+    margin-top: -1px;
+}
+
+.listTitle {
+    font-family: gotham, helvetica, arial, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 17px;
+    font-weight: 300;
+}
+
+#noteListDate {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+}

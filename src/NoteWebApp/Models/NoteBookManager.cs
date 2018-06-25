@@ -49,47 +49,6 @@ namespace NoteWebApp.Models
             return noteBooks;
         }
 
-        // 노트북 아이디로 노트리스트 불러오기 : /List
-        /*
-         목적 : 노트북 내에 있는 노트들을 보여줌
-         준비물 : 노트북아이디, db커넥션
-         (1) 빈 노트 리스트를 만든다.
-         (2) db커넥션을 생성하여 해당 노트북아이디를 가진 note를 모두 불러옴
-         (3) 빈 노트리스트에 (2)에서 받아온 note를 넣음.
-             */
-        public static List<Note> NotesInNoteBook(int id)
-        {
-            List<Note> noteList = new List<Note>();
-
-            OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
-
-            conn.Open();
-
-            String sql = $"select * from Note where isdeleted = {0} and notebookid = {id}";
-
-            OracleCommand cmd = new OracleCommand
-            {
-                Connection = conn,
-                CommandText = sql
-            };
-
-            OracleDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Note note = new Note
-                {
-                    NoteId = int.Parse(reader["NOTEID"].ToString()),
-                    Title = reader["TITLE"].ToString(),
-                };
-
-                noteList.Add(note);
-            }
-            reader.Close();
-            conn.Close();
-
-            return noteList;
-        }
-
         // 새 노트북 생성 : /create
         /*
          목적 : 새로운 노트북을 만듬
