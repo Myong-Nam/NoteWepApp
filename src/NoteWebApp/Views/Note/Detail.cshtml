@@ -76,7 +76,7 @@
 
         <div class="title">
 
-            @Html.TextBox("title", Model.Title, new { maxlength = 15, onkeyUp = "lengthAlert()" })
+            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
            
         </div>
         <div id="msg"></div>

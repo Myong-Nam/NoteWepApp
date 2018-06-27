@@ -2,12 +2,11 @@
 
 @{
     ViewBag.Title = "Index";
-    List<Note> noteList = ViewBag.noteList;
 
     int firstNoteId = -1;
-    if (noteList.Count > 0)
+    if (Model.Count > 0)
     {
-        firstNoteId = noteList[0].NoteId;
+        firstNoteId = Model[0].NoteId;
     }
 
 }
@@ -18,13 +17,14 @@
     }
 </style>
 
-@foreach (var item in noteList)
+@foreach (var item in Model)
 {
     <ul>
         <li>
-            <div class="listTitle" onclick="notedetail(@item.NoteId)">@item.Title</div>
-                <br />
+            <div class="listTitle" onclick="notedetail(@item.NoteId)">
+                @item.Title<br /><br />
                 <div id="noteListDate"> @item.NoteDate</div>
+            </div>
             <hr />
         </li>
     </ul>

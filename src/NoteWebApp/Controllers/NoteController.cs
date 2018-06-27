@@ -54,8 +54,13 @@ namespace NoteWebApp.Controllers
 			int orderId = Int32.Parse(order);
 			//int bookId = Int32.Parse(notebookId);
 			var noteList = NoteManager.GetNoteList(orderId, notebookId);
-			
-			ViewBag.noteList = noteList;
+			foreach (var item in noteList)
+			{
+				if (item.Title == "")
+				{
+					item.Title = "제목 없음";
+				}
+			}
 			return PartialView(noteList);
 		}
 
