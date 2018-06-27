@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Index";
     List<NoteBook> noteBookList = ViewBag.noteBookList;
-    int countNotes = noteBookList.Count;
+
 }
 
 
@@ -19,7 +19,7 @@
             <div class="listTitle" onclick="showNoteBook(@item.NoteBookId)">
                 @item.Name<br />
             </div>
-            <div id="noteListDate">노트  @countNotes 개</div><br />
+            <div id="noteListDate">노트  @NoteBookManager.CountInBook(item.NoteBookId)개</div><br />
 
             <hr />
         </li>

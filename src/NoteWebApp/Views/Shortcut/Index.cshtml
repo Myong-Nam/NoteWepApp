@@ -4,22 +4,28 @@
     var shortCutList =  ViewBag.shortCutList;
 }
 
+<style>
+    #noteListDate, .listTitle {
+        font-family: 'Montserrat', sans-serif;
+    }
+</style>
+
 <h2>바로가기</h2>
 
-<div class="notelist">
+<div class="noteList">
     @foreach (var item in shortCutList)
     {
         <ul>
             <li>
                 @if (item.GetType().Name == "Note")
                 {
-                    <button id="list">@item.Title</button>
+                   <div class="listTitle" onclick="notedetail(@item.NoteId)">@item.Title</div>
                 }
                 else if (item.GetType().Name == "NoteBook")
                 {
-                    <button id="list">@item.Name</button>
-                }
-            </li>
+                   <div class="listTitle" onclick="noteBookList(@item.NoteBookId)">@item.Name</div>
+                                       }
+</li>
         </ul>
      }
 
@@ -33,6 +39,10 @@
 
     function notedetail(noteid){
         $('#noteDetail').load(url, { selectedNoteid: noteid });
+    }
+
+    function noteBookList(bookId) {
+        window.location.href = "/notebook/list/" + bookId;
     }
 
 </script>

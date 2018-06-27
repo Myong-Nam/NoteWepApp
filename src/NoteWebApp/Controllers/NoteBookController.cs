@@ -18,8 +18,10 @@ namespace NoteWebApp.Controllers
 		public ActionResult Index()
 		{
 			var noteBookList = NoteBookManager.GetNoteBookList();
+			int count = NoteBookManager.CountInBook(0);
 			ViewBag.noteBookList = noteBookList;
-
+			ViewBag.count = count;
+			
 			return View();
 		}
 
@@ -111,10 +113,20 @@ namespace NoteWebApp.Controllers
 		public ActionResult List(int id)
 		{
 			NoteBook noteBook = NoteBookManager.GetNoteBookbyId(id);
-			var noteList = NoteManager.GetNoteList(0, id); //노트리스트
-			int firstNoteId = noteList[0].NoteId;
 			ViewBag.noteBook = noteBook;
-			ViewBag.firstNoteId = firstNoteId;
+
+			var noteList = NoteManager.GetNoteList(0, id); //노트리스트
+			if (noteList.Count == 0)
+			{
+				string msg = "노트를 추가하세요.";
+				ViewBag.firstNoteId = 0;
+			}
+			else
+			{
+				int firstNoteId = noteList[0].NoteId;
+				ViewBag.noteBook = noteBook;
+				ViewBag.firstNoteId = firstNoteId;
+			}
 
 			//바로가기 여부 보여줌
 			ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);

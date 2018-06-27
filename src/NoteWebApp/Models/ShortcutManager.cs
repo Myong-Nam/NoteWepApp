@@ -31,7 +31,6 @@ namespace NoteWebApp.Models
 				while (reader.Read())
 				{
 					int order = int.Parse(reader["orders"].ToString());
-					string type = "";
 					int noteid = 0;
 					int notebookid = 0;
 					if (reader["noteid"] != DBNull.Value)
@@ -44,7 +43,6 @@ namespace NoteWebApp.Models
 
 					if ( noteid != 0) //노트일경우
 					{
-						type = "note";
 						Note newNote = new Note()
 						{
 							NoteId = noteid,
@@ -54,7 +52,6 @@ namespace NoteWebApp.Models
 					}
 					else if (notebookid != 0) //노트북일경우
 					{
-						type = "notebook";
 						NoteBook newNoteBook = new NoteBook()
 						{
 							NoteBookId = notebookid,

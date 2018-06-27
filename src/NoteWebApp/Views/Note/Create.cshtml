@@ -3,13 +3,23 @@
     ViewBag.Title = "Create";
 
 }
-
+<style>
+    #BookDropdown {
+        color: #606060;
+        line-height: 14px;
+        margin: 6px 6px 0 7px;
+        max-width: 190px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+</style>
 <body>
     <h2>새 노트</h2>
     @using (Html.BeginForm("Insert", "Note"))
     {
         <b>노트북 :</b>
-        @Html.DropDownList("noteBookId")
+        <p id="BookDropdown">@Html.DropDownList("noteBookId")</p>
         <div>
             제목: <br />
             @Html.TextBox("title", "")

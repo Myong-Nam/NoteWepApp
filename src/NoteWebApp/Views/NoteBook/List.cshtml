@@ -2,11 +2,22 @@
 @{
     ViewBag.Title = "List";
     NoteBook noteBook = ViewBag.noteBook;
-    int firstNoteId = ViewBag.firstNoteId;
+    var msg = "";
+    var firstNoteId = 0;
+    if (ViewBag.msg == null)
+    {
+        firstNoteId = ViewBag.firstNoteId;
+    } else
+    {
+        msg = ViewBag.msg;
+
+
+    }
+
     var isShortcut = ViewBag.isShortCut;
     var Star = "";
     var Save = "true";
-    
+
     if (isShortcut == "false")
     {
         Star = "../../Content/shortcut_stroke.png";
@@ -47,11 +58,11 @@
 
 <div class="noteList"></div>
 <div id="noteDetail"></div>
-
+<div id="emptyNote"></div>
 <script>
     window.callList("0", @noteBook.NoteBookId);
     var detailUrl = '@Url.Action("Detail", "Note")';
-    document.getElementById("noteDetail").innerHTML = initDetail();
+    initDetail();
 
     function callList(val) {
         $('.noteList').load("/Note/NoteList?", { order: val, notebookId: @noteBook.NoteBookId });
@@ -60,6 +71,12 @@
         $('#noteDetail').load(detailUrl, { selectedNoteid: noteid });
     }
     function initDetail() {
-        $('#noteDetail').load(detailUrl, { selectedNoteid: @firstNoteId });
+        if (@firstNoteId != 0) {
+            $('#noteDetail').load(detailUrl, { selectedNoteid: @firstNoteId });
+        } else {
+            document.getElementById("noteOrderBy").style.display = "none";
+            document.getElementById("emptyNote").innerText = "노트를 추가하세요.";
+        }
+       
     }
 </script>
