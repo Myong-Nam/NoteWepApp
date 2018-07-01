@@ -95,7 +95,14 @@
 
     @Html.ActionLink(NoteListText, NoteList)
     <script>
-        CKEDITOR.replace('contents');
+        $(document).ready(function () {
+            CKEDITOR.replace('contents',
+                {
+                    fullPage: true,
+                    filebrowserImageUploadUrl: '../Handler/Upload.ashx'
+                });
+        })
+
 
         function lengthAlert() {
             var length = document.getElementById("title").value.length;

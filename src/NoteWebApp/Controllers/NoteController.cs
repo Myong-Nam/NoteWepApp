@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,8 +19,36 @@ namespace NoteWebApp.Controllers
 
 			return View();
 		}
+		/*
+		public void Upload(HttpPostedFileBase upload)
+		{
+			if (upload != null)
+			{
+				string pic = System.IO.Path.GetFileName(upload.FileName);
+				string url = System.IO.Path.Combine(
+									   Server.MapPath("~/image/"), pic);
+
+				// file is uploaded
+				upload.SaveAs(url);
+
+				// save the image path path to the database or you can send image 
+				// directly to database
+				// in-case if you want to store byte[] ie. for DB
+				using (MemoryStream ms = new MemoryStream())
+				{
+					upload.InputStream.CopyTo(ms);
+					byte[] array = ms.GetBuffer();
+				}
+
+				string CKEditorFuncNum = Request["CKEditorFuncNum"];
+
+				Response.Write("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction('" + CKEditorFuncNum + "', '" + url + "', '전송에 성공 했습니다')</script>");
 
 
+			}
+
+		}
+		*/
 		public PartialViewResult Detail(int selectedNoteid)
 		{
 			Note selected = new Note();

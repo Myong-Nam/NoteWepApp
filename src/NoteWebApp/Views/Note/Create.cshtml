@@ -14,34 +14,44 @@
         overflow: hidden;
     }
 </style>
-<body>
-    <h2>새 노트</h2>
-    @using (Html.BeginForm("Insert", "Note"))
-    {
-        <b>노트북 :</b>
-        <p id="BookDropdown">@Html.DropDownList("noteBookId")</p>
-        <div>
-            제목: <br />
-            @Html.TextBox("title", "", new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()", autofocus = "autofocus" })
-        </div>
-        <div id="msg"></div>
-        <div>
-            내용: <br />
-            @Html.TextArea("contents")
-        </div>
-        <input type="submit" value="저장" />
-    }
 
-    <script>
-        CKEDITOR.replace('contents');
+@using (Html.BeginForm("Insert", "Note"))
+{
+    <b>노트북 :</b>
+    <p id="BookDropdown">@Html.DropDownList("noteBookId")</p>
+    <div>
+        <br />
+        @Html.TextBox("title", "", new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()", autofocus = "autofocus" })
+    </div>
+    <div id="msg"></div>
+    <div>
+        <br />
+        @Html.TextArea("contents")
+    </div>
+    <input type="submit" value="저장" />
+}
 
-        function lengthAlert() {
-            var length = document.getElementById("title").value.length;
-            if (length > 15) {
-                document.getElementById("msg").innerHTML = "제목은 15자 이내로 작성해주세요.";
-            } else {
-                document.getElementById("msg").innerHTML = "";
-            }
+
+<script>
+
+    $(document).ready(function () {
+        CKEDITOR.replace('contents',
+            {
+                fullPage: true,
+                filebrowserImageUploadUrl: '../Handler/Upload.ashx'
+            });
+    })
+
+    function lengthAlert() {
+        var length = document.getElementById("title").value.length;
+        if (length > 15) {
+            document.getElementById("msg").innerHTML = "제목은 15자 이내로 작성해주세요.";
+        } else {
+            document.getElementById("msg").innerHTML = "";
         }
-    </script>
-</body>
+    }
+</script>
+
+<asp:TextBox ID="txtCkEditor" TextMode="MultiLine" runat="server"></asp:TextBox>
+
+

@@ -25,6 +25,8 @@ namespace NoteWebApp.Controllers
 			return View();
 		}
 
+
+
 		/*
 		 목적 : 새 노트북 추가
 		 준비물 : 새 노트북 이름, 노트북을 새로 추가하는 메소드 : NoteBookManager.Create(name);

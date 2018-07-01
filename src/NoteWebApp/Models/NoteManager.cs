@@ -378,6 +378,8 @@ namespace NoteWebApp.Models
 			}
 		}
 
+
+
 		public static void NotToShortCut(int noteid)
 		{
 			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))

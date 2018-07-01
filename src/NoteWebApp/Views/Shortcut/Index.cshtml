@@ -1,7 +1,7 @@
 ﻿@using NoteWebApp.Models
 @{
     ViewBag.Title = "Index";
-    var shortCutList =  ViewBag.shortCutList;
+    var shortCutList = ViewBag.shortCutList;
 }
 
 <style>
@@ -19,15 +19,15 @@
             <li>
                 @if (item.GetType().Name == "Note")
                 {
-                   <div class="listTitle" onclick="notedetail(@item.NoteId)">@item.Title</div>
+                    <div class="listTitle" onclick="notedetail(@item.NoteId)">@item.Title</div>
                 }
                 else if (item.GetType().Name == "NoteBook")
                 {
-                   <div class="listTitle" onclick="noteBookList(@item.NoteBookId)">@item.Name</div>
-                                       }
-</li>
+                    <div class="listTitle" onclick="noteBookList(@item.NoteBookId)">@item.Name</div>
+                }
+            </li>
         </ul>
-     }
+    }
 
 </div>
 <div id="noteDetail">
