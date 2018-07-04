@@ -125,8 +125,7 @@
         }
         originalDropDown[i].appendChild(b);
         a.addEventListener("click", function (e) {
-            /*when the select box is clicked, close any other select boxes,
-            and open/close the current select box:*/
+            /*셀렉박스가 클릭되면 다른 셀렉박스들은 닫는다. 그리고 현재 박스를 열거나 닫음 (토글로)*/
             e.stopPropagation();
             closeAllSelect(this);
             this.nextSibling.classList.toggle("select-hide");
@@ -134,8 +133,7 @@
         });
     }
     function closeAllSelect(elmnt) {
-        /*a function that will close all select boxes in the document,
-        except the current select box:*/
+        /*현재 선택된 박스 이외의 문서의 다른 셀렉박스들을 닫는 기능:*/
         var x, y, i, arrNo = [];
         x = document.getElementsByClassName("select-items");
         y = document.getElementsByClassName("select-selected");
@@ -152,8 +150,7 @@
             }
         }
     }
-    /*if the user clicks anywhere outside the select box,
-    then close all select boxes:*/
+    /*만약 셀렉박스 이외 다른 곳 선택하면 해당 박스를 닫음.*/
     document.addEventListener("click", closeAllSelect);
 
 </script>
