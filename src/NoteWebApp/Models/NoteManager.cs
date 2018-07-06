@@ -378,6 +378,37 @@ namespace NoteWebApp.Models
 			}
 		}
 
+		public static string NewestNote()
+		{
+			string NewestNote = "";
+
+			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			{
+				conn.Open();
+
+				String sql = "select max(noteid) from Note order by notedate desc";
+
+				OracleCommand cmd = new OracleCommand
+				{
+					Connection = conn,
+					CommandText = sql
+				};
+
+				OracleDataReader reader = cmd.ExecuteReader();
+				if (reader.Read())
+				{
+					NewestNote = reader["MAX(NOTEID)"].ToString();
+
+				}
+
+				reader.Close();
+
+			};
+
+			return NewestNote;
+		}
+
+
 
 
 		public static void NotToShortCut(int noteid)

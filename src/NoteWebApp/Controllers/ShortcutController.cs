@@ -10,7 +10,7 @@ namespace NoteWebApp.Controllers
 	public class ShortcutController : Controller
 	{
 		// GET: Shortcut
-		public ActionResult Index()
+		public PartialViewResult Index()
 		{
 			Dictionary<int, object> shortcuts = ShortcutManager.GetShortcuts();
 
@@ -18,7 +18,7 @@ namespace NoteWebApp.Controllers
 
 			ViewBag.shortCutList = shortCutList;
 
-			return View();
+			return PartialView();
 		}
 
 		public ActionResult ChangeBook(int id, string isShortcut)

@@ -14,5 +14,6 @@ namespace NoteWebApp.Models
 				return ConfigurationManager.ConnectionStrings["MainDB"].ToString();
 			}
 		}
+
 	}
 }

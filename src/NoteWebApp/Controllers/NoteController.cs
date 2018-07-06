@@ -127,7 +127,7 @@ namespace NoteWebApp.Controllers
 		}
 
 		[ValidateInput(false)]
-		public ActionResult Insert(String title, String contents, string noteBookId)
+		public ActionResult Insert(String title, String contents, String noteBookId)
 		{
 			int newNoteId = NoteManager.Create(title, contents, noteBookId);
 
@@ -167,7 +167,7 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Deleted()
 		{
-			var DeletedNoteList = NoteManager.GetDeletedNoteList().ToList();
+			var DeletedNoteList = NoteManager.GetDeletedNoteList();
 			ViewBag.DeletedNoteList = DeletedNoteList;
 
 			return View();
