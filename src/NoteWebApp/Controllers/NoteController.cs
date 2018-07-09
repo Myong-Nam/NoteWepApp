@@ -129,7 +129,7 @@ namespace NoteWebApp.Controllers
 		[ValidateInput(false)]
 		public ActionResult Insert(String title, String contents, String noteBookId)
 		{
-			int newNoteId = NoteManager.Create(title, contents, noteBookId);
+			NoteManager.Create(title, contents, noteBookId);
 
 			return RedirectToAction("index");
 		}
@@ -137,6 +137,7 @@ namespace NoteWebApp.Controllers
 		public ActionResult Create(String title, String contents)
 		{
 			SelectNewNoteBook();
+
 
 			return View();
 		}

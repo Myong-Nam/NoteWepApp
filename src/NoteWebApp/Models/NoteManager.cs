@@ -154,7 +154,7 @@ namespace NoteWebApp.Models
 		 (2) 새노트 아이디, 제목, 본문, 작성일자를 db로 insert해줌.
 
 			 */
-		public static int Create(String Title, String Contents, string notebookid)
+		public static void Create(String Title, String Contents, string notebookid)
 		{
 			int NewNoteId = GetNewNoteId();
 			int NewBookId = int.Parse(notebookid);
@@ -176,7 +176,6 @@ namespace NoteWebApp.Models
 
 			};
 
-			return NewNoteId;
 		}
 
 		// 새 노트 생성 시, 새 노트 아이디 구하기

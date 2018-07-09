@@ -1,8 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "Create";
-    var newNoteId = NoteWebApp.Models.NoteManager.NewestNote();
-    var insertNoteId = NoteWebApp.Models.NoteManager.GetNewNoteId();
+    var newNoteId = NoteWebApp.Models.NoteManager.NewestNote(); //가장최근거.
+    //새로생성
 
 }
 <style>
@@ -30,6 +30,7 @@
     }
     /*옵션 아이템들:*/
     .select-items {
+        display: inline;
         position: absolute;
         background-color: #fff;
         top: 100%;
@@ -46,10 +47,31 @@
         background-color: #2dbe60;
         color: #fff;
     }
+
+    .BookDropdown {
+        display: inline;
+    }
+
+    /*저장버튼*/
+    .saveButton {
+        background-color: #2dbe60;
+        color: #fff;
+        border: 1px solid #2dbe60;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline;
+        float: right;
+        outline: none;
+        height: 28px;
+        box-sizing: border-box;
+        padding: 0 15px;
+        vertical-align: top;
+    }
 </style>
 
-@using (Html.BeginForm("Insert", "Note"))
-{   <input type="hidden" name="noteid" value=@newNoteId>
+@using (Html.BeginForm("Update", "Note"))
+{<input type="hidden" name="noteid" value=@newNoteId>
+    <input class="saveButton" type="submit" value="저장" />
     <div class="BookDropdown">
         <div class="custom-select">@Html.DropDownList("noteBookId")</div>
     </div>
@@ -62,30 +84,48 @@
         <br />
         <textarea name="contents"></textarea>
     </div>
-    <input type="submit" value="저장" />
+
 }
 
 
 <script>
     //var isNewNote = 1; //새노트인가? true
-    var newNoteid = @newNoteId;
+    var isNewNote = 1;
+   
     $(document).ready(function () {
         CKEDITOR.replace('contents',
             {
                 fullPage: true,
                 filebrowserImageUploadUrl: '../Handler/Upload.ashx'
             }).on('key', function () {
-                $.ajax({
-                    url: 'Update',
-                    data: {
-                        title: document.getElementsByName('title')[0].value,
-                        contents: this.getData(),
-                        noteBookId: originalOption.options[originalOption.selectedIndex].value,
-                        noteid: newNoteid
-                    }
-                }).done(function () {
-                    console.log("updated");
-                });
+                 if (isNewNote == 1) {
+                    $.ajax({
+                        url: 'Insert',
+                        data: {
+                            title: document.getElementsByName('title')[0].value,
+                            contents: this.getData(),
+                            noteBookId: originalOption.options[originalOption.selectedIndex].value
+                        }
+                    }).done(function () {
+                        isNewNote = 0;
+                        console.log('inserted', isNewNote);
+                    });
+                 } else if (isNewNote == 0) {
+                      var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();;
+                    $.ajax({
+                        url: 'Update',
+                        data: {
+                            title: document.getElementsByName('title')[0].value,
+                            contents: this.getData(),
+                            noteBookId: originalOption.options[originalOption.selectedIndex].value,
+                            noteid: NewNoteId + 1
+                        }
+                    }).done(function () {
+                        console.log('Updated', isNewNote);
+                    });
+                }
+
+
 
             });
     });
@@ -114,6 +154,7 @@
         /*b: select-items select-hide 클래스 div를 새로 만든다.*/
         b = document.createElement("DIV");
         b.setAttribute("class", "select-items select-hide");
+        
         for (j = 0; j < originalOption.length; j++) {
             /*c: div 요소를 새로 만들어서 오리지널 옵션의 내용을 넣는다.*/
             c = document.createElement("DIV");
@@ -151,13 +192,13 @@
     function closeAllSelect(elmnt) {
         /*현재 선택된 박스 이외의 문서의 다른 셀렉박스들을 닫는 기능:*/
         var x, y, i, arrNo = [];
-        x = document.getElementsByClassName("select-items");
-        y = document.getElementsByClassName("select-selected");
+        x = document.getElementsByClassName("select-items"); //새드롭다운옵션들
+        y = document.getElementsByClassName("select-selected");//새드롭다운선택
         for (i = 0; i < y.length; i++) {
             if (elmnt == y[i]) {
                 arrNo.push(i)
             } else {
-                y[i].classList.remove("select-arrow-active");
+              //  y[i].classList.remove("select-arrow-active");
             }
         }
         for (i = 0; i < x.length; i++) {

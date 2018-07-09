@@ -21,7 +21,8 @@ namespace NoteWebApp.Views.Note
 			//provide direct URL here
 			string url = "http://localhost:7223/Handler/Image/" + file;
 
-			context.Response.Write("<script>window.parent.CKEDITOR.tools.callFunction( "+CKEditorFuncNum +  ", \"" + url + "\");</script>");
+			context.Response.Write("<script>window.parent.CKEDITOR.tools.callFunction( " + CKEditorFuncNum + ", \"" + url + "\");</script>");
+
 			context.Response.End();
 		}
 
