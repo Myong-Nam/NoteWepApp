@@ -12,6 +12,8 @@ namespace NoteWebApp.Models
 		{
 			get {
 				return ConfigurationManager.ConnectionStrings["MainDB"].ToString();
+				// MainDB
+				// AWS
 			}
 		}
 
