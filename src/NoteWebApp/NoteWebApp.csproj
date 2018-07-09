@@ -103,6 +103,8 @@
     <Content Include="Content\shortcut_stroke.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style\global.css" />
+    <Content Include="Content\style\lab_global.css" />
+    <Content Include="Content\style\reset.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
