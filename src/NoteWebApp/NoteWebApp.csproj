@@ -101,6 +101,7 @@
     <Content Include="Content\menu\star_stroke.png" />
     <Content Include="Content\shortcut_fill.png" />
     <Content Include="Content\shortcut_stroke.png" />
+    <Content Include="Content\Site.css" />
     <Content Include="Content\style\global.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -123,6 +124,11 @@
     <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="Scripts\ckeditor\skins\moono-lisa\readme.md" />
+    <Content Include="Areas\Lab\Views\web.config" />
+    <Content Include="Areas\Lab\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Lab\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Lab\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Lab\Views\Home\SimpleFileUpload.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -437,6 +443,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Lab\LabAreaRegistration.cs" />
+    <Compile Include="Areas\Lab\Models\BinaryFile.cs" />
+    <Compile Include="Areas\Lab\Models\BinaryFileVO.cs" />
     <Compile Include="Controllers\NoteBookController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\ShortcutController.cs" />
