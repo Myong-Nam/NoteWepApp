@@ -1,0 +1,83 @@
+﻿@model IEnumerable<NoteWebApp.Areas.Lab.Models.BinaryFileVO>
+
+@{
+    ViewBag.Title = "SimpleFileUpload";
+}
+
+<h2>SimpleFileUpload</h2>
+
+<p>Uploaded file: @ViewBag.filename</p>
+
+<div>
+    @using(Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="file" name="file" />
+        <input type="submit" name="Submit" id="Submit" value="Upload" />                                                                        
+    }
+
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BINARY_FILE_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FILE_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MIME_TYPE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BINARY_DATA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FILE_SIZE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IS_DELETED)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CREATED_DATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MODIFIED_DATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DELETED_DATE)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BINARY_FILE_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FILE_NAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MIME_TYPE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BINARY_DATA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FILE_SIZE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IS_DELETED)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CREATED_DATE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MODIFIED_DATE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DELETED_DATE)
+        </td>
+    </tr>
+}
+
+</table>
