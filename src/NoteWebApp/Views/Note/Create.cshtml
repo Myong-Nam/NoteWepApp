@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Create";
-    var newNoteId = NoteWebApp.Models.NoteManager.NewestNote(); //가장최근거.
+
     //새로생성
 
 }
@@ -12,9 +12,9 @@
         width: 30%;
     }
 
-        .custom-select select {
-            display: none; /*본래 오리지널 요소 감춤*/
-        }
+    .custom-select select {
+        display: none; /*본래 오리지널 요소 감춤*/
+    }
 
     .select-selected {
         background-color: #fff; /*선택되어있는 요소 배경색*/
@@ -51,7 +51,7 @@
     .BookDropdown {
         display: inline;
     }
-
+   
     /*저장버튼*/
     .saveButton {
         background-color: #2dbe60;
@@ -70,7 +70,7 @@
 </style>
 
 @using (Html.BeginForm("Update", "Note"))
-{<input type="hidden" name="noteid" value=@newNoteId>
+{<input type="hidden" name="noteid" value=@NoteWebApp.Models.NoteManager.NewestNote()>
     <input class="saveButton" type="submit" value="저장" />
     <div class="BookDropdown">
         <div class="custom-select">@Html.DropDownList("noteBookId")</div>
@@ -91,7 +91,7 @@
 <script>
     //var isNewNote = 1; //새노트인가? true
     var isNewNote = 1;
-   
+
     $(document).ready(function () {
         CKEDITOR.replace('contents',
             {
@@ -111,14 +111,14 @@
                         console.log('inserted', isNewNote);
                     });
                  } else if (isNewNote == 0) {
-                      var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();;
+                      var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();
                     $.ajax({
                         url: 'Update',
                         data: {
                             title: document.getElementsByName('title')[0].value,
                             contents: this.getData(),
                             noteBookId: originalOption.options[originalOption.selectedIndex].value,
-                            noteid: NewNoteId + 1
+                            noteid: NewNoteId
                         }
                     }).done(function () {
                         console.log('Updated', isNewNote);
@@ -143,18 +143,18 @@
     var originalDropDown, i, j, originalOption, a, b, c;
     /*오리지널 드롭다운 찾기*/
     originalDropDown = document.getElementsByClassName("custom-select");
-    for (i = 0; i < originalDropDown.length; i++) {
+    for (i = 0; i < originalDropDown.length; i++) { //original dropdown에는 하나의 select세트밖에없어서 반복문안써도됨
         originalOption = originalDropDown[i].getElementsByTagName("select")[0];
         /*select-selected 클래스 div를 새로 만들고 오리지널옵션에서 선택된 값을 select-selected에 넣는다.*/
         a = document.createElement("DIV");
         a.setAttribute("class", "select-selected");
         a.innerHTML = originalOption.options[originalOption.selectedIndex].innerHTML;
-        /*오리지널 드롭다운에 select-selected를 넣는다.*/
+        /*오리지널 드롭다운 아래에 select-selected를 넣는다.*/
         originalDropDown[i].appendChild(a);
         /*b: select-items select-hide 클래스 div를 새로 만든다.*/
         b = document.createElement("DIV");
         b.setAttribute("class", "select-items select-hide");
-        
+
         for (j = 0; j < originalOption.length; j++) {
             /*c: div 요소를 새로 만들어서 오리지널 옵션의 내용을 넣는다.*/
             c = document.createElement("DIV");
@@ -170,13 +170,13 @@
                         h.innerHTML = this.innerHTML;
                         y = this.parentNode.getElementsByClassName("same-as-selected");
                         for (k = 0; k < y.length; k++) {
-                            y[k].removeAttribute("class");
+                            y[k].classList.remove("same-as-selected");
                         }
-                        this.setAttribute("class", "same-as-selected");
+                        this.classList.add("same-as-selected");
                         break;
                     }
                 }
-                h.click();
+               // h.click();
             });
             b.appendChild(c);
         }
@@ -189,8 +189,9 @@
             this.classList.toggle("select-arrow-active");
         });
     }
+
     function closeAllSelect(elmnt) {
-        /*현재 선택된 박스 이외의 문서의 다른 셀렉박스들을 닫는 기능:*/
+
         var x, y, i, arrNo = [];
         x = document.getElementsByClassName("select-items"); //새드롭다운옵션들
         y = document.getElementsByClassName("select-selected");//새드롭다운선택

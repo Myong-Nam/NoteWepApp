@@ -1,32 +1,97 @@
 ﻿@using NoteWebApp.Models
 @{
     ViewBag.Title = "Index";
-    List<Note> notelist = ViewBag.noteList;
-    int countNotes = notelist.Count;
 
     int firstNoteId = -1;
-    if (notelist.Count > 0)
+    if (Model.Count > 0)
     {
-        firstNoteId = notelist[0].NoteId;
+        firstNoteId = Model[0].NoteId;
     }
 }
 
-
-<h2>노트</h2>
-<h4>@countNotes 개의 노트</h4>
-
-<div id="noteOrderBy">
-    @using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
-    {
-        @Html.DropDownList("orders", new SelectListItem[]{
-        new SelectListItem() { Text = "설정", Value = ""},
-        new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "0"},
-        new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "1"},
-        new SelectListItem() { Text = "제목(내림차순)", Value = "2"},
-        new SelectListItem() { Text = "제목(오름차순)", Value = "3"}
-       }, new { onchange="callList(this.value)" })
+<style>
+    .partViewList {
+        margin-top: 15px;
+        overflow-y: scroll;
+        height: calc(100% - 120px);
+        overflow-x: hidden;
     }
-</div>
+
+    #noteOrderBy {
+        margin-bottom: 5px;
+    }
+
+    #pageTitle {
+        color: #878787;
+        display: block;
+        vertical-align: top;
+        font-size: 21px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-weight: 300;
+        line-height: 26px;
+        padding: 24px 20px 0 24px;
+    }
+
+    #countNotes, .alarm {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #ababab;
+        padding: 24px 20px 0 24px;
+        display: inline-block;
+    }
+    .listConfig {
+        margin-left: 150px;
+        cursor: pointer;
+        display: inline;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #878787;
+    }
+
+    .select-hide {
+        display: none;
+    }
+    .customOption {
+        padding: 9px 54px 10px 20px;
+        background-size: 12px 12px
+    }
+    .select-items {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        z-index: 100;
+        background: #fff;
+        border: 3px solid rgba(217, 217, 217, 0.4);
+        border-top: 1px solid rgba(217, 217, 217, 0.4);
+        border-left: 1px solid rgba(217, 217, 217, 0.4);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04), -6px 8px 15px rgba(0, 0, 0, 0.04), 6px 8px 15px rgba(0, 0, 0, 0.04);
+        padding: 12px 0;
+        margin-top: 4px;
+        color: #606060;
+        position: fixed;
+        box-sizing: border-box;
+        margin-left:100px;
+    }
+    .select-items div:hover, .same-as-selected {
+        background-color: #2dbe60;
+        color: #fff;
+        padding: 9px 54px 10px 20px;
+        background-size: 12px 12px
+    }
+    .configContainer{
+       display:inline;
+    }
+    #noteDetail {
+        width: calc(100% - 400px);
+        height: 90%
+    }
+
+</style>
+
 
 <div class="noteList"></div>
 <div id="noteDetail"></div>
@@ -36,16 +101,11 @@
 <script>
     var detailUrl = '@Url.Action("Detail", "Note")';
     var listUrl = '@Url.Action("NoteList", "Note")';
-    document.getElementById("noteDetail").innerHTML = initDetail();
-    window.callList("0", 0); //첫번째 0 : 최근순 / 둘째0 : 노트북 전체
 
-    function notedetail(noteid) {
-        $('#noteDetail').load(detailUrl, { selectedNoteid: noteid });
-    }
-    function initDetail() {
-        $('#noteDetail').load(detailUrl, { selectedNoteid: @firstNoteId });
-        }
+    window.callList();
+
     function callList(val) {
-        $('.noteList').load("/Note/NoteList?", { order: val, notebookId : 0 }); 
+        $('.noteList').load(listUrl); 
     }
+
 </script>

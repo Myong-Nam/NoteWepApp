@@ -51,10 +51,15 @@
         UpdateOrRecover = "RecoverNote";
         UpdateOrRecoverText = "복원";
         NoteList = "Deleted";
+        Star = "none";
         NoteListText = "<< 휴지통 리스트로 돌아가기";
     }
 }
-
+<style>
+    #none{
+        display:none;
+    }
+</style>
 
     <br />
     <div class="noteHeader">
@@ -62,47 +67,56 @@
         {
             @Html.Hidden("id", Model.NoteId)
             @Html.Hidden("isShortcut", @Save)
-            <input type="image" src=@Star alt="Submit" width="25px">
+            <input id="star" type="image" src=@Star alt="Submit" width="25px"> //만약 삭제된 노트면 display = none으로
             <input type="image" src=@Info alt="Submit" width="25px">
         }
 
     </div>
 
+    <div id="noteDetailForm">
+        @using (Html.BeginForm(UpdateOrRecover, "Note"))
+        {
+            @Html.DropDownList("noteBookId")
+            <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
 
-    @using (Html.BeginForm(UpdateOrRecover, "Note"))
-    {
-       @Html.DropDownList("noteBookId")
-        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
+            <div class="title">
 
-        <div class="title">
+                @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
 
-            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
-           
-        </div>
-        <div id="msg"></div>
-        <div>
-            <br />
-            @Html.TextArea("contents", Model.Contents)
-        </div>
-        <input type="submit" value=@UpdateOrRecoverText />
-    }
+            </div>
+            <div id="msg"></div>
+            <div>
+                <br />
+                @Html.TextArea("contents", Model.Contents)
+            </div>
+            <input type="submit" value=@UpdateOrRecoverText />
+        }
 
-    @using (Html.BeginForm(@DeleteButton, "Note"))
-    {
-        @Html.Hidden("noteId", Model.NoteId)
-        <input type="submit" value="@DeleteText" />
-    }
+        @using (Html.BeginForm(@DeleteButton, "Note"))
+        {
+            @Html.Hidden("noteId", Model.NoteId)
+            <input type="submit" value="@DeleteText" />
+        }
 
-    @Html.ActionLink(NoteListText, NoteList)
+        @Html.ActionLink(NoteListText, NoteList)
+
+    </div>
+
     <script>
+        
         $(document).ready(function () {
             CKEDITOR.replace('contents',
                 {
                     fullPage: true,
                     filebrowserImageUploadUrl: '../Handler/Upload.ashx'
                 });
-        })
 
+            if (@Model.IsDeleted == 1) {
+                document.getElementById("star").setAttribute("id", "none");
+            }
+           
+        })
+      
 
         function lengthAlert() {
             var length = document.getElementById("title").value.length;
@@ -111,6 +125,10 @@
             } else {
                 document.getElementById("msg").innerHTML = "";
             }
+        }
+
+        function getStar() {
+            
         }
 
     </script>

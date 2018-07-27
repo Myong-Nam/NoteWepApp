@@ -1,0 +1,31 @@
+﻿
+
+<div class="alarm">알리미</div>
+<table id="noteListTable">
+
+    @foreach (var item in Model)
+    {
+        <tr onclick="notedetail(@item.NoteId)">
+            <th>
+                <div class="listTitle">@item.Title</div>
+                <div id="noteListDate">  @item.NoteDate</div>
+                <div class="preContents">@item.Contents</div>
+            </th>
+        </tr>
+    }
+</table>
+
+<script>
+
+    gabi_content();
+
+    function gabi_content() {
+
+        var elements = document.getElementsByClassName('preContents');
+
+        for (i = 0; i < elements.length; i++) {
+            var element = document.getElementsByClassName('preContents')[i];
+            element.innerHTML = element.innerText;
+        }
+    }
+</script>

@@ -1,24 +1,45 @@
 ﻿@using NoteWebApp.Models
 @{
     ViewBag.Title = "Delete";
-    List<Note> deletedList = ViewBag.DeletedNoteList;
-}
+    List<Note> notelist = ViewBag.noteList;
+    int countNotes = notelist.Count;
 
-<body>
-
-    <h2>휴지통</h2>
-
-
-    @foreach (var item in deletedList)
+    int firstNoteId = -1;
+    if (notelist.Count > 0)
     {
-        <ul>
-            @Html.ActionLink(item.Title, "Detail", new { id = item.NoteId })
-            @using (Html.BeginForm("Delete", "Note"))
-            {
-                @Html.Hidden("noteId", item.NoteId)
-                <input type="submit" value="영구삭제" />
-            }
-        </ul>
-        <hr />
+        firstNoteId = notelist[0].NoteId;
     }
-</body>
+}
+<h2>휴지통</h2>
+
+<div id="noteOrderBy">
+    @using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
+    {
+        @Html.DropDownList("orders", new SelectListItem[]{
+        new SelectListItem() { Text = "설정", Value = ""},
+        new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "0"},
+        new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "1"},
+        new SelectListItem() { Text = "제목(내림차순)", Value = "2"},
+        new SelectListItem() { Text = "제목(오름차순)", Value = "3"}
+       }, new { onchange="callList(this.value)" })
+    }
+</div>
+<div class="noteList"></div>
+<div id="noteDetail"></div>
+
+<script>
+    var detailUrl = '@Url.Action("Detail", "Note")';
+    var listUrl = '@Url.Action("NoteList", "Note")';
+    document.getElementById("noteDetail").innerHTML = initDetail();
+    window.callList("0", -1); //첫번째 0 : 최근순 / 둘째-1 : 삭제된 노트북
+
+    function notedetail(noteid) {
+        $('#noteDetail').load(detailUrl, { selectedNoteid: noteid });
+    }
+    function initDetail() {
+        $('#noteDetail').load(detailUrl, { selectedNoteid: @firstNoteId });
+        }
+    function callList(val) {
+        $('.noteList').load("/Note/NoteList?", { order: val, notebookId : -1 }); 
+    }
+</script>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -13,13 +14,20 @@ namespace NoteWebApp.Controllers
 		// GET: Note
 
 		public ActionResult Index()
-		{ 
+		{
 			var noteList = NoteManager.GetNoteList(0, 0);
-			ViewBag.noteList = noteList;
 
-			return View();
+			return View(noteList);
 		}
 
+		public PartialViewResult NoteList()
+{
+			var noteList = NoteManager.GetNoteList(0, 0);
+
+			OrderBy();
+
+			return PartialView(noteList);
+		}
 		public PartialViewResult Detail(int selectedNoteid)
 		{
 			Note selected = new Note();
@@ -49,18 +57,23 @@ namespace NoteWebApp.Controllers
 		}
 
 		//노트 리스트 보여주는 partial view
-		public PartialViewResult NoteList(string order, int notebookId)
+		[HttpPost]
+		public PartialViewResult ShowNoteList(string order, int notebookId)
 		{
 			int orderId = Int32.Parse(order);
 			//int bookId = Int32.Parse(notebookId);
+
 			var noteList = NoteManager.GetNoteList(orderId, notebookId);
 			foreach (var item in noteList)
 			{
+
 				if (item.Title == "")
 				{
 					item.Title = "제목 없음";
 				}
+
 			}
+
 			return PartialView(noteList);
 		}
 
@@ -92,6 +105,20 @@ namespace NoteWebApp.Controllers
 
 			return View();
 		}
+
+		public ActionResult OrderBy()
+		{
+			List<SelectListItem> items = new List<SelectListItem>();
+			items.Add(new SelectListItem { Text = "만든날짜(최근 순으로)", Value = "0" });
+			items.Add(new SelectListItem { Text = "만든날짜(오래된 순으로)", Value = "1" });
+			items.Add(new SelectListItem { Text = "제목(내림차순)", Value = "2" });
+			items.Add(new SelectListItem { Text = "제목(오름차순)", Value = "3" });
+
+			ViewBag.order = items;
+
+			return View(items);
+		}
+
 
 
 			//노트 디테일에서 노트북 선택하는 함수
@@ -168,8 +195,8 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Deleted()
 		{
-			var DeletedNoteList = NoteManager.GetDeletedNoteList();
-			ViewBag.DeletedNoteList = DeletedNoteList;
+			var noteList = NoteManager.GetNoteList(0, -1);
+			ViewBag.noteList = noteList;
 
 			return View();
 		}

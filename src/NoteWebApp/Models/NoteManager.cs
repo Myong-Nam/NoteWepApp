@@ -44,6 +44,7 @@ namespace NoteWebApp.Models
 			else if (noteBookId == -1) //휴지통에 있는 노트 전체
 			{
 				sbQuery.Append("\n WHERE isdeleted = 1 ");
+				
 			} else
 			{
 				sbQuery.Append("\n WHERE isdeleted = 0 ");
@@ -90,7 +91,49 @@ namespace NoteWebApp.Models
 
 				noteList.Add(note);
 
-				note.NoteDate = note.FullDate.ToString("yy. M. d.");
+				DateTime today = DateTime.Now;
+				DateTime theDay = note.FullDate;
+
+				TimeSpan diff = today.Subtract(theDay);
+				
+				if(diff.Days < 21)
+				{
+					note.NoteDate = "2주 전";
+
+					if (diff.Days < 14)
+					{
+						note.NoteDate = "1주 전";
+
+						if (diff.Days < 7)
+						{
+							note.NoteDate = diff.Days.ToString() + "일 전";
+
+							if (diff.Days < 1)
+							{
+								note.NoteDate = diff.Hours.ToString() + "시간 전";
+
+								if (diff.Hours < 1)
+								{
+									note.NoteDate = diff.Minutes.ToString() + "분 전";
+
+									if (diff.Minutes < 1)
+									{
+										note.NoteDate = diff.Seconds.ToString() + "초 전";
+									}
+								}
+
+							}
+						}
+					}
+				}
+				
+				else
+				{
+					note.NoteDate = note.FullDate.ToString();
+					//note.NoteDate = note.FullDate.ToString("yy. M. d.");
+				}
+
+
 			}
 			reader.Close();
 			conn.Close();
@@ -294,47 +337,6 @@ namespace NoteWebApp.Models
 			};
 		}
 
-		// 휴지통에 있는 노트리스트 불러오기 : /deleted
-		/*
-		 목적 : 사용자가 휴지통으로 보낸 노트들을 보여줌.
-		 준비물 : 빈 노트리스트, db커넥션
-		 (1) 노트 db에서 삭제여부(isdeleted)가1(true)인 노트를 받아옴
-		 (2) (1)의 노트를 노트리스트에 넣음
-		*/
-		public static List<Note> GetDeletedNoteList()
-		{
-			List<Note> noteList = new List<Note>();
-
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
-			{
-				conn.Open();
-
-				String sql = $"select * from Note where ISDELETED = {1} ORDER BY notedate desc";
-
-				OracleCommand cmd = new OracleCommand
-				{
-					Connection = conn,
-					CommandText = sql
-				};
-
-				OracleDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
-				{
-					Note note = new Note
-					{
-						NoteId = int.Parse(reader["NOTEID"].ToString()),
-						Title = reader["TITLE"].ToString(),
-					};
-
-					noteList.Add(note);
-				}
-				reader.Close();
-
-			}
-
-			return noteList;
-		}
-
 		// 휴지통에 있는 노트 복원 : /detail
 		 /*
 		 목적 : 사용자가 휴지통으로 보낸 노트들을 복원함.
@@ -377,6 +379,7 @@ namespace NoteWebApp.Models
 			}
 		}
 
+		//create 뷰에서 저장버튼 눌렀을때 호출되는 메소드. 자동저장되는 id와 같도록 할것.
 		public static string NewestNote()
 		{
 			string NewestNote = "";
@@ -396,7 +399,8 @@ namespace NoteWebApp.Models
 				OracleDataReader reader = cmd.ExecuteReader();
 				if (reader.Read())
 				{
-					NewestNote = reader["MAX(NOTEID)"].ToString();
+					int temp = int.Parse(reader["MAX(NOTEID)"].ToString()) + 1;
+					NewestNote = temp.ToString();
 
 				}
 

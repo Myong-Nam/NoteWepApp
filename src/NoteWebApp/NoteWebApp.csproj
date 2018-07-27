@@ -487,6 +487,8 @@
     <Content Include="Views\Note\NoteList.cshtml" />
     <Content Include="Views\NoteBook\List.cshtml" />
     <Content Include="Handler\Upload.ashx" />
+    <Content Include="Views\Note\ShowNoteList.cshtml" />
+    <Content Include="Views\Note\test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
