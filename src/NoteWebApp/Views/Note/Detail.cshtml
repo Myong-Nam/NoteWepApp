@@ -67,9 +67,10 @@
         {
             @Html.Hidden("id", Model.NoteId)
             @Html.Hidden("isShortcut", @Save)
-            <input id="star" type="image" src=@Star alt="Submit" width="25px"> //만약 삭제된 노트면 display = none으로
-            <input type="image" src=@Info alt="Submit" width="25px">
+            <input id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
         }
+        <img src=@Info alt="Submit" width="25px">
+
 
     </div>
 
@@ -109,6 +110,18 @@
                 {
                     fullPage: true,
                     filebrowserImageUploadUrl: '../Handler/Upload.ashx'
+                }).on('key', function () {
+                    $.ajax({
+                        url: 'Update',
+                        data: {
+                            title: document.getElementsByName('title')[0].value,
+                            contents: this.getData(),
+                            noteBookId: @Model.NoteBookId,
+                            noteid: @Model.NoteId
+                        }
+                    }).done(function () {
+                        console.log('Updated');
+                    });
                 });
 
             if (@Model.IsDeleted == 1) {

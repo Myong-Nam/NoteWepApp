@@ -111,7 +111,6 @@
                         console.log('inserted', isNewNote);
                     });
                  } else if (isNewNote == 0) {
-                      var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();
                     $.ajax({
                         url: 'Update',
                         data: {
