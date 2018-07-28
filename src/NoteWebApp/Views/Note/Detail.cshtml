@@ -20,7 +20,7 @@
     var Info = "../../Content/menu/info.png";
 }
 
-@{ 
+@{
     if (Model.IsDeleted == 0) //삭제된 노트가 아닐경우
     {
         DeleteButton = "preDelete";
@@ -56,61 +56,113 @@
     }
 }
 <style>
-    #none{
-        display:none;
+    #none {
+        display: none;
     }
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 </style>
+<!-- 모달시작 -->
+<button id="myBtn">Open Modal</button>
 
-    <br />
-    <div class="noteHeader">
-        @using (Html.BeginForm("ChangeNote", "Shortcut"))
-        {
-            @Html.Hidden("id", Model.NoteId)
-            @Html.Hidden("isShortcut", @Save)
-            <input id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
-        }
-        <img src=@Info alt="Submit" width="25px">
+<!-- The Modal -->
+<div id="myModal" class="modal">
 
-
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
     </div>
 
-    <div id="noteDetailForm">
-        @using (Html.BeginForm(UpdateOrRecover, "Note"))
-        {
-            @Html.DropDownList("noteBookId")
-            <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
+</div>
 
-            <div class="title">
+<br />
+<div class="noteHeader">
+    @using (Html.BeginForm("ChangeNote", "Shortcut"))
+    {
+        @Html.Hidden("id", Model.NoteId)
+        @Html.Hidden("isShortcut", @Save)
+        <input id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
+    }
+    <img src=@Info alt="Submit" width="25px">
 
-                @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
 
-            </div>
-            <div id="msg"></div>
-            <div>
-                <br />
-                @Html.TextArea("contents", Model.Contents)
-            </div>
-            <input type="submit" value=@UpdateOrRecoverText />
-        }
+</div>
 
-        @using (Html.BeginForm(@DeleteButton, "Note"))
-        {
-            @Html.Hidden("noteId", Model.NoteId)
-            <input type="submit" value="@DeleteText" />
-        }
+<div id="noteDetailForm">
+    @using (Html.BeginForm(UpdateOrRecover, "Note"))
+    {
+        @Html.DropDownList("noteBookId")
+        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
 
-        @Html.ActionLink(NoteListText, NoteList)
+        <div class="title">
 
-    </div>
+            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
 
-    <script>
-        
+        </div>
+        <div id="msg"></div>
+        <div>
+            <br />
+            @Html.TextArea("contents", Model.Contents)
+        </div>
+        <input type="submit" value=@UpdateOrRecoverText />
+    }
+
+    @using (Html.BeginForm(@DeleteButton, "Note"))
+    {
+        @Html.Hidden("noteId", Model.NoteId)
+        <input type="submit" value="@DeleteText" />
+    }
+
+    @Html.ActionLink(NoteListText, NoteList)
+
+</div>
+
+<script>
+
         $(document).ready(function () {
             CKEDITOR.replace('contents',
                 {
                     fullPage: true,
                     filebrowserImageUploadUrl: '../Handler/Upload.ashx'
                 }).on('key', function () {
+                    //ajax시작 ? settimeout이랑 쓰고싶다..
+
+
                     $.ajax({
                         url: 'Update',
                         data: {
@@ -119,17 +171,16 @@
                             noteBookId: @Model.NoteBookId,
                             noteid: @Model.NoteId
                         }
-                    }).done(function () {
-                        console.log('Updated');
                     });
+                    //ajax 끝
                 });
 
             if (@Model.IsDeleted == 1) {
                 document.getElementById("star").setAttribute("id", "none");
             }
-           
+
         })
-      
+
 
         function lengthAlert() {
             var length = document.getElementById("title").value.length;
@@ -140,8 +191,30 @@
             }
         }
 
-        function getStar() {
-            
-        }
+    // Get the modal
+    var modal = document.getElementById('myModal');
 
-    </script>
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal 
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+</script>

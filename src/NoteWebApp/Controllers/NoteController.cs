@@ -13,6 +13,7 @@ namespace NoteWebApp.Controllers
 	{
 		// GET: Note
 
+		//노트 리스트 가져오는 인덱스 페이지
 		public ActionResult Index()
 		{
 			var noteList = NoteManager.GetNoteList(0, 0);
@@ -20,6 +21,7 @@ namespace NoteWebApp.Controllers
 			return View(noteList);
 		}
 
+		//노트리스트 파셜뷰
 		public PartialViewResult NoteList()
 {
 			var noteList = NoteManager.GetNoteList(0, 0);
@@ -28,6 +30,8 @@ namespace NoteWebApp.Controllers
 
 			return PartialView(noteList);
 		}
+
+		//노트 상세 partial view
 		public PartialViewResult Detail(int selectedNoteid)
 		{
 			Note selected = new Note();
@@ -55,6 +59,16 @@ namespace NoteWebApp.Controllers
 
 			return PartialView(selected);
 		}
+
+		//노트 정보 가져오는 modal partial view
+		[HttpPost]
+		public PartialViewResult Info(int noteid)
+		{
+			Note note = NoteManager.GetNotebyId(noteid);
+			return PartialView(note);
+		}
+
+
 
 		//노트 리스트 보여주는 partial view
 		[HttpPost]
