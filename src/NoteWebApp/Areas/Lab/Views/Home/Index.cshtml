@@ -3,9 +3,19 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="gutter">
+    <section>
+        <h3>Simple File Upload</h3>
+        <ul>
+            <li>@Html.ActionLink("List", "List", "SimpleFileUpload")</li>
+        </ul>
+    </section>
 
-<ul>
-    <li>@Html.ActionLink("Simple File Upload", "SimpleFileUpload")</li>
-</ul>
-
+    <section>
+        <h3>HTML5</h3>
+        <ul>
+            <li><a href="~/Areas/Lab/Content/html/draganddrop.html">Drag and drop</a></li>
+            <li><a href="~/Areas/Lab/Content/html/draganddrop2.html">Drag and drop2</a></li>
+        </ul>
+    </section>
+</div>
