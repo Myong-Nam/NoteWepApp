@@ -27,13 +27,15 @@ namespace NoteWebApp.Areas.Lab.Controllers
 			return View(binaryFileVOList);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="id">BinaryFileId</param>
-		/// <returns></returns>
-		public FileContentResult Download(string id)
+		public ActionResult Download(string id)
 		{
+			// Validation: id는 숫자만 허용한다.
+			if (!int.TryParse(id, out int i))
+			{
+				// 숫자 이외의 문자가 들어온 경우 처리
+				return View("PageNotFound");
+			}
+
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 			conn.Open();
 
@@ -46,6 +48,12 @@ namespace NoteWebApp.Areas.Lab.Controllers
 			};
 
 			OracleDataReader reader = cmd.ExecuteReader();
+
+			if (!reader.HasRows)
+			{
+				// 파일이 없을때 처리
+				return View("PageNotFound");
+			}
 
 			byte[] blob = null;
 			string contentType = "";
@@ -60,7 +68,9 @@ namespace NoteWebApp.Areas.Lab.Controllers
 			cmd.Dispose();
 			conn.Close();
 
-			return File(blob, contentType);
+			FileContentResult result = File(blob, contentType);
+
+			return result;
 		}
 
 		[HttpPost]
@@ -87,6 +97,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 
 				OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 				conn.Open();
+
 				OracleCommand cmd = new OracleCommand();
 				cmd.CommandText = sql;
 				cmd.Connection = conn;

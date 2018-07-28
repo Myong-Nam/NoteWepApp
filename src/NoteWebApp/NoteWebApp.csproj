@@ -131,6 +131,7 @@
     <Content Include="Areas\Lab\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Lab\Views\Home\Index.cshtml" />
     <Content Include="Areas\Lab\Views\SimpleFileUpload\List.cshtml" />
+    <Content Include="Areas\Lab\Views\Shared\PageNotFound.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
