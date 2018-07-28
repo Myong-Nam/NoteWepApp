@@ -90,6 +90,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Lab\Content\html\DragAndDrop2.html" />
+    <Content Include="Areas\Lab\Content\html\DragAndDrop.html" />
+    <Content Include="Areas\Lab\Content\html\DragAndDrop3\HtmlPage1.html" />
+    <Content Include="Areas\Lab\Content\html\DragAndDrop3\img_logo.gif" />
+    <Content Include="Areas\Lab\Content\style\reset.css" />
     <Content Include="Content\menu\add_fill.png" />
     <Content Include="Content\menu\add_stroke.png" />
     <Content Include="Content\menu\book_fill.png" />
@@ -103,7 +108,7 @@
     <Content Include="Content\shortcut_stroke.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style\global.css" />
-    <Content Include="Content\style\lab_global.css" />
+    <Content Include="Areas\Lab\Content\style\global.css" />
     <Content Include="Content\style\reset.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -132,6 +137,8 @@
     <Content Include="Areas\Lab\Views\Home\Index.cshtml" />
     <Content Include="Areas\Lab\Views\SimpleFileUpload\List.cshtml" />
     <Content Include="Areas\Lab\Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Areas\Lab\Views\Html5\Index.cshtml" />
+    <Content Include="Areas\Lab\Views\Html5\DragAndDrop.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -447,6 +454,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
     <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
     <Compile Include="Areas\Lab\LabAreaRegistration.cs" />
     <Compile Include="Areas\Lab\Models\BinaryFile.cs" />
