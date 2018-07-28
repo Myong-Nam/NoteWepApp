@@ -17,7 +17,7 @@ namespace NoteWebApp.Areas.Lab
             context.MapRoute(
                 "Lab_default",
                 "Lab/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
