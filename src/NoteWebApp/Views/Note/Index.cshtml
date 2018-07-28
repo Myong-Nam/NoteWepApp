@@ -1,12 +1,13 @@
 ﻿@using NoteWebApp.Models
+@model NoteWebApp.ViewModels.NoteIndexVM
+
 @{
     ViewBag.Title = "Index";
 
-    int firstNoteId = -1;
-    if (Model.Count > 0)
-    {
-        firstNoteId = Model[0].NoteId;
-    }
+    List<Note> noteList = Model.NoteList;
+    Note note = Model.SelectedNote;
+    var order = ViewBag.order;
+    string desc = "Notedate&orderType=Desc";
 }
 
 <style>
@@ -42,6 +43,7 @@
         padding: 24px 20px 0 24px;
         display: inline-block;
     }
+
     .listConfig {
         margin-left: 150px;
         cursor: pointer;
@@ -55,10 +57,12 @@
     .select-hide {
         display: none;
     }
+
     .customOption {
         padding: 9px 54px 10px 20px;
         background-size: 12px 12px
     }
+
     .select-items {
         font-family: gotham, helvetica, arial, sans-serif;
         font-size: 13px;
@@ -74,38 +78,77 @@
         color: #606060;
         position: fixed;
         box-sizing: border-box;
-        margin-left:100px;
+        margin-left: 100px;
     }
-    .select-items div:hover, .same-as-selected {
-        background-color: #2dbe60;
-        color: #fff;
-        padding: 9px 54px 10px 20px;
-        background-size: 12px 12px
+
+        .select-items div:hover, .same-as-selected {
+            background-color: #2dbe60;
+            color: #fff;
+            padding: 9px 54px 10px 20px;
+            background-size: 12px 12px
+        }
+
+    .configContainer {
+        display: inline;
     }
-    .configContainer{
-       display:inline;
-    }
+
     #noteDetail {
         width: calc(100% - 400px);
         height: 90%
     }
-
 </style>
 
 
-<div class="noteList"></div>
-<div id="noteDetail"></div>
+<div class="noteList">
+
+    <div id="pageTitle">노트</div>
+    <div id="countNotes">@noteList.Count 개의 노트</div>
+
+
+    <div class="configContainer"></div>
+    <div class="custom-select">
+        @using (Html.BeginForm("Index", "Note", FormMethod.Get))
+        {
+            @Html.DropDownList("orderColumn", new SelectListItem[]{
+
+            new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = { "Notedate", "orderType" } },
+            new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value =  "Notedate"},
+            new SelectListItem() { Text = "제목(내림차순)", Value = "Title"},
+            new SelectListItem() { Text = "제목(오름차순)", Value = "Title"}
+           }, new { onchange = "form.submit();" } )
+        }
+    </div>
+
+    <div class="partViewList">
+        @{ Html.RenderPartial("ShowNoteList", noteList); }
+    </div>
+
+</div>
+
+
+
+<div id="noteDetail">
+    @{ Html.RenderAction("Detail", new { selectedNoteid = noteList[0].NoteId }); }
+</div>
 
 
 
 <script>
-    var detailUrl = '@Url.Action("Detail", "Note")';
-    var listUrl = '@Url.Action("NoteList", "Note")';
+
+    function test() {
+        alert('test');
+        $('#orders').submit();
+    }
+
+    @*var listUrl = '@Url.Action("NoteList", "Note")';
 
     window.callList();
 
     function callList(val) {
-        $('.noteList').load(listUrl); 
+        $('.noteList').load(listUrl);
+    }*@
+        function callList(val) {
+            
     }
 
 </script>

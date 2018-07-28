@@ -117,7 +117,7 @@ namespace NoteWebApp.Controllers
 			NoteBook noteBook = NoteBookManager.GetNoteBookbyId(id);
 			ViewBag.noteBook = noteBook;
 
-			var noteList = NoteManager.GetNoteList(0, id); //노트리스트
+			var noteList = NoteManager.GetNoteList(Enums.OrderColumn.Notedate, Enums.OrderType.Desc, id); //노트리스트
 			if (noteList.Count == 0)
 			{
 				string msg = "노트를 추가하세요.";

@@ -4,7 +4,93 @@
     List<NoteBook> noteBookList = ViewBag.noteBookList;
 
 }
+<style>
+    .partViewList {
+        margin-top: 15px;
+        overflow-y: scroll;
+        height: calc(100% - 120px);
+        overflow-x: hidden;
+    }
 
+    #noteOrderBy {
+        margin-bottom: 5px;
+    }
+
+    #pageTitle {
+        color: #878787;
+        display: block;
+        vertical-align: top;
+        font-size: 21px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-weight: 300;
+        line-height: 26px;
+        padding: 24px 20px 0 24px;
+    }
+
+    #countNotes, .alarm {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #ababab;
+        padding: 24px 20px 0 24px;
+        display: inline-block;
+    }
+
+    .listConfig {
+        margin-left: 150px;
+        cursor: pointer;
+        display: inline;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #878787;
+    }
+
+    .select-hide {
+        display: none;
+    }
+
+    .customOption {
+        padding: 9px 54px 10px 20px;
+        background-size: 12px 12px
+    }
+
+    .select-items {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        z-index: 100;
+        background: #fff;
+        border: 3px solid rgba(217, 217, 217, 0.4);
+        border-top: 1px solid rgba(217, 217, 217, 0.4);
+        border-left: 1px solid rgba(217, 217, 217, 0.4);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04), -6px 8px 15px rgba(0, 0, 0, 0.04), 6px 8px 15px rgba(0, 0, 0, 0.04);
+        padding: 12px 0;
+        margin-top: 4px;
+        color: #606060;
+        position: fixed;
+        box-sizing: border-box;
+        margin-left: 100px;
+    }
+
+        .select-items div:hover, .same-as-selected {
+            background-color: #2dbe60;
+            color: #fff;
+            padding: 9px 54px 10px 20px;
+            background-size: 12px 12px
+        }
+
+    .configContainer {
+        display: inline;
+    }
+
+    #noteDetail {
+        width: calc(100% - 400px);
+        height: 90%
+    }
+</style>
 
 <h2>노트북리스트</h2>
 @Html.ActionLink("새 노트북", "Create")
@@ -37,3 +123,13 @@
 
 </script>
 
+<script>
+    var listUrl = '@Url.Action("NoteList", "Note")';
+
+    window.callList();
+
+    function callList(val) {
+        $('.noteList').load(listUrl); 
+    }
+
+</script>

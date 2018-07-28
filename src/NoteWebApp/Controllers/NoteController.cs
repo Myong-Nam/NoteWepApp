@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NoteWebApp.Models;
+using NoteWebApp.ViewModels;
 
 namespace NoteWebApp.Controllers
 {
@@ -14,17 +15,69 @@ namespace NoteWebApp.Controllers
 		// GET: Note
 
 		//노트 리스트 가져오는 인덱스 페이지
-		public ActionResult Index()
+		public ActionResult Index(string orderColumn, string orderType, string noteId, string notebookId)
 		{
-			var noteList = NoteManager.GetNoteList(0, 0);
+			Enums.OrderColumn defaultOrderColumn = Enums.OrderColumn.Notedate;
+			Enums.OrderType defaultOrderType = Enums.OrderType.Desc;
+			int defaultNoteBookId = 0;
 
-			return View(noteList);
+			Enums.OrderColumn selectedOrderColumn;
+			Enums.OrderType selectedOrderType;
+			int selectedNotebookId;
+
+			if (String.IsNullOrEmpty(orderColumn))
+			{
+				// parameter is empty
+				selectedOrderColumn = defaultOrderColumn;
+			}
+			else
+			{
+				// parameter is delivered
+				selectedOrderColumn = (Enums.OrderColumn) Enum.Parse(typeof(Enums.OrderColumn), orderColumn);
+			}
+
+			if (String.IsNullOrEmpty(orderType))
+			{
+				// parameter is empty
+				selectedOrderType = defaultOrderType;
+			}
+			else
+			{
+				// parameter is delivered
+				selectedOrderType = (Enums.OrderType)Enum.Parse(typeof(Enums.OrderType), orderType);
+			}
+
+			//notebookid
+			selectedNotebookId = (String.IsNullOrEmpty(notebookId)) ? defaultNoteBookId : int.Parse(notebookId);
+
+
+			// note list
+			// Notebook id
+			// default set
+
+
+			var noteList = NoteManager.GetNoteList( selectedOrderColumn, selectedOrderType, selectedNotebookId );
+
+			// 리스트 정렬 정보 (column, asc|desc)
+
+			// note detail
+			int selectedNoteid = (String.IsNullOrEmpty(noteId))? noteList[0].NoteId : int.Parse(noteId);
+			Note selectedNote = NoteManager.GetNotebyId(selectedNoteid);
+
+			NoteIndexVM model = new NoteIndexVM();
+
+			model.NoteList = noteList;
+			model.SelectedNote = selectedNote;
+
+			OrderBy();
+
+			return View(model);
 		}
 
 		//노트리스트 파셜뷰
 		public PartialViewResult NoteList()
 		{
-			var noteList = NoteManager.GetNoteList(0, 0);
+			var noteList = NoteManager.GetNoteList(Enums.OrderColumn.Notedate, Enums.OrderType.Desc, noteBookId: 0);
 
 			OrderBy();
 
@@ -73,12 +126,34 @@ namespace NoteWebApp.Controllers
 
 		//노트 리스트 보여주는 partial view
 		[HttpPost]
-		public PartialViewResult ShowNoteList(string order, int notebookId)
+		public PartialViewResult ShowNoteList(int order, int notebookId)
 		{
-			int orderId = Int32.Parse(order);
-			//int bookId = Int32.Parse(notebookId);
+			Enums.OrderColumn orderColumnName = Enums.OrderColumn.Notedate;
+			Enums.OrderType orderType = Enums.OrderType.Desc;
 
-			var noteList = NoteManager.GetNoteList(orderId, notebookId);
+			switch (order)
+			{
+				case 0:
+					orderColumnName = Enums.OrderColumn.Notedate;
+					orderType = Enums.OrderType.Desc;
+					break;
+				case 1:
+					orderColumnName = Enums.OrderColumn.Notedate;
+					orderType = Enums.OrderType.Asc;
+					break;
+				case 2:
+					orderColumnName = Enums.OrderColumn.Title;
+					orderType = Enums.OrderType.Desc;
+					break;
+				case 3:
+					orderColumnName = Enums.OrderColumn.Title;
+					orderType = Enums.OrderType.Asc;
+					break;
+				default:
+					break;
+			}
+
+			var noteList = NoteManager.GetNoteList(orderColumnName, orderType, notebookId);
 			foreach (var item in noteList)
 			{
 
@@ -128,7 +203,6 @@ namespace NoteWebApp.Controllers
 			items.Add(new SelectListItem { Text = "만든날짜(오래된 순으로)", Value = "1" });
 			items.Add(new SelectListItem { Text = "제목(내림차순)", Value = "2" });
 			items.Add(new SelectListItem { Text = "제목(오름차순)", Value = "3" });
-
 			ViewBag.order = items;
 
 			return View(items);
@@ -210,7 +284,7 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Deleted()
 		{
-			var noteList = NoteManager.GetNoteList(0, -1);
+			var noteList = NoteManager.GetNoteList(Enums.OrderColumn.Notedate, Enums.OrderType.Desc, noteBookId: -1); //-1은 휴지통
 			ViewBag.noteList = noteList;
 
 			return View();

@@ -304,7 +304,7 @@ namespace NoteWebApp.Models
 		//해당 노트북 노트 개수구하기
 		public static int CountInBook(int bookId)
 		{
-			List<Note> List = NoteManager.GetNoteList(0, bookId);
+			List<Note> List = NoteManager.GetNoteList(Enums.OrderColumn.Notedate, Enums.OrderType.Desc, bookId);
 			int count = List.Count;
 
 			return count;

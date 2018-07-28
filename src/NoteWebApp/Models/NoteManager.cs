@@ -10,16 +10,18 @@ namespace NoteWebApp.Models
 {
 	public class NoteManager
 	{
-
-		//노트리스트 불러오기 : /index
-		/*
-			목적 : 인덱스 페이지에서 노트리스트를 최근순으로 불러옴
-			준비물 : 노트리스트, db커넥션
-			(1) 빈 노트리스트와 db커넥션을 생성.
-			(2) isdeleted의 값이 0인(삭제되지 않은) 노트를 불러오는 쿼리 작성.
-			(3) 불러온 노트를 노트리스트에 넣고 커넥션과 reader를 닫아준다.
-				*/
-		public static List<Note> GetNoteList(int order, int noteBookId)
+		/// <summary>
+        /// 목적 : 인덱스 페이지에서 노트리스트를 최근순으로 불러옴
+        /// 준비물 : 노트리스트, db커넥션
+        /// (1) 빈 노트리스트와 db커넥션을 생성.
+        /// (2) isdeleted의 값이 0인(삭제되지 않은) 노트를 불러오는 쿼리 작성.
+        /// (3) 불러온 노트를 노트리스트에 넣고 커넥션과 reader를 닫아준다.
+		/// </summary>
+		/// <param name="orderColumnName">"notedate" | "title"</param>
+		/// <param name="orderType">"ASC" | "DESC"</param>
+		/// <param name="noteBookId"></param>
+		/// <returns></returns>
+		public static List<Note> GetNoteList(Enums.OrderColumn orderColumnName, Enums.OrderType orderType, int noteBookId)
 		{
 			List<Note> noteList = new List<Note>();
 
@@ -40,36 +42,22 @@ namespace NoteWebApp.Models
 			if (noteBookId == 0) //삭제 되지 않은 노트 전체
 			{
 				sbQuery.Append("\n WHERE isdeleted = 0 ");
-			} 
+			}
 			else if (noteBookId == -1) //휴지통에 있는 노트 전체
 			{
 				sbQuery.Append("\n WHERE isdeleted = 1 ");
-				
-			} else
+
+			}
+			else
 			{
 				sbQuery.Append("\n WHERE isdeleted = 0 ");
 				sbQuery.Append("\n AND notebookid = " + noteBookId);
 			}
 
-			if (order == 0)
-			{
-				sbQuery.Append("\n order by notedate DESC  ");
-			}
-			else if (order == 1)
-			{
-				sbQuery.Append("\n order by notedate ASC  ");
-			}
-			else if (order == 2)
-			{
-				sbQuery.Append("\n order by title DESC  ");
-			}
-			else if (order == 3)
-			{
-				sbQuery.Append("\n order by title ASC  ");
-			}
+			sbQuery.Append($"\n order by {orderColumnName} {orderType}");
 
 			String sql = sbQuery.ToString();
-			
+
 			OracleCommand cmd = new OracleCommand
 			{
 				Connection = conn,
@@ -95,8 +83,8 @@ namespace NoteWebApp.Models
 				DateTime theDay = note.FullDate;
 
 				TimeSpan diff = today.Subtract(theDay);
-				
-				if(diff.Days < 21)
+
+				if (diff.Days < 21)
 				{
 					note.NoteDate = "2주 전";
 
@@ -126,7 +114,7 @@ namespace NoteWebApp.Models
 						}
 					}
 				}
-				
+
 				else
 				{
 					note.NoteDate = note.FullDate.ToString();
@@ -138,10 +126,11 @@ namespace NoteWebApp.Models
 			reader.Close();
 			conn.Close();
 
-			
+
 
 			return noteList;
 		}
+
 
 		// 노트 아이디로 노트 불러오기 : /detail
 		/*

@@ -466,6 +466,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataBase.cs" />
+    <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\NoteBook.cs" />
     <Compile Include="Models\NoteBookManager.cs" />
@@ -475,6 +476,7 @@
     <Compile Include="Handler\Upload.ashx.cs">
       <DependentUpon>Upload.ashx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\NoteIndexVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -498,6 +500,7 @@
     <Content Include="Views\NoteBook\List.cshtml" />
     <Content Include="Handler\Upload.ashx" />
     <Content Include="Views\Note\ShowNoteList.cshtml" />
+    <Content Include="Views\Note\OrderByPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
