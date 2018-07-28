@@ -90,6 +90,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Lab\Content\html\DragAndDrop2.html" />
+    <Content Include="Areas\Lab\Content\html\DragAndDrop.html" />
+    <Content Include="Areas\Lab\Content\html\DragAndDrop3\HtmlPage1.html" />
+    <Content Include="Areas\Lab\Content\html\DragAndDrop3\img_logo.gif" />
+    <Content Include="Areas\Lab\Content\style\reset.css" />
     <Content Include="Content\menu\add_fill.png" />
     <Content Include="Content\menu\add_stroke.png" />
     <Content Include="Content\menu\book_fill.png" />
@@ -103,7 +108,7 @@
     <Content Include="Content\shortcut_stroke.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style\global.css" />
-    <Content Include="Content\style\lab_global.css" />
+    <Content Include="Areas\Lab\Content\style\global.css" />
     <Content Include="Content\style\reset.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -130,7 +135,10 @@
     <Content Include="Areas\Lab\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Lab\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Lab\Views\Home\Index.cshtml" />
-    <Content Include="Areas\Lab\Views\Home\SimpleFileUpload.cshtml" />
+    <Content Include="Areas\Lab\Views\SimpleFileUpload\List.cshtml" />
+    <Content Include="Areas\Lab\Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Areas\Lab\Views\Html5\Index.cshtml" />
+    <Content Include="Areas\Lab\Views\Html5\DragAndDrop.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -446,6 +454,8 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
+    <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
     <Compile Include="Areas\Lab\LabAreaRegistration.cs" />
     <Compile Include="Areas\Lab\Models\BinaryFile.cs" />
     <Compile Include="Areas\Lab\Models\BinaryFileVO.cs" />
@@ -504,6 +514,25 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -532,6 +561,9 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y $(SolutionDir)lib\oracle11\*.dll $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

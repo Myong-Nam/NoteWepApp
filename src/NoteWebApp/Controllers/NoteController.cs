@@ -23,7 +23,7 @@ namespace NoteWebApp.Controllers
 
 		//노트리스트 파셜뷰
 		public PartialViewResult NoteList()
-{
+		{
 			var noteList = NoteManager.GetNoteList(0, 0);
 
 			OrderBy();
@@ -39,7 +39,8 @@ namespace NoteWebApp.Controllers
 			if (selectedNoteid != 0)
 			{
 				selected = NoteManager.GetNotebyId(selectedNoteid);
-			} else
+			}
+			else
 			{
 				selected = NoteManager.GetNotebyId(40);
 			}
@@ -135,8 +136,8 @@ namespace NoteWebApp.Controllers
 
 
 
-			//노트 디테일에서 노트북 선택하는 함수
-			public ActionResult SelectNoteBook(int noteid)
+		//노트 디테일에서 노트북 선택하는 함수
+		public ActionResult SelectNoteBook(int noteid)
 		{
 			var allBooks = NoteBookManager.GetNoteBookList(); //노트북 전체 불러오기
 			List<SelectListItem> items = new List<SelectListItem>(); //select list item 초기화
