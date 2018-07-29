@@ -21,7 +21,7 @@ namespace NoteWebApp.Models
 		/// <param name="orderType">"ASC" | "DESC"</param>
 		/// <param name="noteBookId"></param>
 		/// <returns></returns>
-		public static List<Note> GetNoteList(Enums.OrderColumn orderColumnName, Enums.OrderType orderType, int noteBookId)
+		public static List<Note> GetNoteList(OrderColumn orderColumnName, OrderType orderType, int noteBookId)
 		{
 			List<Note> noteList = new List<Note>();
 

@@ -5,17 +5,14 @@ using System.Web;
 
 namespace NoteWebApp.Models
 {
-	public static class Enums
+	public enum OrderColumn
 	{
-		public enum OrderColumn
-		{
-			Notedate,
-			Title
-		}
+		Notedate,
+		Title
+	}
 
-		public enum OrderType
-		{
-			Desc, Asc
-		}
+	public enum OrderType
+	{
+		Desc, Asc
 	}
 }
