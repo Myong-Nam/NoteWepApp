@@ -17,12 +17,12 @@ namespace NoteWebApp.Controllers
 		//노트 리스트 가져오는 인덱스 페이지
 		public ActionResult Index(string orderColumn, string orderType, string noteId, string notebookId)
 		{
-			Enums.OrderColumn defaultOrderColumn = Enums.OrderColumn.Notedate;
-			Enums.OrderType defaultOrderType = Enums.OrderType.Desc;
+			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
+			OrderType defaultOrderType = OrderType.Desc;
 			int defaultNoteBookId = 0;
 
-			Enums.OrderColumn selectedOrderColumn;
-			Enums.OrderType selectedOrderType;
+			OrderColumn selectedOrderColumn;
+			OrderType selectedOrderType;
 			int selectedNotebookId;
 
 			if (String.IsNullOrEmpty(orderColumn))
@@ -33,7 +33,7 @@ namespace NoteWebApp.Controllers
 			else
 			{
 				// parameter is delivered
-				selectedOrderColumn = (Enums.OrderColumn) Enum.Parse(typeof(Enums.OrderColumn), orderColumn);
+				selectedOrderColumn = (OrderColumn) Enum.Parse(typeof(OrderColumn), orderColumn);
 			}
 
 			if (String.IsNullOrEmpty(orderType))
@@ -44,7 +44,7 @@ namespace NoteWebApp.Controllers
 			else
 			{
 				// parameter is delivered
-				selectedOrderType = (Enums.OrderType)Enum.Parse(typeof(Enums.OrderType), orderType);
+				selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), orderType);
 			}
 
 			//notebookid
@@ -77,7 +77,7 @@ namespace NoteWebApp.Controllers
 		//노트리스트 파셜뷰
 		public PartialViewResult NoteList()
 		{
-			var noteList = NoteManager.GetNoteList(Enums.OrderColumn.Notedate, Enums.OrderType.Desc, noteBookId: 0);
+			var noteList = NoteManager.GetNoteList(OrderColumn.Notedate, OrderType.Desc, noteBookId: 0);
 
 			OrderBy();
 
@@ -128,26 +128,26 @@ namespace NoteWebApp.Controllers
 		[HttpPost]
 		public PartialViewResult ShowNoteList(int order, int notebookId)
 		{
-			Enums.OrderColumn orderColumnName = Enums.OrderColumn.Notedate;
-			Enums.OrderType orderType = Enums.OrderType.Desc;
+			OrderColumn orderColumnName = OrderColumn.Notedate;
+			OrderType orderType = OrderType.Desc;
 
 			switch (order)
 			{
 				case 0:
-					orderColumnName = Enums.OrderColumn.Notedate;
-					orderType = Enums.OrderType.Desc;
+					orderColumnName = OrderColumn.Notedate;
+					orderType = OrderType.Desc;
 					break;
 				case 1:
-					orderColumnName = Enums.OrderColumn.Notedate;
-					orderType = Enums.OrderType.Asc;
+					orderColumnName = OrderColumn.Notedate;
+					orderType = OrderType.Asc;
 					break;
 				case 2:
-					orderColumnName = Enums.OrderColumn.Title;
-					orderType = Enums.OrderType.Desc;
+					orderColumnName = OrderColumn.Title;
+					orderType = OrderType.Desc;
 					break;
 				case 3:
-					orderColumnName = Enums.OrderColumn.Title;
-					orderType = Enums.OrderType.Asc;
+					orderColumnName = OrderColumn.Title;
+					orderType = OrderType.Asc;
 					break;
 				default:
 					break;
@@ -284,7 +284,7 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Deleted()
 		{
-			var noteList = NoteManager.GetNoteList(Enums.OrderColumn.Notedate, Enums.OrderType.Desc, noteBookId: -1); //-1은 휴지통
+			var noteList = NoteManager.GetNoteList(OrderColumn.Notedate, OrderType.Desc, noteBookId: -1); //-1은 휴지통
 			ViewBag.noteList = noteList;
 
 			return View();
