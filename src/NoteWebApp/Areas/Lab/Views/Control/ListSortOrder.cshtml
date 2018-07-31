@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "ListSortOrder";
+}
+
+<h2>ListSortOrder</h2>
+
+@using (Html.BeginForm("ListSortOrder", "Control", FormMethod.Get))
+{
+    <div>
+        <div>
+            <label>Notebook id</label>
+            @Html.TextBox("NoteBookId", ViewBag.NoteBookId as String )
+        </div>
+        <div>
+            <label>Order Column Name (notedate or title)</label>
+            @Html.TextBox("OrderColumnName", ViewBag.OrderColumnName as String)
+        </div>
+        <div>
+            <label>Order Type (asc or desc)</label>
+            @Html.TextBox("OrderType", ViewBag.OrderType as String)
+        </div>
+    </div>
+    <div>
+        <input type="submit" value="Search" />
+    </div>
+}
+<div>
+    <h3>List 내용</h3>
+    <p>@ViewBag.List</p>
+</div>
