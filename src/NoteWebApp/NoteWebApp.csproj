@@ -500,7 +500,6 @@
     <Content Include="Views\NoteBook\List.cshtml" />
     <Content Include="Handler\Upload.ashx" />
     <Content Include="Views\Note\ShowNoteList.cshtml" />
-    <Content Include="Views\Note\OrderByPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
