@@ -139,6 +139,7 @@
     <Content Include="Areas\Lab\Views\Shared\PageNotFound.cshtml" />
     <Content Include="Areas\Lab\Views\Html5\Index.cshtml" />
     <Content Include="Areas\Lab\Views\Html5\DragAndDrop.cshtml" />
+    <Content Include="Areas\Lab\Views\Control\ListSortOrder.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -453,6 +454,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Lab\Controllers\ControlController.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
     <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
     <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
