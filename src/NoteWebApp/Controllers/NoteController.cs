@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using NoteWebApp.Models;
 using NoteWebApp.ViewModels;
+using System.Text.RegularExpressions;
+using System.Net;
 
 namespace NoteWebApp.Controllers
 {
@@ -17,6 +15,7 @@ namespace NoteWebApp.Controllers
 		//노트 리스트 가져오는 인덱스 페이지
 		public ActionResult Index(string orderColumn, string orderType, string noteId, string notebookId)
 		{
+			
 			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
 			OrderType defaultOrderType = OrderType.Desc;
 			int defaultNoteBookId = 0;

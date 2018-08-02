@@ -7,9 +7,6 @@
     List<Note> noteList = Model.NoteList;
     Note note = Model.SelectedNote;
     var order = ViewBag.order;
-    string desc = "Notedate&orderType=Desc";
-
-    var descUrl = HttpUtility.UrlEncode(desc);
 
 }
 
@@ -199,7 +196,6 @@
         var descorasc = "Asc"
         document.getElementById("orderType").value = descorasc;
         this.submit();
-        
     }
 </script>
 

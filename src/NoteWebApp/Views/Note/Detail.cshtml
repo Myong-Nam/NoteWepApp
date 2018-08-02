@@ -1,4 +1,6 @@
 ﻿@using NoteWebApp.Models
+@using System.Text.RegularExpressions
+@using System.Web;
 @model Note
 
 @{
@@ -55,10 +57,21 @@
         NoteListText = "<< 휴지통 리스트로 돌아가기";
     }
 }
+@{
+    //글자수 구하는 로직
+
+    string Regexresult = Regex.Replace(Model.Contents, "\\r|\\n|\\t|<(.|\n)*?>", string.Empty); //태그제거
+    string finalResult = WebUtility.HtmlDecode(Regexresult); //특수문자 처리
+
+    int contentsLength = finalResult.Length;
+
+
+}
 <style>
     #none {
         display: none;
     }
+
     .modal {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
@@ -68,47 +81,114 @@
         width: 100%; /* Full width */
         height: 100%; /* Full height */
         overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(255,255,255); /* Fallback color */
-        background-color: rgba(255,255,255,0.6); /* Black w/ opacity */
+        background-color: rgba(255,255,255,0.8); /* Black w/ opacity */
     }
 
     /* Modal Content/Box */
     .modal-content {
         background-color: #fefefe;
-        margin: 0; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
+        margin: auto; /* 15% from the top and centered */
+        padding: 0;
         width: 100%;
         height: 100%;
-        background: rgba(255,255,255,0.6);
+        background: rgba(255,255,255,0.7);
         /* Could be more or less, depending on screen size */
     }
 
-    /* The Close Button */
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
+    /* Modal design */
+    .modal-info {
+        margin:auto;
+        width: 450px;
+    }
+    .modal-Icon {
+        vertical-align: middle;
+        text-align: center;
+    }
+    #modal-noteInfo {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+    #modal-seperater {
+        width: 124px;
+        margin: 18px auto 54px;
+        border-bottom: 1px solid #d9d9d9;
+        text-align: center;
+    }
+    #modal-title-data {
+        color: #383838;
+        word-break: break-word;
+        word-wrap: break-word;
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 44px;
+        font-family: caecilia, times, serif;
+        text-align: center;
+    }
+    #modal-summary {
+        margin-bottom: 16px;
+        color: #4a4a4a;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .modal-list {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        text-transform: uppercase;
+        margin-right: 8px;
+        color: #878787;
+    }
+    .modal-data {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #4a4a4a;
+    }
+    .modal-btn{
+        text-align:center;
+    }
+    .modal-button {
+        color: WHITE;
+        background-color: #2dbe60;
+        border: 1px solid #2dbe60;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 5px;
+        display: inline-block;
+        padding: 9px 14px;
+        min-width: 160px;
     }
 
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
+    .modal-button:hover {
+        background-color: #299e52;
+    }
+    .noteHeader form{
+        display: inline;
     }
 </style>
-<!-- 모달시작 -->
-<button id="myBtn">Open Modal</button>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
 
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
+        <div class="modal-info">
+            <div class="modal-Icon"><img src=@Info width="34px"></div>
+            <p id="modal-noteInfo">노트 정보</p>
+            <div id="modal-seperater"></div> <!--가로선-->
+            <p id="modal-title-data">@Model.Title</p>
+            <p id="modal-summary">개요</p>
+            <p class="modal-list">만든날짜 : <span class="modal-data">@Model.NoteDate</span></p>
+            <p class="modal-list">글자 수 : <span class="modal-data">@contentsLength 자</span>
+            <p class="modal-btn"><button class="modal-button">확인</button></p>
+        </div>
+
     </div>
 
 </div>
@@ -119,9 +199,9 @@
     {
         @Html.Hidden("id", Model.NoteId)
         @Html.Hidden("isShortcut", @Save)
-        <input id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
+        <input class="noteSetting" id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
     }
-    <img src=@Info alt="Submit" width="25px">
+        <img src=@Info class="noteSetting" id="openInfo" width="25px">
 
 
 </div>
@@ -134,13 +214,13 @@
 
         <div class="title">
 
-            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
+        @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
 
         </div>
         <div id="msg"></div>
         <div>
             <br />
-            @Html.TextArea("contents", Model.Contents)
+            @Html.TextArea("contents", Model.Contents, new { id = "noteContents" })
         </div>
         <input type="submit" value=@UpdateOrRecoverText />
     }
@@ -157,53 +237,53 @@
 
 <script>
 
-        $(document).ready(function () {
-            CKEDITOR.replace('contents',
-                {
-                    fullPage: true,
-                    filebrowserImageUploadUrl: '../Handler/Upload.ashx'
-                }).on('key', function () {
-                    //ajax시작 ? settimeout이랑 쓰고싶다..
+    $(document).ready(function () {
+        CKEDITOR.replace('contents',
+            {
+                fullPage: true,
+                filebrowserImageUploadUrl: '../Handler/Upload.ashx'
+            }).on('key', function () {
+                //ajax시작 ? settimeout이랑 쓰고싶다..
 
 
-                    $.ajax({
-                        url: 'Update',
-                        data: {
-                            title: document.getElementsByName('title')[0].value,
-                            contents: this.getData(),
-                            noteBookId: @Model.NoteBookId,
-                            noteid: @Model.NoteId
-                        }
-                    });
-                    //ajax 끝
+                $.ajax({
+                    url: 'Update',
+                    data: {
+                        title: document.getElementsByName('title')[0].value,
+                        contents: this.getData(),
+                        noteBookId: @Model.NoteBookId,
+                        noteid: @Model.NoteId
+                    }
                 });
+                //ajax 끝
+            });
 
-            if (@Model.IsDeleted == 1) {
-                document.getElementById("star").setAttribute("id", "none");                
-            }
-
-        })
-
-
-        function lengthAlert() {
-            var length = document.getElementById("title").value.length;
-            if (length > 15) {
-                document.getElementById("msg").innerHTML = "제목은 15자 이내로 작성해주세요.";
-            } else {
-                document.getElementById("msg").innerHTML = "";
-            }
+        if (@Model.IsDeleted == 1) {
+            document.getElementById("star").setAttribute("id", "none");
         }
+
+    })
+
+
+    function lengthAlert() {
+        var length = document.getElementById("title").value.length;
+        if (length > 15) {
+            document.getElementById("msg").innerHTML = "제목은 15자 이내로 작성해주세요.";
+        } else {
+            document.getElementById("msg").innerHTML = "";
+        }
+    }
 
     // Get the modal
     var modal = document.getElementById('myModal');
 
     // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
+    var btn = document.getElementById("openInfo");
 
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+    var span = document.getElementsByClassName("modal-button")[0];
 
-    // When the user clicks on the button, open the modal 
+    // When the user clicks on the button, open the modal
     btn.onclick = function () {
         modal.style.display = "block";
     }
@@ -219,5 +299,8 @@
             modal.style.display = "none";
         }
     }
+
+
+
 
 </script>
