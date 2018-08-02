@@ -95,6 +95,7 @@
     <Content Include="Areas\Lab\Content\html\DragAndDrop3\HtmlPage1.html" />
     <Content Include="Areas\Lab\Content\html\DragAndDrop3\img_logo.gif" />
     <Content Include="Areas\Lab\Content\style\reset.css" />
+    <Content Include="Content\greenCheck_selected.png" />
     <Content Include="Content\menu\add_fill.png" />
     <Content Include="Content\menu\add_stroke.png" />
     <Content Include="Content\menu\book_fill.png" />

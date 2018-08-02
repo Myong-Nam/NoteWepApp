@@ -78,14 +78,23 @@
         color: #606060;
         position: fixed;
         box-sizing: border-box;
-        margin-left: 100px;
+        margin-left: 130px;
+        min-width: 200px;
     }
 
-    .select-items div:hover, .same-as-selected {
+    .select-items div:hover {
+        background: no-repeat;
         background-color: #2dbe60;
         color: #fff;
         padding: 9px 54px 10px 20px;
-        background-size: 12px 12px
+        background-size: 12px 12px;
+        
+    }
+
+    .same-as-selected {
+        background: right center no-repeat;
+        background-image: url('../../Content/greenCheck_selected.png');
+        padding: 9px 54px 10px 20px;
     }
 
     .configContainer {
@@ -148,8 +157,12 @@
         height: 50px;
         color: #707070
     }
-    #noteOrderForm{
+    #noteOrderForm {
         display:none;
+    }
+    .menuDiver {
+        border-top: 1px solid #ececec;
+        margin: 15px 15px 23px;
     }
 </style>
 
@@ -166,13 +179,16 @@
         {
             @Html.DropDownList("orderColumn", new SelectListItem[]{
 
-            new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "Notedate" },
-            new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value =  "Notedate"},
-            new SelectListItem() { Text = "제목(내림차순)", Value = "Title"},
-            new SelectListItem() { Text = "제목(오름차순)", Value = "Title"}
-           }, new { onchange = " orderSubmit();" } )
+            new SelectListItem() { Text = "만든날짜", Value = "Notedate", Selected = true },
+            new SelectListItem() { Text = "제목", Value = "Title"},
+           } )
 
-            @Html.Hidden("orderType", "",  new { id = "orderType" })
+            @Html.DropDownList("orderType", new SelectListItem[]{
+
+            new SelectListItem() { Text = "내림차순", Value = "Desc", Selected = true },
+            new SelectListItem() { Text = "오름차순", Value = "Asc"}
+            } )
+
         }
     </div>
 
@@ -188,17 +204,6 @@
     @{ Html.RenderAction("Detail", new { selectedNoteid = noteList[0].NoteId }); }
 </div>
 
-
-
-<script>
-
-    function orderSubmit() {
-        var descorasc = "Asc"
-        document.getElementById("orderType").value = descorasc;
-        this.submit();
-    }
-</script>
-
 <script>
 
 ////드롭다운 커스터마이징
@@ -211,6 +216,8 @@
 
 var originListOrder = document.getElementById("noteOrderBy"); //원본 드롭다운
 var originSelect = originListOrder.getElementsByTagName("select")[0]; //원본의 옵션을넣음
+var originOrderType = originListOrder.getElementsByTagName("select")[1];//원본의 오더타입 select객체
+
 var originContainer = document.getElementsByClassName("configContainer")[0];
 
 var listConfig = document.createElement("DIV"); //새로운 엘리먼트를 만듬
@@ -230,24 +237,66 @@ for (i = 0; i < originSelect.length; i++) {
     var customOption = document.createElement("DIV");
     customOption.setAttribute("class", "customOption");
     customOption.innerHTML = originSelect[i].innerHTML;
+
+    if (customOption.innerHTML == originSelect[originSelect.selectedIndex].innerHTML) {
+        customOption.setAttribute("class", "customOption same-as-selected")
+    }
     optionContainer.appendChild(customOption);
+    
+  
     customOption.addEventListener("click", function (e) {
 
         for (j = 0; j < originSelect.length; j++) {
             if (this.innerHTML == originSelect[j].innerHTML) {//선택한 옵션의 내용으로 원본의 해당 인덱스를 찾아서
                 originSelect.options[j].selected = true;
-                //리스트 순서를 바꾸는 로직
-                $("#noteOrderForm").submit();
+                //노트리스트에 선택을 반영하는 로직
+                
                 y = this.parentNode.getElementsByClassName("same-as-selected");
                 for (k = 0; k < y.length; k++) {
                     y[k].classList.remove("same-as-selected");
                 }
                 this.setAttribute("class", "customOption same-as-selected");
+                $("#noteOrderForm").submit();
                 break;
             };
         };
     });
- };
+    };
+    //메뉴 구분선 만들기
+    var menuDivider = document.createElement("DIV");
+    menuDivider.setAttribute("class", "menuDiver");
+    optionContainer.appendChild(menuDivider);
+
+//2-1정렬기준 내림오름 만들어주기
+    for (i = 0; i < originOrderType.length; i++) {
+        var customOption = document.createElement("DIV");
+        customOption.setAttribute("class", "customOption");
+        customOption.innerHTML = originOrderType[i].innerHTML;
+
+        if (customOption.innerHTML == originOrderType[originOrderType.selectedIndex].innerHTML) {
+            customOption.setAttribute("class", "customOption same-as-selected")
+        }
+        optionContainer.appendChild(customOption);
+        customOption.addEventListener("click", function (e) {
+
+            for (j = 0; j < originOrderType.length; j++) {
+                if (this.innerHTML == originOrderType[j].innerHTML) {//선택한 옵션의 내용으로 원본의 해당 인덱스를 찾아서
+                    originOrderType.options[j].selected = true;
+                    //노트리스트에 선택을 반영하는 로직
+
+                    y = this.parentNode.getElementsByClassName("same-as-selected");
+                    for (k = 0; k < y.length; k++) {
+                        y[k].classList.remove("same-as-selected");
+                    }
+                    this.setAttribute("class", "customOption same-as-selected");
+                    $("#noteOrderForm").submit();
+                    break;
+                };
+            };
+        });
+    };
+
+
 
 
 //4. container를 원본 드롭다운의 자식으로 넣는다.
