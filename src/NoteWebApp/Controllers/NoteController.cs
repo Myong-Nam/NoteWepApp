@@ -253,7 +253,6 @@ namespace NoteWebApp.Controllers
 		{
 			SelectNewNoteBook();
 
-
 			return View();
 		}
 

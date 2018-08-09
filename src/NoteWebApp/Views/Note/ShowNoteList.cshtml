@@ -5,7 +5,7 @@
 
     @foreach (var item in Model)
     {
-        <tr onclick="notedetail(@item.NoteId)">
+        <tr class="individualListTr"onclick="notedetail(@item.NoteId)">
             <th>
                 <div class="listTitle">@item.Title</div>
                 <div id="noteListDate">  @item.NoteDate</div>

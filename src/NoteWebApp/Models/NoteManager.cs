@@ -11,11 +11,11 @@ namespace NoteWebApp.Models
 	public class NoteManager
 	{
 		/// <summary>
-        /// 목적 : 인덱스 페이지에서 노트리스트를 최근순으로 불러옴
-        /// 준비물 : 노트리스트, db커넥션
-        /// (1) 빈 노트리스트와 db커넥션을 생성.
-        /// (2) isdeleted의 값이 0인(삭제되지 않은) 노트를 불러오는 쿼리 작성.
-        /// (3) 불러온 노트를 노트리스트에 넣고 커넥션과 reader를 닫아준다.
+		/// 목적 : 인덱스 페이지에서 노트리스트를 최근순으로 불러옴
+		/// 준비물 : 노트리스트, db커넥션
+		/// (1) 빈 노트리스트와 db커넥션을 생성.
+		/// (2) isdeleted의 값이 0인(삭제되지 않은) 노트를 불러오는 쿼리 작성.
+		/// (3) 불러온 노트를 노트리스트에 넣고 커넥션과 reader를 닫아준다.
 		/// </summary>
 		/// <param name="orderColumnName">"notedate" | "title"</param>
 		/// <param name="orderType">"ASC" | "DESC"</param>
@@ -166,6 +166,7 @@ namespace NoteWebApp.Models
 					IsDeleted = int.Parse(reader["ISDELETED"].ToString()),
 					Contents = reader["CONTENTS"] as String,
 					NoteDate = reader["NOTEDATE"].ToString(),
+					UpdatedDate = reader["UpdatedDate"].ToString(),
 					NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString())
 				};
 
@@ -196,7 +197,7 @@ namespace NoteWebApp.Models
 			{
 				conn.Open();
 
-				String sql = $"Insert into note (noteid, title, contents, notedate, notebookid) values ( {NewNoteId}, '{Title}', '{Contents}', sysdate, {NewBookId})";
+				String sql = $"Insert into note (noteid, title, contents, notedate, updateddate, notebookid) values ( {NewNoteId}, '{Title}', '{Contents}', sysdate, sysdate, {NewBookId})";
 
 				OracleCommand cmd = new OracleCommand
 				{
@@ -314,7 +315,7 @@ namespace NoteWebApp.Models
 			{
 				conn.Open();
 
-				String sql = $"UPDATE note SET title = '{title}', contents = '{contents}', notebookid = {id} WHERE noteid = {noteId}";
+				String sql = $"UPDATE note SET title = '{title}', contents = '{contents}', notebookid = {id}, updateddate = sysdate WHERE noteid = {noteId}";
 
 				OracleCommand cmd = new OracleCommand
 				{

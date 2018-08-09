@@ -97,7 +97,7 @@
             {
                 fullPage: true,
                 filebrowserImageUploadUrl: '../Handler/Upload.ashx'
-            }).on('key', function () {
+            }).on('change', function () {
                  if (isNewNote == 1) {
                     $.ajax({
                         url: 'Insert',
@@ -111,6 +111,7 @@
                         console.log('inserted', isNewNote);
                     });
                  } else if (isNewNote == 0) {
+                    var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();
                     $.ajax({
                         url: 'Update',
                         data: {

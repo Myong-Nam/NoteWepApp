@@ -185,6 +185,7 @@
             <p id="modal-title-data">@Model.Title</p>
             <p id="modal-summary">개요</p>
             <p class="modal-list">만든날짜 : <span class="modal-data">@Model.NoteDate</span></p>
+            <p class="modal-list">수정날짜 : <span class="modal-data">@Model.UpdatedDate</span></p>
             <p class="modal-list">글자 수 : <span class="modal-data">@contentsLength 자</span>
             <p class="modal-btn"><button class="modal-button">확인</button></p>
         </div>
@@ -236,15 +237,14 @@
 </div>
 
 <script>
+    //리스트 제목에 저장이 필요하다는 표시 하는 함수
 
     $(document).ready(function () {
         CKEDITOR.replace('contents',
             {
                 fullPage: true,
                 filebrowserImageUploadUrl: '../Handler/Upload.ashx'
-            }).on('key', function () {
-                //ajax시작 ? settimeout이랑 쓰고싶다..
-
+            }).on('change', function () {
 
                 $.ajax({
                     url: 'Update',
@@ -254,16 +254,17 @@
                         noteBookId: @Model.NoteBookId,
                         noteid: @Model.NoteId
                     }
+                }).done(function () {
                 });
-                //ajax 끝
+
+                if (@Model.IsDeleted == 1) {
+                    document.getElementById("star").setAttribute("id", "none");
+                }
+
             });
 
-        if (@Model.IsDeleted == 1) {
-            document.getElementById("star").setAttribute("id", "none");
-        }
-
-    })
-
+    });
+    
 
     function lengthAlert() {
         var length = document.getElementById("title").value.length;
