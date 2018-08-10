@@ -9,7 +9,7 @@ namespace NoteWebApp.Areas.Lab.Models
 {
 	public class BinaryFile
 	{
-		internal static List<BinaryFileVO> GetVOList()
+		public static List<BinaryFileVO> GetVOList()
 		{
 			List<BinaryFileVO> binaryFileVOList = new List<BinaryFileVO>();
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
