@@ -14,7 +14,7 @@ namespace NoteWebApp.Areas.Lab.Models
 			List<BinaryFileVO> binaryFileVOList = new List<BinaryFileVO>();
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 			conn.Open();
-			string sql = "SELECT * FROM BINARY_FILE order by created_date desc";
+			string sql = "SELECT * FROM BINARY_FILE order by binary_file_id desc";
 			OracleCommand cmd = new OracleCommand { Connection = conn, CommandText = sql };
 			OracleDataReader reader = cmd.ExecuteReader();
 

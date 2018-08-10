@@ -143,7 +143,7 @@
     <Content Include="Areas\Lab\Views\Control\ListSortOrder.cshtml" />
     <Content Include="Areas\Lab\Views\DragDropFileUpload\FileUploadToFileSystem.cshtml" />
     <Content Include="Areas\Lab\Views\DragDropFileUpload\Index.cshtml" />
-    <Content Include="Areas\Lab\Views\SimpleFileUpload\BinaryFileList_Partial.cshtml" />
+    <Content Include="Areas\Lab\Views\Shared\BinaryFileList_Partial.cshtml" />
     <Content Include="Areas\Lab\Views\DragDropFileUpload\FileUploadToDatabase.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />

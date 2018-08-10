@@ -11,6 +11,10 @@
             padding: 3em;
             background: gainsboro;
         }
+
+        .result-message {
+            background-color: burlywood;
+        }
     </style>
 }
 
@@ -71,7 +75,8 @@
                     processData: false,
                     data: data,
                     success: function (message) {
-                        $("#fileBasket").html(message);
+                        location.reload();
+                        //$("#fileBasket").html(message);
                     },
                     error: function () {
                         $("#fileBasket").html("There was error uploading files!");
