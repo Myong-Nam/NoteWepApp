@@ -60,11 +60,14 @@
 @{
     //글자수 구하는 로직
 
-    string Regexresult = Regex.Replace(Model.Contents, "\\r|\\n|\\t|<(.|\n)*?>", string.Empty); //태그제거
-    string finalResult = WebUtility.HtmlDecode(Regexresult); //특수문자 처리
+    int contentsLength = 0;
 
-    int contentsLength = finalResult.Length;
-
+    if (Model.Contents != null)
+    {
+        string Regexresult = Regex.Replace(Model.Contents, "\\r|\\n|\\t|<(.|\n)*?>", string.Empty); //태그제거
+        string finalResult = WebUtility.HtmlDecode(Regexresult); //특수문자 처리
+        contentsLength = finalResult.Length;
+    }
 
 }
 <style>
@@ -171,6 +174,20 @@
     .noteHeader form{
         display: inline;
     }
+    .img_loader {
+        position: absolute;
+        right: 30px;
+        margin-top: 100px;
+    }
+
+    .img_loader_hidden {
+        display: none;
+    }
+
+    .grayscale {
+        -webkit-filter: grayscale(100%);
+        filter: gray;
+    }
 </style>
 
 <!-- The Modal -->
@@ -215,12 +232,16 @@
 
         <div class="title">
 
-        @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
+
+            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
 
         </div>
         <div id="msg"></div>
+        
         <div>
             <br />
+            <img class="img_loader grayscale img_loader_hidden" id="img_saving" src="~/Content/greenCheck_selected.png" width=30px />
+            <img class="img_loader img_loader_hidden" id="img_loading" src="~/Content/ajax_loader_green_512.gif" width=30px />
             @Html.TextArea("contents", Model.Contents, new { id = "noteContents" })
         </div>
         <input type="submit" value=@UpdateOrRecoverText />
@@ -238,6 +259,51 @@
 
 <script>
     //리스트 제목에 저장이 필요하다는 표시 하는 함수
+    var timeOutID = 0;
+
+    CKEDITOR.replace('contents'); //new ckeditor instance
+    var editor = CKEDITOR.instances.contents; //reference to instance
+
+
+    editor.on('change', function () {
+
+        document.getElementById("img_loading").classList.remove("img_loader_hidden");
+        document.getElementById("img_saving").classList.remove("img_loader_hidden");
+        document.getElementById("img_saving").classList.add("grayscale");
+        clearTimeout(timeOutID);
+        timeOutID = setTimeout(function () {
+
+            $.ajax({
+                url: 'Update',
+                data: {
+                    title: document.getElementsByName('title')[0].value,
+                    contents: this.getData(),
+                    noteBookId: @Model.NoteBookId,
+                    noteid: @Model.NoteId
+                },
+                error: function (request, status, error) {
+                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                }
+            }).done(function () {
+                document.getElementById("img_saving").classList.remove("grayscale");
+                document.getElementById("img_loading").classList.add("img_loader_hidden");
+                setTimeout(function () { document.getElementById("img_saving").classList.add("img_loader_hidden"); }, 500)
+                    
+                console.log('Updated', isNewNote);
+            }) 
+        }, 2000);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+            
+    });
+
+
+
+
+
+
+
+
+
+
 
     $(document).ready(function () {
         CKEDITOR.replace('contents',

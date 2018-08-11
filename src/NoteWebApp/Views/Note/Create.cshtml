@@ -67,6 +67,18 @@
         padding: 0 15px;
         vertical-align: top;
     }
+    .img_loader {
+        position: absolute;
+        right: 30px;
+        margin-top: 100px;
+    }
+    .img_loader_hidden {
+        display: none;
+    }
+    .grayscale {
+        -webkit-filter: grayscale(100%);
+        filter: gray;
+    }
 </style>
 
 @using (Html.BeginForm("Update", "Note"))
@@ -82,7 +94,9 @@
     <div id="msg"></div>
     <div>
         <br />
-        <textarea name="contents"></textarea>
+        <img class="img_loader img_loader_hidden grayscale" id="img_saving" src="~/Content/greenCheck_selected.png" width=30px />
+        <img class="img_loader img_loader_hidden" id="img_loading" src="~/Content/ajax_loader_green_512.gif" width=30px />
+        <textarea id="contents" name="contents"></textarea>
     </div>
 
 }
@@ -91,45 +105,61 @@
 <script>
     //var isNewNote = 1; //새노트인가? true
     var isNewNote = 1;
+    var timeOutID = 0;
 
-    $(document).ready(function () {
-        CKEDITOR.replace('contents',
-            {
-                fullPage: true,
-                filebrowserImageUploadUrl: '../Handler/Upload.ashx'
-            }).on('change', function () {
-                 if (isNewNote == 1) {
-                    $.ajax({
-                        url: 'Insert',
-                        data: {
-                            title: document.getElementsByName('title')[0].value,
-                            contents: this.getData(),
-                            noteBookId: originalOption.options[originalOption.selectedIndex].value
-                        }
-                    }).done(function () {
-                        isNewNote = 0;
-                        console.log('inserted', isNewNote);
-                    });
-                 } else if (isNewNote == 0) {
-                    var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();
-                    $.ajax({
-                        url: 'Update',
-                        data: {
-                            title: document.getElementsByName('title')[0].value,
-                            contents: this.getData(),
-                            noteBookId: originalOption.options[originalOption.selectedIndex].value,
-                            noteid: NewNoteId
-                        }
-                    }).done(function () {
-                        console.log('Updated', isNewNote);
-                    });
+    CKEDITOR.replace('contents'); //new ckeditor instance
+    var editor = CKEDITOR.instances.contents; //reference to instance
+
+    editor.on('key', function () {
+        document.getElementById("img_saving").classList.remove("img_loader_hidden");
+    }
+    )
+
+    editor.on('change', function () {
+        document.getElementById("img_loading").classList.remove("img_loader_hidden");
+        if (isNewNote == 1) {
+            document.getElementById("img_saving").classList.add("grayscale");
+            isNewNote = 0;
+            $.ajax({
+                url: 'Insert',
+                data: {
+                    title: document.getElementsByName('title')[0].value,
+                    contents: this.getData(),
+                    noteBookId: originalOption.options[originalOption.selectedIndex].value
                 }
-
-
-
+            }).done(function () {
+                document.getElementById("img_saving").classList.remove("grayscale");
+                console.log('inserted', isNewNote);     
             });
+        }else if (isNewNote == 0) {
+            var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();
+            document.getElementById("img_loading").classList.remove("img_loader_hidden");
+            document.getElementById("img_saving").classList.add("grayscale");
+            clearTimeout(timeOutID);
+            timeOutID = setTimeout(function () {
+                $.ajax({
+                    url: 'Update',
+                    data: {
+                        title: document.getElementsByName('title')[0].value,
+                        contents: editor.getData(),
+                        noteBookId: originalOption.options[originalOption.selectedIndex].value,
+                        noteid: NewNoteId
+                    },
+                    error: function (request, status, error) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                }).done(function () {
+                    document.getElementById("img_saving").classList.remove("grayscale");
+                    document.getElementById("img_loading").classList.add("img_loader_hidden");
+                    setTimeout(function () { document.getElementById("img_saving").classList.add("img_loader_hidden"); }, 500)
+                    
+                    console.log('Updated', isNewNote);
+                }) 
+            }
+            , 2000);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+            }
+                
     });
-
 
     function lengthAlert() {
         var length = document.getElementById("title").value.length;
