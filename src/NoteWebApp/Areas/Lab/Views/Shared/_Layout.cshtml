@@ -1,11 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@{
+    // cache 방지용
+    string version = DateTime.Now.ToString("yyyyMMddHHmmssff");
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab</title>
     <link href="~/Areas/Lab/Content/style/reset.css" rel="stylesheet" type="text/css" />
-    <link href="~/Areas/Lab/Content/style/global.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/Lab/Content/style/global.css?v=@version" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
 </head>
 <body>
     <h1>@Html.ActionLink("Lab", "Index", "Home")</h1>
@@ -15,5 +20,7 @@
     </div>
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    @RenderSection("Scripts", false)
 </body>
 </html>

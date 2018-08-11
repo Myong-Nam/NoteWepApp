@@ -141,6 +141,10 @@
     <Content Include="Areas\Lab\Views\Html5\Index.cshtml" />
     <Content Include="Areas\Lab\Views\Html5\DragAndDrop.cshtml" />
     <Content Include="Areas\Lab\Views\Control\ListSortOrder.cshtml" />
+    <Content Include="Areas\Lab\Views\DragDropFileUpload\FileUploadToFileSystem.cshtml" />
+    <Content Include="Areas\Lab\Views\DragDropFileUpload\Index.cshtml" />
+    <Content Include="Areas\Lab\Views\Shared\BinaryFileList_Partial.cshtml" />
+    <Content Include="Areas\Lab\Views\DragDropFileUpload\FileUploadToDatabase.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -456,6 +460,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Lab\Controllers\ControlController.cs" />
+    <Compile Include="Areas\Lab\Controllers\DragDropFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
     <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
     <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
