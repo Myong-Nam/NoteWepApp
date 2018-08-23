@@ -14,7 +14,8 @@
     <section>
         <h3>Drag and drop File Upload</h3>
         <ul>
-            <li>@Html.ActionLink("index", "index", "DragDropFileUpload")</li>
+            <li>@Html.ActionLink("File Upload (File System)", "FileUploadToFileSystem", "DragDropFileUpload")</li>
+            <li>@Html.ActionLink("File Upload (Database)", "FileUploadToDatabase", "DragDropFileUpload")</li>
         </ul>
     </section>
 
@@ -25,4 +26,12 @@
             <li><a href="~/Areas/Lab/Content/html/draganddrop2.html">Drag and drop2</a></li>
         </ul>
     </section>
+
+    <section>
+        <h3>SQL Injection</h3>
+        <ul>
+            <li>@Html.ActionLink("index", "index", "SqlInjection")</li>
+        </ul>
+    </section>
+
 </div>

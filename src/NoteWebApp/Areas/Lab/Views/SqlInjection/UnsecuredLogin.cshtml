@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "UnsecuredLogin";
+}
+
+<h2>UnsecuredLogin</h2>
+
+<div>
+    @using (Html.BeginForm("UnsecuredLogin", "SqlInjection", FormMethod.Post))
+    {
+        <div><label>Id</label><input type="text" name="id" /></div>
+        <div><label>pass</label><input type="text" name="pass" /></div>
+        <div><input type="submit" /></div>
+    }
+
+    <label>Message</label>
+    <p style="background: gainsboro;">
+        @Html.Raw(ViewBag.Message)
+    </p>
+</div>
