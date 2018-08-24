@@ -146,6 +146,9 @@
     <Content Include="Areas\Lab\Views\DragDropFileUpload\Index.cshtml" />
     <Content Include="Areas\Lab\Views\Shared\BinaryFileList_Partial.cshtml" />
     <Content Include="Areas\Lab\Views\DragDropFileUpload\FileUploadToDatabase.cshtml" />
+    <Content Include="Areas\Lab\Views\SqlInjection\UnsecuredLogin.cshtml" />
+    <Content Include="Areas\Lab\Views\SqlInjection\Index.cshtml" />
+    <Content Include="Areas\Lab\Views\SqlInjection\SecuredLogin.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -465,6 +468,7 @@
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
     <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
     <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
+    <Compile Include="Areas\Lab\Controllers\SqlInjectionController.cs" />
     <Compile Include="Areas\Lab\LabAreaRegistration.cs" />
     <Compile Include="Areas\Lab\Models\BinaryFile.cs" />
     <Compile Include="Areas\Lab\Models\BinaryFileVO.cs" />

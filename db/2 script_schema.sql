@@ -129,3 +129,50 @@ DROP SEQUENCE BINARY_FILE_SEQ;
 CREATE SEQUENCE BINARY_FILE_SEQ MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 NOCACHE NOORDER NOCYCLE;
 
 
+--------------------------------------------------------
+-- TABLE TAG
+--------------------------------------------------------
+DROP TABLE TAG CASCADE CONSTRAINTS PURGE;
+
+CREATE TABLE TAG
+(
+    TAG_ID      NUMBER          NOT NULL, 
+    TAG_NAME    VARCHAR2(20)    NULL, 
+    CONSTRAINT TAG_PK PRIMARY KEY (TAG_ID)
+)
+/
+
+
+--------------------------------------------------------
+-- SEQUENCE TAG_SEQ
+--------------------------------------------------------
+DROP SEQUENCE TAG_SEQ;
+
+CREATE SEQUENCE TAG_SEQ MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 NOCACHE NOORDER NOCYCLE;
+
+
+--------------------------------------------------------
+-- TABLE NOTE_TAG_MAP
+--------------------------------------------------------
+DROP TABLE NOTE_TAG_MAP CASCADE CONSTRAINTS PURGE;
+
+CREATE TABLE "NOTE_TAG_MAP" 
+(	
+    "NOTE_ID" NUMBER NOT NULL ENABLE, 
+    "TAG_ID" NUMBER NOT NULL ENABLE, 
+    CONSTRAINT "NOTE_TAG_MAP_PK" PRIMARY KEY ("NOTE_ID", "TAG_ID") ENABLE, 
+    CONSTRAINT "FK_NOTE_TAG_MAP_TAG_ID_TAG_TAG" FOREIGN KEY ("TAG_ID") REFERENCES "TAG" ("TAG_ID") ENABLE, 
+    CONSTRAINT "FK_NOTE_TAG_MAP_NOTEID_NOTE_NO" FOREIGN KEY ("NOTE_ID") REFERENCES "NOTE" ("NOTEID") ENABLE
+) ;
+
+
+
+--------------------------------------------------------
+-- LAB_USER
+--------------------------------------------------------
+DROP TABLE LAB_USER CASCADE CONSTRAINTS PURGE;
+
+CREATE TABLE LAB_USER (
+    id   VARCHAR2(8)
+   ,pass VARCHAR2(8)
+);

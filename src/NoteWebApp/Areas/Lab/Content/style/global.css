@@ -7,12 +7,14 @@ h1 a:visited { color:unset; }
 h2 { background: #aaa; font-size: 1.5em; text-align: center; padding: 0.2em; color: black; font-weight: bold; }
 h3 { margin-bottom: 1em;}
 
-div { }
+div { margin: 1em; }
+label { margin: 0 1em; }
 
 table, th, td { border: 1px solid black; }
-th, td { padding: 0.3em; }
+th, td { padding: 0.3em; vertical-align: middle; }
 
-section { display: inline-block; background: gainsboro; padding: 1em; }
+section { display: inline-block; background: gainsboro; padding: 1em; vertical-align: top; margin: 1em; }
 section ul { list-style:disc; list-style-position: inside; }
+section ul li { margin-bottom: 0.5em; margin-right: 1em; }
 
 .gutter { padding: 1em; }

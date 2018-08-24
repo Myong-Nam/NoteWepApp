@@ -32,7 +32,9 @@ namespace NoteWebApp.Areas.Lab.Models
 				binaryFileVO.MODIFIED_DATE = Convert.ToDateTime(reader["MODIFIED_DATE"]);
 
 				if (!(reader["DELETED_DATE"] is DBNull))
+				{
 					binaryFileVO.DELETED_DATE = Convert.ToDateTime(reader["DELETED_DATE"]);
+				}
 
 				binaryFileVOList.Add(binaryFileVO);
 			}
