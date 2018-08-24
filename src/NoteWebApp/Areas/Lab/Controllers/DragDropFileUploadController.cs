@@ -83,7 +83,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 				OracleCommand cmd = new OracleCommand();
 				cmd.CommandText = sql;
 				cmd.Connection = conn;
-				cmd.CommandType = CommandType.Text;
+				//cmd.CommandType = CommandType.Text;
 
 				OracleParameter param = cmd.Parameters.Add("BINARY_DATA", OracleDbType.Blob);
 				param.Direction = ParameterDirection.Input;
