@@ -259,57 +259,13 @@
 
 <script>
     //리스트 제목에 저장이 필요하다는 표시 하는 함수
-    var timeOutID = 0;
 
-    CKEDITOR.replace('contents'); //new ckeditor instance
-    var editor = CKEDITOR.instances.contents; //reference to instance
-
-
-    editor.on('change', function () {
-
-        document.getElementById("img_loading").classList.remove("img_loader_hidden");
-        document.getElementById("img_saving").classList.remove("img_loader_hidden");
-        document.getElementById("img_saving").classList.add("grayscale");
-        clearTimeout(timeOutID);
-        timeOutID = setTimeout(function () {
-
-            $.ajax({
-                url: 'Update',
-                data: {
-                    title: document.getElementsByName('title')[0].value,
-                    contents: this.getData(),
-                    noteBookId: @Model.NoteBookId,
-                    noteid: @Model.NoteId
-                },
-                error: function (request, status, error) {
-                    alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                }
-            }).done(function () {
-                document.getElementById("img_saving").classList.remove("grayscale");
-                document.getElementById("img_loading").classList.add("img_loader_hidden");
-                setTimeout(function () { document.getElementById("img_saving").classList.add("img_loader_hidden"); }, 500)
-                    
-                console.log('Updated', isNewNote);
-            }) 
-        }, 2000);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-            
-    });
-
-
-
-
-
-
-
-
-
-
-
+    
     $(document).ready(function () {
         CKEDITOR.replace('contents',
             {
                 fullPage: true,
-                filebrowserImageUploadUrl: '../Handler/Upload.ashx'
+                filebrowserImageUploadUrl: '../Handler/Upload.ashx',
             }).on('change', function () {
 
                 $.ajax({

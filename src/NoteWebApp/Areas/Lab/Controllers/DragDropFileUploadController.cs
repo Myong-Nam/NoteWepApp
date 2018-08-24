@@ -11,13 +11,13 @@ using System.Web.Mvc;
 
 namespace NoteWebApp.Areas.Lab.Controllers
 {
-    public class DragDropFileUploadController : Controller
-    {
-        // GET: Lab/DragDropFileUpload
-        public ActionResult Index()
-        {
-            return View();
-        }
+	public class DragDropFileUploadController : Controller
+	{
+		// GET: Lab/DragDropFileUpload
+		public ActionResult Index()
+		{
+			return View();
+		}
 
 		public ActionResult FileUploadToFileSystem()
 		{
@@ -47,6 +47,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 
 				file.SaveAs(filenameWithPath);
 			}
+
 			string message = $"{files.Count} file(s) / {size} bytes uploaded successfully!";
 
 			return Json(message);

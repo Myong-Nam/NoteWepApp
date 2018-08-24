@@ -78,9 +78,9 @@
                         location.reload();
                         //$("#fileBasket").html(message);
                     },
-                    error: function () {
-                        $("#fileBasket").html("There was error uploading files!");
-                    },
+                    //error: function () {
+                    //    $("#fileBasket").html("There was error uploading files!");
+                    //},
                     error: function (response, status, error) {
                         $("#fileBasket").html(response.responseText);
                     },

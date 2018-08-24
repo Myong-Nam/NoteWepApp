@@ -47,7 +47,7 @@
                 @item.FILE_NAME
             </td>
             <td>
-                @Html.ActionLink("download", "download", new { id = item.BINARY_FILE_ID }, new { target = "_blank" })
+                @Html.ActionLink("download", "download", "SimpleFileUpload", new { id = item.BINARY_FILE_ID }, new { target = "_blank" })
             </td>
             <td>
                 @item.MIME_TYPE
