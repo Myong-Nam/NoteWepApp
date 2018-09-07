@@ -1,0 +1,40 @@
+﻿@using NoteWebApp.Models
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/shared/_layout.cshtml";
+}
+
+
+<style>
+</style>
+<h2>Tag</h2>
+@using (Html.BeginForm("Create", "Tag"))
+{
+    <div>
+        태그 추가:
+        @Html.TextBox("tagName", "")
+        <input type="submit" value="저장" />
+    </div>
+}
+
+@using (Html.BeginForm("Search", "Tag"))
+{
+    <div>
+        태그 검색:
+        @Html.TextBox("tagName", "")
+        <input type="submit" value="검색" />
+    </div>
+}
+
+@foreach (var item in Model){
+    <ul>
+        <li>
+            <div class="tagName">
+                @item.Tag_Name<br />
+            </div>
+        </li>
+    </ul>
+
+}
+

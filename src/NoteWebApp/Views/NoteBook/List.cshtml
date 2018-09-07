@@ -1,82 +1,384 @@
 ﻿@using NoteWebApp.Models
+@model NoteWebApp.ViewModels.NoteIndexVM
+
 @{
-    ViewBag.Title = "List";
-    NoteBook noteBook = ViewBag.noteBook;
-    var msg = "";
-    var firstNoteId = 0;
-    if (ViewBag.msg == null)
-    {
-        firstNoteId = ViewBag.firstNoteId;
-    } else
-    {
-        msg = ViewBag.msg;
+    ViewBag.Title = "Index";
 
+    List<Note> noteList = Model.NoteList;
+    Note note = Model.SelectedNote;
+    NoteBook noteBook = Model.NoteBook;
+    String NoteBookName = noteBook.Name;
+    String NoteBookId = noteBook.NoteBookId.ToString();
+    var order = ViewBag.order;
 
-    }
-
-    var isShortcut = ViewBag.isShortCut;
-    var Star = "";
-    var Save = "true";
-
-    if (isShortcut == "false")
-    {
-        Star = "../../Content/shortcut_stroke.png";
-        Save = "true";
-
-    }
-    else if (isShortcut == "true")
-    {
-        Star = "../../Content/shortcut_fill.png";
-        Save = "false";
-    }
 }
 
+<style>
+    .partViewList {
+        margin-top: 15px;
+        overflow-y: scroll;
+        height:100%;
+        height: calc(100% - 220px);
+        overflow-x: hidden;
+    }
 
-<h2>@noteBook.Name</h2>
-@Html.ActionLink("노트북 정보", "Info", new { id = noteBook.NoteBookId })
-<br />
-@using (Html.BeginForm("ChangeBook", "Shortcut"))
-{
-    @Html.Hidden("id", noteBook.NoteBookId)
-    @Html.Hidden("isShortcut", @Save)
-    <input type="image" src=@Star alt="Submit" width="25px">
-    /*<input class="star" type="image" value=@Save src="" />*/
-}
+    #noteOrderBy {
+        margin-bottom: 3px;
+    }
 
+    #pageTitle {
+        color: #878787;
+        display: block;
+        vertical-align: top;
+        font-size: 21px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-weight: 300;
+        line-height: 26px;
+        padding: 24px 20px 0 24px;
+    }
+
+    #countNotes {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #ababab;
+        padding: 24px 20px 0 24px;
+        display: inline-block;
+    }
+
+    .listConfig {
+        margin-left: 150px;
+        cursor: pointer;
+        display: inline;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #878787;
+    }
+
+    .select-hide {
+        display: none;
+    }
+
+    .customOption {
+        padding: 9px 54px 10px 20px;
+        background-size: 12px 12px
+    }
+
+    .select-items {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        z-index: 100;
+        background: #fff;
+        border: 3px solid rgba(217, 217, 217, 0.4);
+        border-top: 1px solid rgba(217, 217, 217, 0.4);
+        border-left: 1px solid rgba(217, 217, 217, 0.4);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04), -6px 8px 15px rgba(0, 0, 0, 0.04), 6px 8px 15px rgba(0, 0, 0, 0.04);
+        padding: 12px 0;
+        margin-top: 4px;
+        color: #606060;
+        position: fixed;
+        box-sizing: border-box;
+        margin-left: 130px;
+        min-width: 200px;
+    }
+
+        .select-items .customOption:hover {
+            background: no-repeat;
+            background-color: #2dbe60;
+            color: #fff;
+            padding: 9px 54px 10px 20px;
+            background-size: 12px 12px;
+        }
+
+    .same-as-selected {
+        background: right center no-repeat;
+        background-image: url('../../Content/greenCheck_selected.png');
+        padding: 9px 54px 10px 20px;
+    }
+
+    .configContainer {
+        display: inline;
+    }
+
+    #noteDetail {
+        width: calc(100% - 400px);
+        height: 90%
+    }
+
+    .preview-container {
+        width: 100%;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .listTitle {
+        font-family: sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    #noteListDate {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .preContents {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 10px;
+        height: 50px;
+        overflow: hidden;
+    }
+
+    .noteBookTitleContainer {
+        height: 160px;
+        background-color: #393d41;
+        font-size: 18px;
+        line-height: 30px;
+        color:#fff;
+        text-align:center;
+        display:table;
+        width:100%;
+        vertical-align:middle;
+
+    }
+    .noteBookName {
+       padding-top:60px;
+       display:table-cell;
+    }
+
+    #noteListTable{
+        width:330px;
+    }
+
+    #noteListTable tr th:hover {
+        background-color: #2dbe60;
+        color: #fff;
+    }
+
+    #noteListTable tr th {
+        text-align: left;
+        border-bottom: 1px solid rgb(225, 222, 222);
+        padding-left: 20px;
+        padding-top: 7px;
+        height: 50px;
+        color: #707070
+    }
+
+    #noteOrderForm {
+        display: none;
+    }
+
+    .menuDiver {
+        border-top: 1px solid #ececec;
+        margin: 15px 15px 23px;
+    }
+
+</style>
+
+
+<div class="noteList">
+
+    <div class="noteBookTitleContainer"><div class="noteBookName">@NoteBookName</div></div>
+    <div id="countNotes">@noteList.Count 개의 노트</div>
+    <div class="configContainer"></div>
     <div id="noteOrderBy">
-        @using (Html.BeginForm("NoteList", "Note", FormMethod.Get))
+        @using (Html.BeginForm("List", "NoteBook", FormMethod.Get, new { id = "noteOrderForm" }))
         {
-            @Html.DropDownList("orders", new SelectListItem[]{
-            new SelectListItem() { Text = "설정", Value = ""},
-            new SelectListItem() { Text = "만든날짜(최근 순으로)", Value = "0"},
-            new SelectListItem() { Text = "만든날짜(오래된 순으로)", Value = "1"},
-            new SelectListItem() { Text = "제목(내림차순)", Value = "2"},
-            new SelectListItem() { Text = "제목(오름차순)", Value = "3"}
-           }, new { onchange= "callList(this.value)" })
+            @Html.DropDownList("orderColumn", new SelectListItem[]{
+
+            new SelectListItem() { Text = "만든날짜", Value = "Notedate", Selected = true },
+            new SelectListItem() { Text = "제목", Value = "Title"},
+           } )
+
+            @Html.DropDownList("orderType", new SelectListItem[]{
+
+            new SelectListItem() { Text = "내림차순", Value = "Desc", Selected = true },
+            new SelectListItem() { Text = "오름차순", Value = "Asc"}
+            } )
+
+            @Html.Hidden("notebookId", NoteBookId);
+
         }
     </div>
+    @{
+        string orderColumn = "";
+        string orderType = "";
 
-<div class="noteList"></div>
-<div id="noteDetail"></div>
-<div id="emptyNote"></div>
-<script>
-    window.callList("0", @noteBook.NoteBookId);
-    var detailUrl = '@Url.Action("Detail", "Note")';
-    initDetail();
+        if (Session["OrderColumn"] != null)
+        {
+            OrderColumn column = (OrderColumn)Session["OrderColumn"];
+            OrderType type = (OrderType)Session["OrderType"];
 
-    function callList(val) {
-        $('.noteList').load("/Note/NoteList?", { order: val, notebookId: @noteBook.NoteBookId });
-    }
-    function notedetail(noteid) {
-        $('#noteDetail').load(detailUrl, { selectedNoteid: noteid });
-    }
-    function initDetail() {
-        if (@firstNoteId != 0) {
-            $('#noteDetail').load(detailUrl, { selectedNoteid: @firstNoteId });
-        } else {
-            document.getElementById("noteOrderBy").style.display = "none";
-            document.getElementById("emptyNote").innerText = "노트를 추가하세요.";
+            orderColumn = column.ToString();
+            orderType = type.ToString();
         }
-       
+        else
+        {
+            orderColumn = "null";
+            orderType = "null";
+        }
+     }
+
+    <div>
+        <div>Session</div>
+        <div>Order Column: @orderColumn</div>
+        <div>Order Type: @orderType</div>
+    </div>
+
+    <div class="partViewList">
+        <table id="noteListTable">
+            @foreach (var item in noteList)
+            {
+                <tr class="individualListTr" onclick="getNoteDetail(@item.NoteId)">
+                    <th>
+                        <div class="listTitle">@item.Title</div>
+                        <div id="noteListDate">  @item.NoteDate</div>
+                        <div class="preContents">@item.Contents</div>
+                    </th>
+                </tr>
+            }
+          </table>
+    </div>
+
+
+</div>
+
+
+
+<div id="noteDetail">
+    @{ Html.RenderAction("Detail", "Note", new { selectedNoteid = noteList[0].NoteId }); }
+</div>
+
+<script>
+
+
+////드롭다운 커스터마이징
+////[1] 오리지널 드롭다운에서 이미 선택된 값을 보여주는 엘리먼트를 만든다.
+
+////1. 오리지널 드롭다운을 찾기
+////2. 오리지널 옵션을 따옴
+////3. 오리지널 드롭다운 아래에 child로 selected value를 넣음.
+
+
+var originListOrder = document.getElementById("noteOrderBy"); //원본 드롭다운
+var originSelect = originListOrder.getElementsByTagName("select")[0]; //원본의 옵션을넣음
+var originOrderType = originListOrder.getElementsByTagName("select")[1];//원본의 오더타입 select객체
+
+var originContainer = document.getElementsByClassName("configContainer")[0];
+
+var listConfig = document.createElement("DIV"); //새로운 엘리먼트를 만듬
+listConfig.setAttribute("class", "listConfig"); // 드롭다운을 보여줄 버튼을 만듬
+listConfig.innerHTML = "설정 ∨";
+//새로운 엘리먼트를 원본 자식으로 넣음.
+originContainer.appendChild(listConfig);
+
+//[2] 다른 옵션 값을 넣어준다.
+
+//1. 옵션들을 감싸줄 container를 만들되, 사용하지않을 땐 숨겨야하므로 숨길수 있는 클래스도 넣는다.
+var optionContainer = document.createElement("DIV");
+optionContainer.setAttribute("class", "select-items select-hide");
+
+////2. container에 다른 옵션들을 넣어준다.
+for (i = 0; i < originSelect.length; i++) {
+    var customOption = document.createElement("DIV");
+    customOption.setAttribute("class", "customOption");
+    customOption.innerHTML = originSelect[i].innerHTML;
+
+    if (customOption.innerHTML == originSelect[originSelect.selectedIndex].innerHTML) {
+        customOption.setAttribute("class", "customOption same-as-selected")
     }
+    optionContainer.appendChild(customOption);
+
+
+    customOption.addEventListener("click", function (e) {
+
+        for (j = 0; j < originSelect.length; j++) {
+            if (this.innerHTML == originSelect[j].innerHTML) {//선택한 옵션의 내용으로 원본의 해당 인덱스를 찾아서
+                originSelect.options[j].selected = true;
+                //노트리스트에 선택을 반영하는 로직
+
+                y = this.parentNode.getElementsByClassName("same-as-selected");
+                for (k = 0; k < y.length; k++) {
+                    y[k].classList.remove("same-as-selected");
+                }
+                this.setAttribute("class", "customOption same-as-selected");
+                $("#noteOrderForm").submit();
+                break;
+            };
+        };
+    });
+};
+//메뉴 구분선 만들기
+var menuDivider = document.createElement("DIV");
+menuDivider.setAttribute("class", "menuDiver");
+optionContainer.appendChild(menuDivider);
+
+//2-1정렬기준 내림오름 만들어주기
+for (i = 0; i < originOrderType.length; i++) {
+    var customOption = document.createElement("DIV");
+    customOption.setAttribute("class", "customOption");
+    customOption.innerHTML = originOrderType[i].innerHTML;
+
+    if (customOption.innerHTML == originOrderType[originOrderType.selectedIndex].innerHTML) {
+        customOption.setAttribute("class", "customOption same-as-selected")
+    }
+    optionContainer.appendChild(customOption);
+    customOption.addEventListener("click", function (e) {
+
+        for (j = 0; j < originOrderType.length; j++) {
+            if (this.innerHTML == originOrderType[j].innerHTML) {//선택한 옵션의 내용으로 원본의 해당 인덱스를 찾아서
+                originOrderType.options[j].selected = true;
+                //노트리스트에 선택을 반영하는 로직
+
+                y = this.parentNode.getElementsByClassName("same-as-selected");
+                for (k = 0; k < y.length; k++) {
+                    y[k].classList.remove("same-as-selected");
+                }
+                this.setAttribute("class", "customOption same-as-selected");
+                $("#noteOrderForm").submit();
+                break;
+            };
+        };
+    });
+};
+
+
+
+
+//4. container를 원본 드롭다운의 자식으로 넣는다.
+originContainer.appendChild(optionContainer);
+
+//다른곳클릭하면 닫는 메소드
+document.addEventListener("click", function (e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+    if (target == listConfig) {
+        optionContainer.classList.toggle("select-hide");
+    } else {
+        optionContainer.classList.add("select-hide");
+    }
+})
+
+
+//노트리스트 내용미리보기
+gabi_content();
+
+function gabi_content() {
+
+    var elements = document.getElementsByClassName('preContents');
+
+    for (i = 0; i < elements.length; i++) {
+        var element = document.getElementsByClassName('preContents')[i];
+        element.innerHTML = element.innerText;
+    }
+}
 </script>

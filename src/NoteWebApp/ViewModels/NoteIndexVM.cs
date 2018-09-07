@@ -10,6 +10,8 @@ namespace NoteWebApp.ViewModels
 	{
 		public List<Note> NoteList;
 		public Note SelectedNote;
+		public NoteBook NoteBook;
+	
 
 	}
 }

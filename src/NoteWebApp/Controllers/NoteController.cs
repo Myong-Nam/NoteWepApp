@@ -1,10 +1,7 @@
-﻿using System;
+﻿using NoteWebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using NoteWebApp.Models;
-using NoteWebApp.ViewModels;
-using System.Text.RegularExpressions;
-using System.Net;
 
 namespace NoteWebApp.Controllers
 {
@@ -12,76 +9,134 @@ namespace NoteWebApp.Controllers
 	{
 		// GET: Note
 
-		//노트 리스트 가져오는 인덱스 페이지
-		public ActionResult Index(string orderColumn, string orderType, string noteId, string notebookId)
+		[HttpGet]
+		public ActionResult Index()
 		{
-			
+			Note selected = new Note();
+			int id; //노트아이디
+
 			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
 			OrderType defaultOrderType = OrderType.Desc;
 			int defaultNoteBookId = 0;
 
 			OrderColumn selectedOrderColumn;
-			OrderType selectedOrderType;
-			int selectedNotebookId;
+			OrderType selectedOrderType;	
 
-			if (String.IsNullOrEmpty(orderColumn))
+			if (Session["OrderColumn"] != null)
 			{
-				// parameter is empty
-				selectedOrderColumn = defaultOrderColumn;
+				selectedOrderColumn = (OrderColumn)Enum.Parse(typeof(OrderColumn), Session["OrderColumn"].ToString()); 
 			}
 			else
 			{
-				// parameter is delivered
-				selectedOrderColumn = (OrderColumn) Enum.Parse(typeof(OrderColumn), orderColumn);
+				// use default value
+				selectedOrderColumn = defaultOrderColumn;
+
 			}
 
-			if (String.IsNullOrEmpty(orderType))
+			if (Session["OrderType"] != null)
 			{
-				// parameter is empty
+				selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), Session["OrderType"].ToString());
+			}
+			else
+			{
+				// use default value
 				selectedOrderType = defaultOrderType;
 			}
-			else
+
+
+			List<Note> noteList = NoteManager.GetNoteList((OrderColumn)selectedOrderColumn, selectedOrderType, noteBookId: 0);
+			ViewBag.noteList = noteList;
+
+			//특정 노트 아이디가 있을떄
+			if (Request.QueryString["id"] != null)
+			{	
+				id = int.Parse(Request.QueryString["id"]);
+
+				selected = NoteManager.GetNotebyId(id);
+
+			} else //노트 아이디 없을 때는 가장 최근 노트 가져오기
 			{
-				// parameter is delivered
-				selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), orderType);
+				selected = NoteManager.GetNotebyId(noteList[noteList.Count-1].NoteId);
+				id = selected.NoteId;
+				
 			}
 
-			//notebookid
-			selectedNotebookId = (String.IsNullOrEmpty(notebookId)) ? defaultNoteBookId : int.Parse(notebookId);
+			//바로가기 여부 보여줌(노트면 0, 노트북이면 1)
+			ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 0);
 
 
-			// note list
-			// Notebook id
-			// default set
+			//노트북선택 
+			SelectNoteBook(id);
 
+			//노트 아이디로 노트북 얻어옴
+			int noteBookId = selected.NoteBookId;
+			NoteBook notebook = NoteBookManager.GetNoteBookbyId(noteBookId);
+			int NoteBookId = notebook.NoteBookId;
+			ViewBag.name = notebook.Name;
 
-			var noteList = NoteManager.GetNoteList( selectedOrderColumn, selectedOrderType, selectedNotebookId );
-
-			// 리스트 정렬 정보 (column, asc|desc)
-
-			// note detail
-			int selectedNoteid = (String.IsNullOrEmpty(noteId))? noteList[0].NoteId : int.Parse(noteId);
-			Note selectedNote = NoteManager.GetNotebyId(selectedNoteid);
-
-			NoteIndexVM model = new NoteIndexVM();
-
-			model.NoteList = noteList;
-			model.SelectedNote = selectedNote;
-
-			OrderBy();
-
-			return View(model);
+			return View(selected);
 		}
 
-		//노트리스트 파셜뷰
-		public PartialViewResult NoteList()
-		{
-			var noteList = NoteManager.GetNoteList(OrderColumn.Notedate, OrderType.Desc, noteBookId: 0);
+		//노트 리스트 가져오는 인덱스 페이지
+		//public ActionResult Index(string orderColumn, string orderType, string noteId, string notebookId)
+		//{
+			
+		//	OrderColumn defaultOrderColumn = OrderColumn.Notedate;
+		//	OrderType defaultOrderType = OrderType.Desc;
+		//	int defaultNoteBookId = 0;
 
-			OrderBy();
+		//	OrderColumn selectedOrderColumn;
+		//	OrderType selectedOrderType;
+		//	int selectedNotebookId;
 
-			return PartialView(noteList);
-		}
+		//	if (String.IsNullOrEmpty(orderColumn))
+		//	{
+		//		// parameter is empty
+		//		selectedOrderColumn = defaultOrderColumn;
+		//	}
+		//	else
+		//	{
+		//		// parameter is delivered
+		//		selectedOrderColumn = (OrderColumn) Enum.Parse(typeof(OrderColumn), orderColumn);
+		//	}
+
+		//	if (String.IsNullOrEmpty(orderType))
+		//	{
+		//		// parameter is empty
+		//		selectedOrderType = defaultOrderType;
+		//	}
+		//	else
+		//	{
+		//		// parameter is delivered
+		//		selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), orderType);
+		//	}
+
+		//	//notebookid
+		//	selectedNotebookId = (String.IsNullOrEmpty(notebookId)) ? defaultNoteBookId : int.Parse(notebookId);
+
+
+		//	// note list
+		//	// Notebook id
+		//	// default set
+
+
+		//	var noteList = NoteManager.GetNoteList( selectedOrderColumn, selectedOrderType, selectedNotebookId );
+
+		//	// 리스트 정렬 정보 (column, asc|desc)
+
+		//	// note detail
+		//	int selectedNoteid = (String.IsNullOrEmpty(noteId))? noteList[0].NoteId : int.Parse(noteId);
+		//	Note selectedNote = NoteManager.GetNotebyId(selectedNoteid);
+
+		//	NoteIndexVM model = new NoteIndexVM();
+
+		//	model.NoteList = noteList;
+		//	model.SelectedNote = selectedNote;
+
+		//	OrderBy();
+
+		//	return View(model);
+		//}
 
 		//노트 상세 partial view
 		public PartialViewResult Detail(int selectedNoteid)
@@ -124,44 +179,71 @@ namespace NoteWebApp.Controllers
 
 
 		//노트 리스트 보여주는 partial view
-		[HttpPost]
-		public PartialViewResult ShowNoteList(int order, int notebookId)
+		
+		public PartialViewResult ShowNoteList(OrderColumn orderColumn, OrderType orderType)
 		{
-			OrderColumn orderColumnName = OrderColumn.Notedate;
-			OrderType orderType = OrderType.Desc;
+			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
+			OrderType defaultOrderType = OrderType.Desc;
 
-			switch (order)
+			OrderColumn selectedOrderColumn;
+			OrderType selectedOrderType;
+
+			if (String.IsNullOrEmpty(orderColumn.ToString()))
 			{
-				case 0:
-					orderColumnName = OrderColumn.Notedate;
-					orderType = OrderType.Desc;
-					break;
-				case 1:
-					orderColumnName = OrderColumn.Notedate;
-					orderType = OrderType.Asc;
-					break;
-				case 2:
-					orderColumnName = OrderColumn.Title;
-					orderType = OrderType.Desc;
-					break;
-				case 3:
-					orderColumnName = OrderColumn.Title;
-					orderType = OrderType.Asc;
-					break;
-				default:
-					break;
-			}
+				// parameter is empty
+				//selectedOrderColumn = defaultOrderColumn;
 
-			var noteList = NoteManager.GetNoteList(orderColumnName, orderType, notebookId);
-			foreach (var item in noteList)
-			{
-
-				if (item.Title == "")
+				if (Session["OrderColumn"] != null)
 				{
-					item.Title = "제목 없음";
+					// do nothing
+				}
+				else
+				{
+					// use default value
+					Session["OrderColumn"] = defaultOrderColumn;
 				}
 
 			}
+			else
+			{
+				// parameter is delivered by user
+				selectedOrderColumn = (OrderColumn)Enum.Parse(typeof(OrderColumn), orderColumn.ToString());
+				Session["OrderColumn"] = selectedOrderColumn;
+			}
+
+			if (String.IsNullOrEmpty(orderType.ToString()))
+			{
+				// parameter is empty
+				//selectedOrderColumn = defaultOrderColumn;
+
+				if (Session["OrderType"] != null)
+				{
+					// do nothing
+				}
+				else
+				{
+					// use default value
+					Session["OrderType"] = defaultOrderType;
+				}
+			}
+			else
+			{
+				// parameter is delivered by user
+				selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), orderType.ToString());
+				Session["OrderType"] = selectedOrderType;
+			}
+
+
+
+		
+
+			var noteList = NoteManager.GetNoteList((OrderColumn)Session["OrderColumn"], (OrderType)Session["OrderType"], 0);
+
+			// 리스트 정렬 정보 (column, asc|desc)
+
+
+			//바로가기 여부 보여줌
+			//ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);
 
 			return PartialView(noteList);
 		}

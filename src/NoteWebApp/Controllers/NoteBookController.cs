@@ -1,4 +1,5 @@
 ﻿using NoteWebApp.Models;
+using NoteWebApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +88,7 @@ namespace NoteWebApp.Controllers
 			}
 			NoteBookManager.Update(noteBookId, name, Isdefault);
 
-			return RedirectToAction("List", new { id = noteBookId });
+			return RedirectToAction("List", new { notebookId = noteBookId });
 		}
 
 
@@ -112,28 +113,87 @@ namespace NoteWebApp.Controllers
 		 (2) 노트북 아이디로 해당 노트북아이디를 가진 노트를 불러와 리스트화한다.
 		 (3) 위 두개를 Viewbag에 넣는다.
 		*/
-		public ActionResult List(int id)
+		public ActionResult List(string orderColumn, string orderType, string noteId, string notebookId)
 		{
-			NoteBook noteBook = NoteBookManager.GetNoteBookbyId(id);
-			ViewBag.noteBook = noteBook;
+			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
+			OrderType defaultOrderType = OrderType.Desc;
+			int defaultNoteBookId = 0;
 
-			var noteList = NoteManager.GetNoteList(OrderColumn.Notedate, OrderType.Desc, id); //노트리스트
-			if (noteList.Count == 0)
+			OrderColumn selectedOrderColumn;
+			OrderType selectedOrderType;
+			int selectedNotebookId;
+
+			if (String.IsNullOrEmpty(orderColumn))
 			{
-				string msg = "노트를 추가하세요.";
-				ViewBag.firstNoteId = 0;
+				// parameter is empty
+				//selectedOrderColumn = defaultOrderColumn;
+
+				if (Session["OrderColumn"] != null)
+				{
+					// do nothing
+				}
+				else
+				{
+					// use default value
+					Session["OrderColumn"] = defaultOrderColumn;
+				}
+				
 			}
 			else
 			{
-				int firstNoteId = noteList[0].NoteId;
-				ViewBag.noteBook = noteBook;
-				ViewBag.firstNoteId = firstNoteId;
+				// parameter is delivered by user
+				selectedOrderColumn = (OrderColumn)Enum.Parse(typeof(OrderColumn), orderColumn);
+				Session["OrderColumn"] = selectedOrderColumn;
 			}
 
-			//바로가기 여부 보여줌
-			ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);
+			if (String.IsNullOrEmpty(orderType))
+			{
+				// parameter is empty
+				//selectedOrderColumn = defaultOrderColumn;
 
-			return View();
+				if (Session["OrderType"] != null)
+				{
+					// do nothing
+				}
+				else
+				{
+					// use default value
+					Session["OrderType"] = defaultOrderType;
+				}
+			}
+			else
+			{
+				// parameter is delivered by user
+				selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), orderType);
+				Session["OrderType"] = selectedOrderType;
+			}
+
+			
+
+			//notebookid
+			selectedNotebookId = (String.IsNullOrEmpty(notebookId)) ? defaultNoteBookId : int.Parse(notebookId);
+
+
+			var noteList = NoteManager.GetNoteList((OrderColumn)Session["OrderColumn"], (OrderType)Session["OrderType"], selectedNotebookId);
+
+			// 리스트 정렬 정보 (column, asc|desc)
+
+			// note detail
+			int selectedNoteid = (String.IsNullOrEmpty(noteId)) ? noteList[0].NoteId : int.Parse(noteId);
+			Note selectedNote = NoteManager.GetNotebyId(selectedNoteid);
+
+			NoteIndexVM model = new NoteIndexVM();
+
+			model.NoteList = noteList;
+			model.SelectedNote = selectedNote;
+			int notebookIdParsedInt = int.Parse(notebookId);
+			model.NoteBook = NoteBookManager.GetNoteBookbyId(notebookIdParsedInt);
+
+
+			//바로가기 여부 보여줌
+			//ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);
+
+			return View(model);
 		}
 	}
 }

@@ -116,20 +116,8 @@
 <div id="notelist"></div>
 
 <script>
-    var noteListUrl = '@Url.Action("List", "NoteBook")';
     function showNoteBook(noteBookId) {
-        window.location.href = '/NoteBook/List/' + noteBookId;
-    }
-
-</script>
-
-<script>
-    var listUrl = '@Url.Action("NoteList", "Note")';
-
-    window.callList();
-
-    function callList(val) {
-        $('.noteList').load(listUrl); 
+        window.location.href = '/NoteBook/List/?notebookId=' + noteBookId;
     }
 
 </script>

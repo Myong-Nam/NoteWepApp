@@ -10,13 +10,13 @@ using System.Web.Mvc;
 
 namespace NoteWebApp.Areas.Lab.Controllers
 {
-    public class SqlInjectionController : Controller
-    {
-        // GET: Lab/SqlInjection
-        public ActionResult Index()
-        {
-            return View();
-        }
+	public class SqlInjectionController : Controller
+	{
+		// GET: Lab/SqlInjection
+		public ActionResult Index()
+		{
+			return View();
+		}
 
 		public ActionResult UnsecuredLogin(string id, string pass)
 		{
