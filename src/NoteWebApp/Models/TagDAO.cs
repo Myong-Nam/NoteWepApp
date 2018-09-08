@@ -271,7 +271,7 @@ namespace NoteWebApp.Models
 				return tagList;
 			}
 
-			
+
 		}
 		/// <summary>
 		/// 태그아이디로 태그이름 찾음
@@ -347,6 +347,43 @@ namespace NoteWebApp.Models
 
 
 				return noteList;
+			}
+		}
+
+		public static void DeleteTag(int tagId)
+		{
+			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			{
+				conn.Open();
+
+				String MapSql = $"DELETE FROM NOTE_TAG_MAP WHERE TAG_ID = :tagId";
+
+				OracleCommand mapCmd = new OracleCommand
+				{
+					Connection = conn,
+					CommandText = MapSql
+				};
+
+				OracleParameter paramMapId = mapCmd.Parameters.Add("tagId", OracleDbType.Varchar2);
+				paramMapId.Value = tagId;
+
+				mapCmd.ExecuteNonQuery();
+
+
+
+				String tagSql = $"DELETE FROM TAG WHERE TAG_ID = :tagId"; ;
+
+				OracleCommand tagCmd = new OracleCommand
+				{
+					Connection = conn,
+					CommandText = tagSql
+				};
+
+				OracleParameter paramTagId = tagCmd.Parameters.Add("tagId", OracleDbType.Varchar2);
+				paramTagId.Value = tagId;
+
+				tagCmd.ExecuteNonQuery();
+
 			}
 		}
 	}

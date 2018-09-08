@@ -1,0 +1,328 @@
+﻿
+
+@using NoteWebApp.Models
+@using System.Text.RegularExpressions
+@using System.Web;
+@model NoteVO
+@{
+    ViewBag.Title = "Detail";
+    String name = ViewBag.name;
+    var noteBookList = ViewBag.noteBookList;
+    var noteBookId = ViewBag.noteBookId;
+    var isShortcut = ViewBag.isShortCut;
+}
+@{
+    var DeleteButton = "";
+    var DeleteText = "";
+    var UpdateOrRecover = "";
+    var UpdateOrRecoverText = "";
+    var NoteListText = "";
+    var NoteList = "";
+    var Star = "";
+    var Save = "true";
+    var Info = "../../Content/menu/info.png";
+}
+@{
+    if (Model.IsDeleted == 0) //삭제된 노트가 아닐경우
+    {
+        DeleteButton = "preDelete";
+        DeleteText = "삭제";
+        UpdateOrRecover = "Update";
+        UpdateOrRecoverText = "수정";
+        NoteList = "Index";
+        if (isShortcut == "false")
+        {
+            Star = "../../Content/shortcut_stroke.png";
+            Save = "true";
+
+        }
+        else if (isShortcut == "true")
+        {
+            Star = "../../Content/shortcut_fill.png";
+            Save = "false";
+        }
+
+
+        NoteListText = "<< 노트 리스트로 돌아가기";
+
+    }
+    else if (Model.IsDeleted == 1) //삭제된 노트일 경우
+    {
+        DeleteButton = "Delete";
+        DeleteText = "영구삭제";
+        UpdateOrRecover = "RecoverNote";
+        UpdateOrRecoverText = "복원";
+        NoteList = "Deleted";
+        Star = "none";
+        NoteListText = "<< 휴지통 리스트로 돌아가기";
+    }
+}
+@{
+    //글자수 구하는 로직
+
+    int contentsLength = 0;
+
+    if (Model.Contents != null)
+    {
+        string Regexresult = Regex.Replace(Model.Contents, "\\r|\\n|\\t|<(.|\n)*?>", string.Empty); //태그제거
+        string finalResult = WebUtility.HtmlDecode(Regexresult); //특수문자 처리
+        contentsLength = finalResult.Length;
+    }
+
+}
+<style>
+
+    #none {
+        display: none;
+    }
+
+    /*modal*/
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(255,255,255,0.8); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto; /* 15% from the top and centered */
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.7);
+        /* Could be more or less, depending on screen size */
+    }
+
+    /* Modal design */
+    .modal-info {
+        margin: auto;
+        width: 450px;
+    }
+
+    .modal-Icon {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    #modal-noteInfo {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    #modal-seperater {
+        width: 124px;
+        margin: 18px auto 54px;
+        border-bottom: 1px solid #d9d9d9;
+        text-align: center;
+    }
+
+    #modal-title-data {
+        color: #383838;
+        word-break: break-word;
+        word-wrap: break-word;
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 44px;
+        font-family: caecilia, times, serif;
+        text-align: center;
+    }
+
+    #modal-summary {
+        margin-bottom: 16px;
+        color: #4a4a4a;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .modal-list {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        text-transform: uppercase;
+        margin-right: 8px;
+        color: #878787;
+    }
+
+    .modal-data {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #4a4a4a;
+    }
+
+    .modal-btn {
+        text-align: center;
+    }
+
+    .modal-button {
+        color: WHITE;
+        background-color: #2dbe60;
+        border: 1px solid #2dbe60;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: 5px;
+        display: inline-block;
+        padding: 9px 14px;
+        min-width: 160px;
+    }
+
+        .modal-button:hover {
+            background-color: #299e52;
+        }
+
+    .img_loader {
+        position: absolute;
+        right: 30px;
+        margin-top: 100px;
+    }
+
+    .img_loader_hidden {
+        display: none;
+    }
+
+    .grayscale {
+        -webkit-filter: grayscale(100%);
+        filter: gray;
+    }
+
+    .noteHeader form {
+        display: inline;
+    }
+</style>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-info">
+            <div class="modal-Icon"><img src=@Info width="34px"></div>
+            <p id="modal-noteInfo">노트 정보</p>
+            <div id="modal-seperater"></div> <!--가로선-->
+            <p id="modal-title-data">@Model.Title</p>
+            <p id="modal-summary">개요</p>
+            <p class="modal-list">만든날짜 : <span class="modal-data">@Model.NoteDate</span></p>
+            <p class="modal-list">수정날짜 : <span class="modal-data">@Model.UpdatedDate</span></p>
+            <p class="modal-list">글자 수 : <span class="modal-data">@contentsLength 자</span>
+            <p class="modal-btn"><button class="modal-button">확인</button></p>
+        </div>
+    </div>
+</div>
+<br />
+<div class="noteHeader">
+    @using (Html.BeginForm("ChangeNote", "Shortcut"))
+    {
+        @Html.Hidden("id", Model.NoteId)
+        @Html.Hidden("isShortcut", @Save)
+        <input class="noteSetting" id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
+
+    }
+    <img src=@Info class="noteSetting" id="openInfo" width="25px">
+</div>
+<div id="noteDetailForm">
+    <div>테스트</div>
+    @using (Html.BeginForm(UpdateOrRecover, "Note"))
+    {
+        @Html.DropDownList("noteBookId")
+        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
+
+        <div class="title">
+            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
+        </div>
+        <div id="msg"></div>
+
+        <div>
+            <br />
+            <img class="img_loader grayscale img_loader_hidden" id="img_saving" src="~/Content/greenCheck_selected.png" width=30px />
+            <img class="img_loader img_loader_hidden" id="img_loading" src="~/Content/ajax_loader_green_512.gif" width=30px />
+            @Html.TextArea("contents", Model.Contents, new { id = "noteContents" })
+        </div>
+        <input type="submit" value=@UpdateOrRecoverText />
+    }
+    @using (Html.BeginForm(@DeleteButton, "Note"))
+    {
+        @Html.Hidden("noteId", Model.NoteId)
+        <input type="submit" value="@DeleteText" />
+    }
+
+</div>
+<script>
+    //리스트 제목에 저장이 필요하다는 표시 하는 함수
+
+    $(document).ready(function () {
+        CKEDITOR.replace('contents',
+            {
+                fullPage: true,
+                filebrowserImageUploadUrl: '../Handler/Upload.ashx',
+            }).on('change', function () {
+
+                $.ajax({
+                    url: 'Update',
+                    data: {
+                        title: document.getElementsByName('title')[0].value,
+                        contents: this.getData(),
+                        noteBookId: @Model.NoteBookId,
+                        noteid: @Model.NoteId
+                    }
+                }).done(function () {
+                });
+
+                if (@Model.IsDeleted == 1) {
+                    document.getElementById("star").setAttribute("id", "none");
+                }
+
+            });
+
+    });
+
+
+    function lengthAlert() {
+        var length = document.getElementById("title").value.length;
+        if (length > 15) {
+            document.getElementById("msg").innerHTML = "제목은 15자 이내로 작성해주세요.";
+        } else {
+            document.getElementById("msg").innerHTML = "";
+        }
+    }
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("openInfo");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("modal-button")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+
+
+
+</script>
