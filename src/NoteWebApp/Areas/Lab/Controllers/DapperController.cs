@@ -9,10 +9,12 @@ namespace NoteWebApp.Areas.Lab.Controllers
 		// GET: Lab/Dapper
 		public ActionResult Index()
 		{
-			DbConnection conn = App.Database.NewConnection;
+			using (DbConnection conn = App.Database.NewConnection)
+			{
 
 
-			//Database.
+			}
+
 
 
 			return View();
