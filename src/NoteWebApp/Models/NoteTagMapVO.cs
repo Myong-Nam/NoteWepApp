@@ -5,7 +5,7 @@ using System.Web;
 
 namespace NoteWebApp.Models
 {
-	public class NoteTagMap
+	public class NoteTagMapVO
 	{
 		public int Tag_Id;
 		public int Note_Id;

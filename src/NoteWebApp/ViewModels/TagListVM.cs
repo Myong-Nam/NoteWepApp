@@ -5,6 +5,6 @@ namespace NoteWebApp.ViewModels
 {
 	public class TagListVM
 	{
-		public List<Note> NoteList;
+		public List<NoteVO> NoteList;
 	}
 }

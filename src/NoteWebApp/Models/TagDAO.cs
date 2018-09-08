@@ -6,15 +6,15 @@ using System.Web;
 
 namespace NoteWebApp.Models
 {
-	public class TagManager
+	public class TagDAO
 	{
 		/// <summary>
 		/// 태그 리스트 불러오기
 		/// </summary>
 		/// <returns>List<Tag></returns>
-		public static List<Tag> GetTagList()
+		public static List<TagVO> GetTagList()
 		{
-			List<Tag> TagList = new List<Tag>();
+			List<TagVO> TagList = new List<TagVO>();
 
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 
@@ -31,7 +31,7 @@ namespace NoteWebApp.Models
 			OracleDataReader reader = cmd.ExecuteReader();
 			while (reader.Read())
 			{
-				Tag tag = new Tag();
+				TagVO tag = new TagVO();
 				tag.Tag_Id = int.Parse(reader["TAG_ID"].ToString());
 				tag.Tag_Name = reader["TAG_NAME"].ToString();
 
@@ -107,9 +107,9 @@ namespace NoteWebApp.Models
 		/// </summary>
 		/// <param name="keyword">사용자가 입력하는 검색어</param>
 		/// <returns></returns>
-		public static List<Tag> Search(String keyword)
+		public static List<TagVO> Search(String keyword)
 		{
-			List<Tag> TagList = new List<Tag>();
+			List<TagVO> TagList = new List<TagVO>();
 
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 
@@ -126,7 +126,7 @@ namespace NoteWebApp.Models
 			OracleDataReader reader = cmd.ExecuteReader();
 			while (reader.Read())
 			{
-				Tag tag = new Tag();
+				TagVO tag = new TagVO();
 				tag.Tag_Id = int.Parse(reader["TAG_ID"].ToString());
 				tag.Tag_Name = reader["TAG_NAME"].ToString();
 
@@ -174,7 +174,7 @@ namespace NoteWebApp.Models
 
 		public static void AddTagToNote(string tagName, int noteId)
 		{
-			Tag newTag = new Tag();
+			TagVO newTag = new TagVO();
 
 			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
 			{
@@ -239,9 +239,9 @@ namespace NoteWebApp.Models
 		/// </summary>
 		/// <param name="noteId"></param>
 		/// <returns></returns>
-		public static List<Tag> GetTagListByNote(int noteId)
+		public static List<TagVO> GetTagListByNote(int noteId)
 		{
-			List<Tag> tagList = new List<Tag>();
+			List<TagVO> tagList = new List<TagVO>();
 
 			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
 			{
@@ -262,7 +262,7 @@ namespace NoteWebApp.Models
 				OracleDataReader reader = cmd.ExecuteReader();
 				while (reader.Read()) //
 				{
-					Tag tag = new Tag();
+					TagVO tag = new TagVO();
 					tag.Tag_Id = int.Parse(reader["tag_id"].ToString());
 					tag.Tag_Name = getTagNameByTagId(tag.Tag_Id);
 					tagList.Add(tag);
@@ -315,9 +315,9 @@ namespace NoteWebApp.Models
 		/// </summary>
 		/// <param name="tagId"></param>
 		/// <returns></returns>
-		public static List<Note> GetNoteListByTagId(int tagId)
+		public static List<NoteVO> GetNoteListByTagId(int tagId)
 		{
-			List<Note> noteList = new List<Note>();
+			List<NoteVO> noteList = new List<NoteVO>();
 
 			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
 			{
@@ -338,8 +338,8 @@ namespace NoteWebApp.Models
 				OracleDataReader reader = cmd.ExecuteReader();
 				while (reader.Read()) //
 				{
-					Note note = new Note();
-					note = NoteManager.GetNotebyId(int.Parse(reader["note_id"].ToString()));
+					NoteVO note = new NoteVO();
+					note = NoteDAO.GetNotebyId(int.Parse(reader["note_id"].ToString()));
 					noteList.Add(note);
 				}
 

@@ -483,14 +483,14 @@
     </Compile>
     <Compile Include="Models\DataBase.cs" />
     <Compile Include="Models\Enums.cs" />
-    <Compile Include="Models\Note.cs" />
-    <Compile Include="Models\NoteBook.cs" />
-    <Compile Include="Models\NoteBookManager.cs" />
-    <Compile Include="Models\NoteManager.cs" />
-    <Compile Include="Models\NoteTagMap.cs" />
-    <Compile Include="Models\ShortcutManager.cs" />
-    <Compile Include="Models\Tag.cs" />
-    <Compile Include="Models\TagManager.cs" />
+    <Compile Include="Models\NoteVO.cs" />
+    <Compile Include="Models\NoteBookVO.cs" />
+    <Compile Include="Models\NoteBookDAO.cs" />
+    <Compile Include="Models\NoteDAO.cs" />
+    <Compile Include="Models\NoteTagMapVO.cs" />
+    <Compile Include="Models\ShortcutDAO.cs" />
+    <Compile Include="Models\TagVO.cs" />
+    <Compile Include="Models\TagDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handler\Upload.ashx.cs">
       <DependentUpon>Upload.ashx</DependentUpon>

@@ -13,14 +13,14 @@ namespace NoteWebApp.Controllers
 		// GET: Tag
 		public ActionResult Index()
 		{
-			List<Tag> tagList = TagManager.GetTagList();
+			List<TagVO> tagList = TagDAO.GetTagList();
 
 			return View(tagList);
 		}
 
 		public ActionResult Create(string tagName)
 		{
-			string msg = TagManager.Create(tagName);
+			string msg = TagDAO.Create(tagName);
 			ViewBag.msg = msg;
 
 			return View();
@@ -28,7 +28,7 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult AddTagToNote(string tagName, int noteId)
 		{
-			TagManager.AddTagToNote(tagName, noteId);
+			TagDAO.AddTagToNote(tagName, noteId);
 
 			return RedirectToAction("../note/index");
 		}
@@ -93,20 +93,20 @@ namespace NoteWebApp.Controllers
 			selectedTagId = int.Parse(tagId);
 
 
-			var noteList = TagManager.GetNoteListByTagId(selectedTagId);
+			var noteList = TagDAO.GetNoteListByTagId(selectedTagId);
 
 			// 리스트 정렬 정보 (column, asc|desc)
 
 			// note detail
 			int selectedNoteid = noteList[0].NoteId;
-			Note selectedNote = NoteManager.GetNotebyId(selectedNoteid);
+			NoteVO selectedNote = NoteDAO.GetNotebyId(selectedNoteid);
 
 			NoteIndexVM model = new NoteIndexVM();
 
 			model.NoteList = noteList;
 			model.SelectedNote = selectedNote;
 			int notebookIdParsedInt = int.Parse(tagId);
-			model.NoteBook = NoteBookManager.GetNoteBookbyId(notebookIdParsedInt);
+			model.NoteBook = NoteBookDAO.GetNoteBookbyId(notebookIdParsedInt);
 
 
 			//바로가기 여부 보여줌
