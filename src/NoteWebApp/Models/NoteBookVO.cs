@@ -7,12 +7,11 @@ namespace NoteWebApp.Models
 {
     public class NoteBookVO
     {
-        public int NoteBookId;
-        public string Name;
-        public string CreatedDate;
-        public int IsDeleted;
-        public int IsDefault;
-        public int IsShortcut;
+		public int NoteBookId { get; set; }
+		public string Name { get; set; }
+		public string CreatedDate { get; set; }
+		public int IsDeleted { get; set; }
+		public int IsDefault { get; set; }
+		public int IsShortcut { get; set; }
     }
-
 }

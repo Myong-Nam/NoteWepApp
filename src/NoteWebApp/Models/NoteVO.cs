@@ -7,15 +7,15 @@ namespace NoteWebApp.Models
 {
 	public class NoteVO
 	{
-		public int NoteId;
-		public string Title;
-		public string Contents;
-		public string NoteDate;
-		public DateTime FullDate;
-		public string UpdatedDate;
-		public int IsDeleted;
-		public int NoteBookId;
-		public int IsShortcut;
-		public List<TagVO> TagList;
+		public int NoteId { get; set; }
+		public string Title { get; set; }
+		public string Contents { get; set; }
+		public string NoteDate { get; set; }
+		public DateTime FullDate { get; set; }
+		public string UpdatedDate { get; set; }
+		public int IsDeleted { get; set; }
+		public int NoteBookId { get; set; }
+		public int IsShortcut { get; set; }
+		public List<TagVO> TagList { get; set; }
 	}
 }
