@@ -1,7 +1,7 @@
 ﻿@using NoteWebApp.Models
 @using System.Text.RegularExpressions
 @using System.Web
-@model NoteWebApp.Models.Note
+@model NoteWebApp.ViewModels.NoteIndexVM
 
 
 @{
@@ -29,7 +29,7 @@
 }
 
 @{
-    if (Model.IsDeleted == 0) //삭제된 노트가 아닐경우
+    if (Model.SelectedNote.IsDeleted == 0) //삭제된 노트가 아닐경우
     {
         DeleteButton = "preDelete";
         DeleteText = "삭제";
@@ -52,7 +52,7 @@
         NoteListText = "<< 노트 리스트로 돌아가기";
 
     }
-    else if (Model.IsDeleted == 1) //삭제된 노트일 경우
+    else if (Model.SelectedNote.IsDeleted == 1) //삭제된 노트일 경우
     {
         DeleteButton = "Delete";
         DeleteText = "영구삭제";
@@ -68,9 +68,9 @@
 
     int contentsLength = 0;
 
-    if (Model.Contents != null)
+    if (Model.SelectedNote.Contents != null)
     {
-        string Regexresult = Regex.Replace(Model.Contents, "\\r|\\n|\\t|<(.|\n)*?>", string.Empty); //태그제거
+        string Regexresult = Regex.Replace(Model.SelectedNote.Contents, "\\r|\\n|\\t|<(.|\n)*?>", string.Empty); //태그제거
         string finalResult = WebUtility.HtmlDecode(Regexresult); //특수문자 처리
         contentsLength = finalResult.Length;
     }
@@ -168,7 +168,7 @@
         display: inline;
     }
 
-    #noteDetail {
+    #noteDetail, #noteHeader {
         width: calc(100% - 400px);
         height: 90%
     }
@@ -237,9 +237,12 @@
     #noteDetailForm {
         width: calc(100% - 400px);
         height: 90%;
-        float:right;        
+        float: right;
     }
-
+    .noteHeader {
+        width: calc(100% - 400px);
+        float: right;
+    }
     #none {
         display: none;
     }
@@ -368,6 +371,25 @@
         -webkit-filter: grayscale(100%);
         filter: gray;
     }
+
+    .noteHeader form {
+        display: inline;
+    }
+    .TagContainer{
+        margin-top:2px;
+        margin-bottom:2px;
+    }
+    .Tag {
+        display: inline-block;
+        color: #fff;
+        border-color: #2dbe60;
+        background-color: #2dbe60;
+        vertical-align: top;
+        border: 1px solid #ececec;
+        padding: 1px 8px 1px;
+        border-radius: 4px;
+    }
+
 </style>
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -378,10 +400,10 @@
             <div class="modal-Icon"><img src=@Info width="34px"></div>
             <p id="modal-noteInfo">노트 정보</p>
             <div id="modal-seperater"></div> <!--가로선-->
-            <p id="modal-title-data">@Model.Title</p>
+            <p id="modal-title-data">@Model.SelectedNote.Title</p>
             <p id="modal-summary">개요</p>
-            <p class="modal-list">만든날짜 : <span class="modal-data">@Model.NoteDate</span></p>
-            <p class="modal-list">수정날짜 : <span class="modal-data">@Model.UpdatedDate</span></p>
+            <p class="modal-list">만든날짜 : <span class="modal-data">@Model.SelectedNote.NoteDate</span></p>
+            <p class="modal-list">수정날짜 : <span class="modal-data">@Model.SelectedNote.UpdatedDate</span></p>
             <p class="modal-list">글자 수 : <span class="modal-data">@contentsLength 자</span>
             <p class="modal-btn"><button class="modal-button">확인</button></p>
         </div>
@@ -391,7 +413,15 @@
 </div>
 
 <br />
-
+<div class="noteHeader">
+    @using (Html.BeginForm("ChangeNote", "Shortcut"))
+    {
+        @Html.Hidden("id", Model.SelectedNote.NoteId)
+        @Html.Hidden("isShortcut", @Save)
+        <input class="noteSetting" id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
+    }
+    <img src=@Info class="noteSetting" id="openInfo" width="25px">
+</div>
 <div class="noteList">
     <div id="pageTitle">노트</div>
     <div id="countNotes">@noteList.Count 개의 노트</div>
@@ -420,20 +450,28 @@
 
 
 <div id="noteDetailForm">
-    @using (Html.BeginForm("ChangeNote", "Shortcut"))
+    @using (Html.BeginForm("AddTagToNote", "Tag"))
     {
-        @Html.Hidden("id", Model.NoteId)
-        @Html.Hidden("isShortcut", @Save)
-        <input class="noteSetting" id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
+    <div>
+        @Html.TextBox("tagName", "", new { placeholder = "태그 추가" })
+        @Html.Hidden("noteId", Model.SelectedNote.NoteId)
+        <input type="submit" value="추가" />
+    </div>
     }
-    <img src=@Info class="noteSetting" id="openInfo" width="25px">
+    <div class="TagContainer">
+        @foreach (var item in Model.SelectedNote.TagList)
+        {
+        <div class="Tag">@item.Tag_Name</div>
+        }
+    </div>
+
     @using (Html.BeginForm(UpdateOrRecover, "Note"))
     {
         @Html.DropDownList("noteBookId")
-        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
+        <div id="noteid">@Html.Hidden("noteId", Model.SelectedNote.NoteId)</div><hr />
 
         <div class="title">
-            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
+            @Html.TextBox("title", Model.SelectedNote.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
 
         </div>
         <div id="msg"></div>
@@ -442,14 +480,14 @@
             <br />
             <img class="img_loader grayscale img_loader_hidden" id="img_saving" src="~/Content/greenCheck_selected.png" width=30px />
             <img class="img_loader img_loader_hidden" id="img_loading" src="~/Content/ajax_loader_green_512.gif" width=30px />
-            @Html.TextArea("contents", Model.Contents, new { id = "noteContents" })
+            @Html.TextArea("contents", Model.SelectedNote.Contents, new { id = "noteContents" })
         </div>
         <input type="submit" value=@UpdateOrRecoverText />
     }
 
     @using (Html.BeginForm(@DeleteButton, "Note"))
     {
-        @Html.Hidden("noteId", Model.NoteId)
+        @Html.Hidden("noteId", Model.SelectedNote.NoteId)
         <input type="submit" value="@DeleteText" />
     }
 
@@ -474,13 +512,13 @@
                     data: {
                         title: document.getElementsByName('title')[0].value,
                         contents: this.getData(),
-                        noteBookId: @Model.NoteBookId,
-                        noteid: @Model.NoteId
+                        noteBookId: @Model.SelectedNote.NoteBookId,
+                        noteid: @Model.SelectedNote.NoteId
                     }
                 }).done(function () {
                 });
 
-                if (@Model.IsDeleted == 1) {
+                if (@Model.SelectedNote.IsDeleted == 1) {
                     document.getElementById("star").setAttribute("id", "none");
                 }
 

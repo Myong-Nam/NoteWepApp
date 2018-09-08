@@ -12,6 +12,5 @@ namespace NoteWebApp.ViewModels
 		public Note SelectedNote;
 		public NoteBook NoteBook;
 	
-
 	}
 }

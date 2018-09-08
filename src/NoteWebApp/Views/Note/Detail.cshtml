@@ -76,6 +76,7 @@
         display: none;
     }
 
+    /*modal*/
     .modal {
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
@@ -101,13 +102,15 @@
 
     /* Modal design */
     .modal-info {
-        margin:auto;
+        margin: auto;
         width: 450px;
     }
+
     .modal-Icon {
         vertical-align: middle;
         text-align: center;
     }
+
     #modal-noteInfo {
         font-family: gotham, helvetica, arial, sans-serif;
         font-size: 13px;
@@ -115,12 +118,14 @@
         letter-spacing: 1px;
         text-align: center;
     }
+
     #modal-seperater {
         width: 124px;
         margin: 18px auto 54px;
         border-bottom: 1px solid #d9d9d9;
         text-align: center;
     }
+
     #modal-title-data {
         color: #383838;
         word-break: break-word;
@@ -131,6 +136,7 @@
         font-family: caecilia, times, serif;
         text-align: center;
     }
+
     #modal-summary {
         margin-bottom: 16px;
         color: #4a4a4a;
@@ -138,6 +144,7 @@
         font-size: 13px;
         font-weight: 500;
     }
+
     .modal-list {
         font-family: gotham, helvetica, arial, sans-serif;
         font-size: 11px;
@@ -146,15 +153,18 @@
         margin-right: 8px;
         color: #878787;
     }
+
     .modal-data {
         font-family: gotham, helvetica, arial, sans-serif;
         font-size: 13px;
         font-weight: 400;
         color: #4a4a4a;
     }
-    .modal-btn{
-        text-align:center;
+
+    .modal-btn {
+        text-align: center;
     }
+
     .modal-button {
         color: WHITE;
         background-color: #2dbe60;
@@ -169,12 +179,10 @@
         min-width: 160px;
     }
 
-    .modal-button:hover {
-        background-color: #299e52;
-    }
-    .noteHeader form{
-        display: inline;
-    }
+        .modal-button:hover {
+            background-color: #299e52;
+        }
+
     .img_loader {
         position: absolute;
         right: 30px;
@@ -189,6 +197,13 @@
         -webkit-filter: grayscale(100%);
         filter: gray;
     }
+
+    .noteHeader form {
+        display: inline;
+    }
+
+
+
 </style>
 
 <!-- The Modal -->
@@ -219,26 +234,24 @@
         @Html.Hidden("id", Model.NoteId)
         @Html.Hidden("isShortcut", @Save)
         <input class="noteSetting" id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
-    }
-        <img src=@Info class="noteSetting" id="openInfo" width="25px">
 
+    }
+    <img src=@Info class="noteSetting" id="openInfo" width="25px">
 
 </div>
 
 <div id="noteDetailForm">
+    <div>테스트</div>
     @using (Html.BeginForm(UpdateOrRecover, "Note"))
     {
         @Html.DropDownList("noteBookId")
         <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
 
         <div class="title">
-
-
             @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
-
         </div>
         <div id="msg"></div>
-        
+
         <div>
             <br />
             <img class="img_loader grayscale img_loader_hidden" id="img_saving" src="~/Content/greenCheck_selected.png" width=30px />
@@ -254,13 +267,12 @@
         <input type="submit" value="@DeleteText" />
     }
 
-    @Html.ActionLink(NoteListText, NoteList)
 
 </div>
 
 <script>
     //리스트 제목에 저장이 필요하다는 표시 하는 함수
-    
+
     $(document).ready(function () {
         CKEDITOR.replace('contents',
             {
@@ -286,7 +298,7 @@
             });
 
     });
-    
+
 
     function lengthAlert() {
         var length = document.getElementById("title").value.length;
