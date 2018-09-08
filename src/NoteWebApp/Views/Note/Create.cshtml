@@ -82,7 +82,7 @@
 </style>
 
 @using (Html.BeginForm("Update", "Note"))
-{<input type="hidden" name="noteid" value=@NoteWebApp.Models.NoteManager.NewestNote()>
+{<input type="hidden" name="noteid" value=@NoteWebApp.Models.NoteDAO.NewestNote()>
     <input class="saveButton" type="submit" value="저장" />
     <div class="BookDropdown">
         <div class="custom-select">@Html.DropDownList("noteBookId")</div>
@@ -133,7 +133,7 @@
                 console.log('inserted', isNewNote);     
             });
         }else if (isNewNote == 0) {
-            var NewNoteId = @NoteWebApp.Models.NoteManager.NewestNote();
+            var NewNoteId = @NoteWebApp.Models.NoteDAO.NewestNote();
             document.getElementById("img_loading").classList.remove("img_loader_hidden");
             document.getElementById("img_saving").classList.add("grayscale");
             clearTimeout(timeOutID);

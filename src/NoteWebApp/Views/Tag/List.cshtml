@@ -4,9 +4,9 @@
 @{
     ViewBag.Title = "Index";
 
-    List<Note> noteList = Model.NoteList;
-    Note note = Model.SelectedNote;
-    NoteBook noteBook = Model.NoteBook;
+    List<NoteVO> noteList = Model.NoteList;
+    NoteVO note = Model.SelectedNote;
+    NoteBookVO noteBook = Model.NoteBook;
     String NoteBookName = noteBook.Name;
     String NoteBookId = noteBook.NoteBookId.ToString();
     var order = ViewBag.order;

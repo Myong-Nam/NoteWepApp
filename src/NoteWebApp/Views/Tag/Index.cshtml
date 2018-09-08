@@ -50,7 +50,7 @@
     <ul>
         <li>
             <span class="tagName" onclick="showNoteByTag(@item.Tag_Id)">@item.Tag_Name
-                <span class="countNoteTag"> @TagManager.GetNoteListByTagId(item.Tag_Id).Count</span>
+                <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
             </span>
         </li>
     </ul>

@@ -1,7 +1,7 @@
 ﻿@using NoteWebApp.Models
 @{
     ViewBag.Title = "Index";
-    List<NoteBook> noteBookList = ViewBag.noteBookList;
+    List<NoteBookVO> noteBookList = ViewBag.noteBookList;
 
 }
 <style>
@@ -105,7 +105,7 @@
             <div class="listTitle" onclick="showNoteBook(@item.NoteBookId)">
                 @item.Name<br />
             </div>
-            <div id="noteListDate">노트  @NoteBookManager.CountInBook(item.NoteBookId)개</div><br />
+            <div id="noteListDate">노트  @NoteBookDAO.CountInBook(item.NoteBookId)개</div><br />
 
             <hr />
         </li>
