@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NoteWebApp.Models
 {
-	public class NoteBookManager
+	public class NoteBookDAO
 	{
 
 		//노트북리스트 불러오기 : /index
@@ -17,9 +17,9 @@ namespace NoteWebApp.Models
 		 (2) db커넥션을 생성하여 notebook을 모두 불러옴
 		 (3) 빈 노트북리스트에 (2)에서 받아온 notebook을 넣음.
 			 */
-		public static List<NoteBook> GetNoteBookList()
+		public static List<NoteBookVO> GetNoteBookList()
 		{
-			List<NoteBook> noteBooks = new List<NoteBook>();
+			List<NoteBookVO> noteBooks = new List<NoteBookVO>();
 
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 
@@ -36,7 +36,7 @@ namespace NoteWebApp.Models
 			OracleDataReader reader = cmd.ExecuteReader();
 			while (reader.Read())
 			{
-				NoteBook noteBook = new NoteBook();
+				NoteBookVO noteBook = new NoteBookVO();
 				noteBook.NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString());
 				noteBook.Name = reader["NAME"].ToString();
 
@@ -127,9 +127,9 @@ namespace NoteWebApp.Models
 		 (2) db커넥션을 생성하여 해당 노트북아이디를 가진 노트북 부름
 		 (3) 빈 노트북의 해당 노트북 정보 넣음
 			 */
-		public static NoteBook GetNoteBookbyId(int noteBookId)
+		public static NoteBookVO GetNoteBookbyId(int noteBookId)
 		{
-			NoteBook noteBook = new NoteBook();
+			NoteBookVO noteBook = new NoteBookVO();
 
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 
@@ -311,7 +311,7 @@ namespace NoteWebApp.Models
 		//해당 노트북 노트 개수구하기
 		public static int CountInBook(int bookId)
 		{
-			List<Note> List = NoteManager.GetNoteList(OrderColumn.Notedate, OrderType.Desc, bookId);
+			List<NoteVO> List = NoteDAO.GetNoteList(OrderColumn.Notedate, OrderType.Desc, bookId);
 			int count = List.Count;
 
 			return count;

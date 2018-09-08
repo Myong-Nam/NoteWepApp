@@ -8,10 +8,9 @@ namespace NoteWebApp.ViewModels
 {
 	public class NoteIndexVM
 	{
-		public List<Note> NoteList;
-		public Note SelectedNote;
-		public NoteBook NoteBook;
+		public List<NoteVO> NoteList;
+		public NoteVO SelectedNote;
+		public NoteBookVO NoteBook;
 	
-
 	}
 }

@@ -43,19 +43,19 @@ namespace NoteWebApp.Models
 
 					if ( noteid != 0) //노트일경우
 					{
-						Note newNote = new Note()
+						NoteVO newNote = new NoteVO()
 						{
 							NoteId = noteid,
-							Title = NoteManager.GetNotebyId(noteid).Title
+							Title = NoteDAO.GetNotebyId(noteid).Title
 						};
 						shortcutDic.Add(order, newNote);
 					}
 					else if (notebookid != 0) //노트북일경우
 					{
-						NoteBook newNoteBook = new NoteBook()
+						NoteBookVO newNoteBook = new NoteBookVO()
 						{
 							NoteBookId = notebookid,
-							Name = NoteBookManager.GetNoteBookbyId(notebookid).Name
+							Name = NoteBookDAO.GetNoteBookbyId(notebookid).Name
 						};
 						shortcutDic.Add(order, newNoteBook);
 					}
@@ -99,7 +99,7 @@ namespace NoteWebApp.Models
 				OracleDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
-					Note note = new Note();
+					NoteVO note = new NoteVO();
 					note.Title = reader["title"].ToString();
 					note.NoteId = int.Parse(reader["noteid"].ToString());
 					int index = int.Parse(reader["orders"].ToString()) - 1;
@@ -117,7 +117,7 @@ namespace NoteWebApp.Models
 				OracleDataReader noteBookReader = noteBookCmd.ExecuteReader();
 				while (noteBookReader.Read())
 				{
-					NoteBook notebook = new NoteBook();
+					NoteBookVO notebook = new NoteBookVO();
 					notebook.Name = noteBookReader["name"].ToString();
 					notebook.NoteBookId = int.Parse(noteBookReader["notebookid"].ToString());
 					int index = int.Parse(noteBookReader["orders"].ToString()) - 1;

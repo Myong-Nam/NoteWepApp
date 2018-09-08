@@ -7,6 +7,25 @@
 
 
 <style>
+    .tagName {
+        position: relative;
+        cursor: pointer;
+        color: #4a4a4a;
+        background-color: #f8f8f8;
+        border: 1px solid #d1d1d1;
+        border-radius: 4px;
+        box-sizing: border-box;
+        line-height: 22px;
+        padding-left: 20px;
+        padding-right: 10px;
+    }
+    .countNoteTag {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #28a955;
+        margin: 0 12px;
+    }
 </style>
 <h2>Tag</h2>
 @using (Html.BeginForm("Create", "Tag"))
@@ -27,14 +46,19 @@
     </div>
 }
 
-@foreach (var item in Model){
+@foreach (var item in Model) {
     <ul>
         <li>
-            <div class="tagName">
-                @item.Tag_Name<br />
-            </div>
+            <span class="tagName" onclick="showNoteByTag(@item.Tag_Id)">@item.Tag_Name
+                <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
+            </span>
         </li>
     </ul>
 
 }
 
+<script>
+    function showNoteByTag(TagId) {
+            window.location.href = '/Tag/List/?tagid=' + TagId;
+    }
+</script>

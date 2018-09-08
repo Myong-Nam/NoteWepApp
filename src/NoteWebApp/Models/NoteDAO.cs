@@ -8,7 +8,7 @@ using System.Web;
 
 namespace NoteWebApp.Models
 {
-	public class NoteManager
+	public class NoteDAO
 	{
 		/// <summary>
 		/// 목적 : 인덱스 페이지에서 노트리스트를 최근순으로 불러옴
@@ -21,9 +21,9 @@ namespace NoteWebApp.Models
 		/// <param name="orderType">"ASC" | "DESC"</param>
 		/// <param name="noteBookId"></param>
 		/// <returns></returns>
-		public static List<Note> GetNoteList(OrderColumn orderColumnName, OrderType orderType, int noteBookId)
+		public static List<NoteVO> GetNoteList(OrderColumn orderColumnName, OrderType orderType, int noteBookId)
 		{
-			List<Note> noteList = new List<Note>();
+			List<NoteVO> noteList = new List<NoteVO>();
 
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 
@@ -68,7 +68,7 @@ namespace NoteWebApp.Models
 			OracleDataReader reader = cmd.ExecuteReader();
 			while (reader.Read())
 			{
-				Note note = new Note
+				NoteVO note = new NoteVO
 				{
 					NoteId = int.Parse(reader["NOTEID"].ToString()),
 					Title = reader["TITLE"].ToString(),
@@ -140,9 +140,9 @@ namespace NoteWebApp.Models
 		 (2) 노트의 정보를 불러오는 쿼리 작성
 		 (3) 불러온 정보를 빈 노트에 넣어준다.
 			 */
-		public static Note GetNotebyId(int noteId)
+		public static NoteVO GetNotebyId(int noteId)
 		{
-			Note note = new Note();
+			NoteVO note = new NoteVO();
 
 			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
 
@@ -159,7 +159,7 @@ namespace NoteWebApp.Models
 			OracleDataReader reader = cmd.ExecuteReader();
 			while (reader.Read())
 			{
-				Note newNote = new Note
+				NoteVO newNote = new NoteVO
 				{
 					NoteId = int.Parse(reader["NOTEID"].ToString()),
 					Title = reader["TITLE"].ToString(),

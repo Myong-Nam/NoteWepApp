@@ -5,7 +5,7 @@ using System.Web;
 
 namespace NoteWebApp.Models
 {
-	public class Note
+	public class NoteVO
 	{
 		public int NoteId;
 		public string Title;
@@ -16,5 +16,6 @@ namespace NoteWebApp.Models
 		public int IsDeleted;
 		public int NoteBookId;
 		public int IsShortcut;
+		public List<TagVO> TagList;
 	}
 }

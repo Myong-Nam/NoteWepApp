@@ -5,7 +5,7 @@ using System.Web;
 
 namespace NoteWebApp.Models
 {
-    public class NoteBook
+    public class NoteBookVO
     {
         public int NoteBookId;
         public string Name;
