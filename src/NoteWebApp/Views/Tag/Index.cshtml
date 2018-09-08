@@ -49,9 +49,19 @@
 @foreach (var item in Model) {
     <ul>
         <li>
-            <span class="tagName" onclick="showNoteByTag(@item.Tag_Id)">@item.Tag_Name
-                <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
-            </span>
+            <span class="tagName" onclick="showNoteByTag(@item.Tag_Id)">
+                @item.Tag_Name
+            <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
+
+        </span>
+        <span>
+            @using (Html.BeginForm("Delete", "Tag"))
+            {
+                <input type="hidden" value="@item.Tag_Id" name="tagId" />
+                <input type="submit" value="삭제" />
+            }
+
+        </span>
         </li>
     </ul>
 

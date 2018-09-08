@@ -381,13 +381,16 @@
     }
     .Tag {
         display: inline-block;
-        color: #fff;
-        border-color: #2dbe60;
-        background-color: #2dbe60;
+        color: #606060;
+        background-color: #f8f8f8;
         vertical-align: top;
-        border: 1px solid #ececec;
+        border: 1px solid #d1d1d1;
         padding: 1px 8px 1px;
         border-radius: 4px;
+    }
+    .Tag:hover {
+        color: #ffffff;
+        background-color:#2dbe60;
     }
 
 </style>
@@ -461,7 +464,7 @@
     <div class="TagContainer">
         @foreach (var item in Model.SelectedNote.TagList)
         {
-        <div class="Tag">@item.Tag_Name</div>
+        <div class="Tag" id="@item.Tag_Id" onclick="deleteTag(@item.Tag_Id)">@item.Tag_Name</div>
         }
     </div>
 
@@ -495,7 +498,11 @@
 
 </div>
 
+<script>
+    //태그 삭제하는 함수
 
+
+</script>
 
 <script>
     //리스트 제목에 저장이 필요하다는 표시 하는 함수

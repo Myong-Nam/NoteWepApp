@@ -87,8 +87,6 @@ namespace NoteWebApp.Controllers
 				Session["OrderType"] = selectedOrderType;
 			}
 
-
-
 			//Tagid
 			selectedTagId = int.Parse(tagId);
 
@@ -113,6 +111,15 @@ namespace NoteWebApp.Controllers
 			//ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);
 
 			return View(model);
+		}
+
+		public ActionResult Delete(int tagId)
+		{
+			TagDAO.DeleteTag(tagId);
+
+			Response.Redirect(Request.UrlReferrer.ToString());
+
+			return View();
 		}
 	}
 }
