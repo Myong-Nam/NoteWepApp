@@ -150,6 +150,7 @@
     <Content Include="Areas\Lab\Views\SqlInjection\UnsecuredLogin.cshtml" />
     <Content Include="Areas\Lab\Views\SqlInjection\Index.cshtml" />
     <Content Include="Areas\Lab\Views\SqlInjection\SecuredLogin.cshtml" />
+    <Content Include="Areas\Lab\Views\Dapper\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -465,6 +466,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Lab\Controllers\ControlController.cs" />
+    <Compile Include="Areas\Lab\Controllers\DapperController.cs" />
     <Compile Include="Areas\Lab\Controllers\DragDropFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
     <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
@@ -481,6 +483,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\App.cs" />
     <Compile Include="Models\DataBase.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\NoteVO.cs" />
@@ -533,6 +536,12 @@
     <Folder Include="App_Data\" />
     <Folder Include="Handler\Image\" />
     <Folder Include="Views\Test_View\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbHelper\DbHelper.csproj">
+      <Project>{d029bf47-a4ad-4dd0-8972-9a4112f7e2e9}</Project>
+      <Name>DbHelper</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
