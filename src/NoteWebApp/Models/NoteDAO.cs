@@ -1,4 +1,5 @@
 ﻿
+using Dapper;
 using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -144,36 +145,43 @@ namespace NoteWebApp.Models
 		{
 			NoteVO note = new NoteVO();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
-
-			conn.Open();
-
 			String sql = "select * from Note where noteId = " + noteId.ToString();
 
-			OracleCommand cmd = new OracleCommand
+			using (var conn = DbHelper.Connection)
 			{
-				Connection = conn,
-				CommandText = sql
-			};
-
-			OracleDataReader reader = cmd.ExecuteReader();
-			while (reader.Read())
-			{
-				NoteVO newNote = new NoteVO
-				{
-					NoteId = int.Parse(reader["NOTEID"].ToString()),
-					Title = reader["TITLE"].ToString(),
-					IsDeleted = int.Parse(reader["ISDELETED"].ToString()),
-					Contents = reader["CONTENTS"] as String,
-					NoteDate = reader["NOTEDATE"].ToString(),
-					UpdatedDate = reader["UpdatedDate"].ToString(),
-					NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString())
-				};
-
-				note = newNote;
+				note = conn.QuerySingle<NoteVO>(sql);
 			}
-			reader.Close();
-			conn.Close();
+
+			//OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+
+			//conn.Open();
+
+			//String sql = "select * from Note where noteId = " + noteId.ToString();
+
+			//OracleCommand cmd = new OracleCommand
+			//{
+			//	Connection = conn,
+			//	CommandText = sql
+			//};
+
+			//OracleDataReader reader = cmd.ExecuteReader();
+			//while (reader.Read())
+			//{
+			//	NoteVO newNote = new NoteVO
+			//	{
+			//		NoteId = int.Parse(reader["NOTEID"].ToString()),
+			//		Title = reader["TITLE"].ToString(),
+			//		IsDeleted = int.Parse(reader["ISDELETED"].ToString()),
+			//		Contents = reader["CONTENTS"] as String,
+			//		NoteDate = reader["NOTEDATE"].ToString(),
+			//		UpdatedDate = reader["UpdatedDate"].ToString(),
+			//		NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString())
+			//	};
+
+			//	note = newNote;
+			//}
+			//reader.Close();
+			//conn.Close();
 
 
 			return note;  

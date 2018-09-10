@@ -7,8 +7,8 @@
     <ProjectGuid>{D029BF47-A4AD-4DD0-8972-9A4112F7E2E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DbHelper</RootNamespace>
-    <AssemblyName>DbHelper</AssemblyName>
+    <RootNamespace>DatabaseHelper.Oracle</RootNamespace>
+    <AssemblyName>DatabaseHelper.Oracle</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database.cs" />
+    <Compile Include="OracleDbHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

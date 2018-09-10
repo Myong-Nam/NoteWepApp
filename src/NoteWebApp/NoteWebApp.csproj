@@ -488,6 +488,7 @@
     </Compile>
     <Compile Include="Models\App.cs" />
     <Compile Include="Models\DataBase.cs" />
+    <Compile Include="Models\DbHelper.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\NoteVO.cs" />
     <Compile Include="Models\NoteBookVO.cs" />
@@ -541,9 +542,9 @@
     <Folder Include="Views\Test_View\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DbHelper\DbHelper.csproj">
+    <ProjectReference Include="..\DbHelper\DatabaseHelper.Oracle.csproj">
       <Project>{d029bf47-a4ad-4dd0-8972-9a4112f7e2e9}</Project>
-      <Name>DbHelper</Name>
+      <Name>DatabaseHelper.Oracle</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

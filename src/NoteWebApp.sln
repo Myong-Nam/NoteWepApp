@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteWebApp", "NoteWebApp\NoteWebApp.csproj", "{886A933A-5CC8-43DA-95BB-EC91A1913A09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbHelper", "DbHelper\DbHelper.csproj", "{D029BF47-A4AD-4DD0-8972-9A4112F7E2E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseHelper.Oracle", "DbHelper\DatabaseHelper.Oracle.csproj", "{D029BF47-A4AD-4DD0-8972-9A4112F7E2E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
