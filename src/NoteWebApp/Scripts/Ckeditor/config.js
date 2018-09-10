@@ -26,8 +26,7 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 
 	// Remove some buttons provided by the standard plugins, which are
-    // not neede
-    d in the Standard(s) toolbar.
+	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript';
 
 	// Set the most common block elements.
@@ -35,6 +34,6 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
-    config.filebrowserUploadMethod = 'form'
+	config.filebrowserUploadMethod = 'form'
 
 };
