@@ -7,6 +7,9 @@
 
 
 <style>
+    .tagList, .tagList form{
+        display: inline;
+    }
     .tagName {
         position: relative;
         cursor: pointer;
@@ -17,7 +20,8 @@
         box-sizing: border-box;
         line-height: 22px;
         padding-left: 20px;
-        padding-right: 10px;
+        padding-right: 5px;
+        margin-right: 10px;
     }
     .countNoteTag {
         font-family: gotham, helvetica, arial, sans-serif;
@@ -25,6 +29,10 @@
         font-weight: 400;
         color: #28a955;
         margin: 0 12px;
+    }
+
+    .deleteTagBtn{
+        cursor: pointer;
     }
 </style>
 <h2>Tag</h2>
@@ -46,29 +54,37 @@
     </div>
 }
 
-@foreach (var item in Model) {
-    <ul>
-        <li>
-            <span class="tagName" onclick="showNoteByTag(@item.Tag_Id)">
-                @item.Tag_Name
-            <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
+    @foreach (var item in Model)
+    {
+        <ul>
+            <li>
+                <div class="tagList">
+                    <span class="tagName" onclick="showNoteByTag(@item.Tag_Id)">
+                        @item.Tag_Name
+                        <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
 
-        </span>
-        <span>
-            @using (Html.BeginForm("Delete", "Tag"))
-            {
-                <input type="hidden" value="@item.Tag_Id" name="tagId" />
-                <input type="submit" value="삭제" />
-            }
+                    </span>
+                    <span>   
+                        <img class="deleteTagBtn" src="~/Content/tag/tag_delete.png" onclick="deleteTag(@item.Tag_Id)" width="16px">
+                    </span>
+                </div>
+            </li>
+        </ul>
 
-        </span>
-        </li>
-    </ul>
-
-}
+    }
 
 <script>
+
+    function deleteTag(id) {
+        var deleteDialog = confirm("태그를 삭제하시겠습니까?");
+        if (deleteDialog) {
+            window.location.href = '/Tag/Delete/?tagid=' + id;
+        }
+    }
+
     function showNoteByTag(TagId) {
             window.location.href = '/Tag/List/?tagid=' + TagId;
     }
+
+
 </script>

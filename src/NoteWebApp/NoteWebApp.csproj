@@ -116,6 +116,7 @@
     <Content Include="Content\style\global.css" />
     <Content Include="Areas\Lab\Content\style\global.css" />
     <Content Include="Content\style\reset.css" />
+    <Content Include="Content\tag\tag_delete.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
