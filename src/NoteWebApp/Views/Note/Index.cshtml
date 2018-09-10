@@ -471,7 +471,7 @@
             using (Html.BeginForm("Delete", "Tag"))
             {
                 <input type="hidden" value="@item.Tag_Id" name="tagId" />
-                <input type="image" onmouseleave="mouseOut(this)" class="deleteTagBtn select-hide" src="~/Content/tag/tag_delete.png" width="16px">
+                <input type="image" class="deleteTagBtn select-hide" src="~/Content/tag/tag_delete.png" width="16px">
             }
         }
     </div>
