@@ -77,9 +77,9 @@ namespace NoteWebApp.Models
 				}
 				else // 중복 태그가 없는 경우
 				{
-					int NewTagId = GetNewTagId();
+					int newTagId = GetNewTagId();
 
-					String sql = $"INSERT INTO TAG (TAG_ID, TAG_NAME ) VALUES ({NewTagId}, :NAME)";
+					String sql = $"INSERT INTO TAG (TAG_ID, TAG_NAME ) VALUES (:TagId, :NAME)";
 
 
 					OracleCommand cmd = new OracleCommand
@@ -88,8 +88,11 @@ namespace NoteWebApp.Models
 						CommandText = sql
 					};
 
-					OracleParameter Name = cmd.Parameters.Add("Name", OracleDbType.Varchar2);
-					Name.Value = name;
+					OracleParameter paramName = cmd.Parameters.Add("Name", OracleDbType.Varchar2);
+					paramName.Value = name;
+
+					OracleParameter paramTagId = cmd.Parameters.Add("TagId", OracleDbType.Int32);
+					paramTagId.Value = newTagId;
 
 					cmd.ExecuteNonQuery();
 
