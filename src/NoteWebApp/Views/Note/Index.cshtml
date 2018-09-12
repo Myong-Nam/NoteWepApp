@@ -389,7 +389,7 @@
         border-radius: 4px;
         cursor:pointer;
     }
-    .Tag:hover {
+    .Tag:hover, .tagSelected {
         color: #ffffff;
         background-color:#2dbe60;
     }
@@ -514,6 +514,7 @@
             if (tags[i].innerHTML == tag.innerHTML) {
                 var deleteTagBtn = document.getElementsByClassName("deleteTagBtn");
                 deleteTagBtn[i].classList.remove("select-hide");
+                tags[i].classList.add("tagSelected");
                 mouseOutOfTag(i);
             }
         }
@@ -521,6 +522,7 @@
     }
     //태그영역 이외 마우스 오버하면 태그 삭제 버튼 숨김
     function mouseOutOfTag(index) {
+        var tags = document.getElementsByClassName("Tag");
         var deleteTagBtn = document.getElementsByClassName("deleteTagBtn")[index];
         var tagGroup = document.getElementsByClassName("TagContainer")[0];
         document.addEventListener("mouseover", function (e) {
@@ -528,8 +530,10 @@
             var target = e.target || e.srcElement;
             if (target == tagGroup || target == deleteTagBtn) {
                 deleteTagBtn.classList.remove("select-hide");
+                tags[index].classList.add("tagSelected");
             } else {
                 deleteTagBtn.classList.add("select-hide");
+                tags[index].classList.remove("tagSelected");
             }
         })
     }
