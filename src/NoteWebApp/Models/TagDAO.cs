@@ -88,11 +88,13 @@ namespace NoteWebApp.Models
 						CommandText = sql
 					};
 
-					OracleParameter paramName = cmd.Parameters.Add("Name", OracleDbType.Varchar2);
-					paramName.Value = name;
 
+					//error
 					OracleParameter paramTagId = cmd.Parameters.Add("TagId", OracleDbType.Int32);
 					paramTagId.Value = newTagId;
+
+					OracleParameter paramName = cmd.Parameters.Add("Name", OracleDbType.Varchar2);
+					paramName.Value = name;
 
 					cmd.ExecuteNonQuery();
 
@@ -100,7 +102,6 @@ namespace NoteWebApp.Models
 					reader.Close();
 
 					return name + " 태그를 만들었습니다.";
-
 				}
 			};
 		}
@@ -202,9 +203,8 @@ namespace NoteWebApp.Models
 				}
 				else // 중복 태그가 없는 경우
 				{
-					int NewTagId = GetNewTagId();
 
-					String sql = $"INSERT INTO TAG (TAG_ID, TAG_NAME) VALUES ({NewTagId}, :NAME)";
+					String sql = $"INSERT INTO TAG (TAG_ID, TAG_NAME) VALUES (:TAGID, :NAME)";
 
 					OracleCommand cmd = new OracleCommand
 					{
@@ -212,12 +212,15 @@ namespace NoteWebApp.Models
 						CommandText = sql
 					};
 
+					OracleParameter TagId = cmd.Parameters.Add("TAGID", OracleDbType.Int32);
+					TagId.Value = GetNewTagId();
+
 					OracleParameter Name = cmd.Parameters.Add("Name", OracleDbType.Varchar2);
 					Name.Value = tagName;
 
 					cmd.ExecuteNonQuery();
 
-					newTag.Tag_Id = NewTagId;
+					newTag.Tag_Id = int.Parse(TagId.ToString());
 
 				}
 
@@ -302,7 +305,7 @@ namespace NoteWebApp.Models
 				paramTagId.Value = tagId;
 
 				OracleDataReader reader = cmd.ExecuteReader();
-				if (reader.Read()) //
+				if (reader.Read()) 
 				{
 					tagname = reader["tag_name"].ToString();
 				}
@@ -339,7 +342,7 @@ namespace NoteWebApp.Models
 				paramTagId.Value = tagId;
 
 				OracleDataReader reader = cmd.ExecuteReader();
-				while (reader.Read()) //
+				while (reader.Read()) 
 				{
 					NoteVO note = new NoteVO();
 					note = NoteDAO.GetNotebyId(int.Parse(reader["note_id"].ToString()));
@@ -389,5 +392,7 @@ namespace NoteWebApp.Models
 
 			}
 		}
+
+		
 	}
 }
