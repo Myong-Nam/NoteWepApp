@@ -393,6 +393,69 @@ namespace NoteWebApp.Models
 			}
 		}
 
+		/// <summary>
+		/// 태그 이름 수정 함수
+		/// (1) 중복 이름 검사
+		/// (2) 매핑 테이블 검사 
+		/// (3) (2)에 따라 db수정 
+		/// </summary>
+		public static string ModifyTagName(int tagId, string newTagName)
+		{
+			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			{
+				conn.Open();
+
+				//중복검사
+				String checkSql = "select tag_name from tag where tag_name like :CheckName";
+
+				OracleCommand checkCmd = new OracleCommand
+				{
+					Connection = conn,
+					CommandText = checkSql
+				};
+
+				OracleParameter CheckName = checkCmd.Parameters.Add("CheckName", OracleDbType.Varchar2);
+				CheckName.Value = newTagName;
+
+				OracleDataReader reader = checkCmd.ExecuteReader();
+				if (reader.HasRows) //중복 태그가 있는 경우
+				{
+					conn.Close();
+					reader.Close();
+
+					return newTagName + "이(가)라는 태그가 이미 있습니다.";
+
+				}
+				else // 중복 태그가 없는 경우
+				{
+					int newTagId = GetNewTagId();
+
+					String sql = $"UPDATE TAG SET TAG_NAME = :NEWTAGNAME WHERE TAG_ID = :TAGID" ;
+
+
+					OracleCommand cmd = new OracleCommand
+					{
+						Connection = conn,
+						CommandText = sql
+					};
+
+					OracleParameter paramName = cmd.Parameters.Add("NEWTAGNAME", OracleDbType.Varchar2);
+					paramName.Value = newTagName;
+
+					OracleParameter paramTagId = cmd.Parameters.Add("TAGID", OracleDbType.Int32);
+					paramTagId.Value = tagId;
+
+
+					cmd.ExecuteNonQuery();
+
+					conn.Close();
+					reader.Close();
+
+					return newTagName + " 로 수정했습니다.";
+				}
+			};
+		}
+
 		
 	}
 }
