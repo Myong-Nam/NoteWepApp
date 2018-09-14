@@ -404,6 +404,8 @@ namespace NoteWebApp.Models
 			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
 			{
 				conn.Open();
+				//빈칸 or 아무변화없을 경우
+
 
 				//중복검사
 				String checkSql = "select tag_name from tag where tag_name like :CheckName";

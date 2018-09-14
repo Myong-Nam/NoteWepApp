@@ -81,7 +81,7 @@
                     <span class="editTag hide">
                         @using (Html.BeginForm("Modify", "Tag"))
                         {
-                            @Html.TextBox("tagName", "" , new { placeholder = item.Tag_Name });
+                            @Html.TextBox("tagName", "", new { placeholder = item.Tag_Name});
                             @Html.Hidden("tagId", (int)item.Tag_Id);
                             <input type="image" class="btn" alt="submit" src="~/Content/tag/check_green.png" />
                         }
@@ -97,8 +97,9 @@
 
 <script>
     var editMode = document.getElementsByClassName("editTag"); //수정 모드
-    var listMode = document.getElementsByClassName("tagList"); //수정 칸
+    var listMode = document.getElementsByClassName("tagList");
     var modifyTagBtn = document.getElementsByClassName("ModifyTagBtn"); //수정버튼
+    var input = document.getElementsByClassName("tagName");
 
     function deleteTag(id) {
         var deleteDialog = confirm("태그를 삭제하시겠습니까?");
@@ -135,34 +136,11 @@
                         listMode[j].classList.remove('hide');
                     }
                 }
-            } 
-
-            else if (target != editMode[i]) {
-                if (editMode[i].className != 'editTag hide') {
-                    editMode[i].classList.add('hide');
-                    listMode[i].classList.remove('hide');
-                }
-            }
-            
+            }   
         }
         
     });
 
-    //다른곳 클릭하면 리스트모드로 돌아감
-    function openListMode() {
-
-        //edit모드 중 하나라도 hide가 아니면 클릭했을때 리스트모드로 돌아감
-        for (i = 0; i < editMode.length; i++) {
-            if (editMode[i].className != 'editTag hide') {
-                console.log('index: ' + i);
-                editMode[i].className = 'editTag hide';
-                listMode[i].classList.remove("hide");
-            }
-        }
-    }
-
    
-
-
 
 </script>
