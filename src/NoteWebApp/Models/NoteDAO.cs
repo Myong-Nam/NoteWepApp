@@ -147,7 +147,7 @@ namespace NoteWebApp.Models
 
 			String sql = "select * from Note where noteId = " + noteId.ToString();
 
-			using (var conn = DbHelper.Connection)
+			using (var conn = new OracleConnection(DataBase.ConnectionString))
 			{
 				note = conn.QuerySingle<NoteVO>(sql);
 			}

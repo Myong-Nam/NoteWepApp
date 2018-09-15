@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Application_Start에서 초기화
 		/// </summary>
-		public static DbHelper.Oracle.DbHelper DbHelper { get; set; }
+		//public static DbHelper.Oracle.DbHelper DbHelper { get; set; }
 	}
 }
