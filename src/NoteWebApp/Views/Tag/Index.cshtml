@@ -10,7 +10,7 @@
     .tagList, .tagList form{
         display: inline;
     }
-    .tagName {
+    .tag {
         position: relative;
         cursor: pointer;
         color: #4a4a4a;
@@ -31,8 +31,15 @@
         margin: 0 12px;
     }
 
-    .deleteTagBtn{
+    .btn{
         cursor: pointer;
+        width: 16px;
+    }
+    .edit-mode {
+        color: #28a955;
+    }
+    .hide{
+        display:none;
     }
 </style>
 <h2>Tag</h2>
@@ -59,21 +66,40 @@
         <ul>
             <li>
                 <div class="tagList">
-                    <span class="tagName" onclick="showNoteByTag(@item.Tag_Id)">
-                        @item.Tag_Name
+                    <span class="tag" onclick="showNoteByTag(@item.Tag_Id)">
+                        <span class="tagName">@item.Tag_Name</span>
                         <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
 
                     </span>
-                    <span>   
-                        <img class="deleteTagBtn" src="~/Content/tag/tag_delete.png" onclick="deleteTag(@item.Tag_Id)" width="16px">
+                    <span>
+                        <img class="btn ModifyTagBtn" src="~/Content/tag/tag_modify.png" onclick="openEditMode(this)">
+                    </span>
+                    <span>
+                        <img class="btn deleteTagBtn" src="~/Content/tag/tag_delete.png" onclick="deleteTag(@item.Tag_Id)">
                     </span>
                 </div>
+                    <span class="editTag hide">
+                        @using (Html.BeginForm("Modify", "Tag"))
+                        {
+                            @Html.TextBox("tagName", "", new { placeholder = item.Tag_Name});
+                            @Html.Hidden("tagId", (int)item.Tag_Id);
+                            <input type="image" class="btn" alt="submit" src="~/Content/tag/check_green.png" />
+                        }
+
+                    </span>
+
+
+                
             </li>
         </ul>
 
     }
 
 <script>
+    var editMode = document.getElementsByClassName("editTag"); //수정 모드
+    var listMode = document.getElementsByClassName("tagList");
+    var modifyTagBtn = document.getElementsByClassName("ModifyTagBtn"); //수정버튼
+    var input = document.getElementsByClassName("tagName");
 
     function deleteTag(id) {
         var deleteDialog = confirm("태그를 삭제하시겠습니까?");
@@ -86,5 +112,35 @@
             window.location.href = '/Tag/List/?tagid=' + TagId;
     }
 
+    //클릭한 태그 수정하는 칸 열고 다른 버튼 숨기기
+    function openEditMode(tag) {
+        var index;
+        for (i = 0; i < modifyTagBtn.length; i++) {
+            if (tag == modifyTagBtn[i]) {
+                index = i;
+                editMode[index].classList.remove("hide"); //편집칸열기
+                listMode[index].classList.add("hide");//리스트모드닫기                
+            } 
+        }
+    }
+
+    //다른 태그의 수정 버튼 누르면 현재 edit-mode 닫힘.
+    document.addEventListener("click", function (e) { //클릭 이벤트 발생시
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+        for (i = 0; i < modifyTagBtn.length; i++) {
+            if (target == modifyTagBtn[i]) { //수정버튼을 눌렀을 때
+                for (j = 0; j < editMode.length; j++) {
+                    if (i != j && editMode[j].className != 'editTag hide') { //현재 클릭된 수정버튼이 아니면
+                        editMode[j].classList.add('hide');
+                        listMode[j].classList.remove('hide');
+                    }
+                }
+            }   
+        }
+        
+    });
+
+   
 
 </script>

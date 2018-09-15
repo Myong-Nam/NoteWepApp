@@ -116,7 +116,9 @@
     <Content Include="Content\style\global.css" />
     <Content Include="Areas\Lab\Content\style\global.css" />
     <Content Include="Content\style\reset.css" />
+    <Content Include="Content\tag\check_green.png" />
     <Content Include="Content\tag\tag_delete.png" />
+    <Content Include="Content\tag\tag_modify.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
@@ -530,6 +532,8 @@
     <Content Include="Views\Tag\Create.cshtml" />
     <Content Include="Views\Tag\List.cshtml" />
     <Content Include="Views\Note\Detail.cshtml" />
+    <Content Include="Views\Tag\Modify.cshtml" />
+    <Content Include="Views\Tag\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

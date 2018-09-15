@@ -121,5 +121,14 @@ namespace NoteWebApp.Controllers
 
 			return View();
 		}
+
+		public ActionResult Modify(int tagId, string tagName)
+		{
+			string msg = TagDAO.ModifyTagName(tagId, tagName);
+			ViewBag.msg = msg;
+
+			
+			return View();
+		}
 	}
 }
