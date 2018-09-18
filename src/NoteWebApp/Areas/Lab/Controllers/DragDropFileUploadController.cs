@@ -77,7 +77,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 				Debug.WriteLine("Debug.WriteLine: " + sql);
 				Console.WriteLine("Console.WriteLine: " + sql);
 
-				OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+				OracleConnection conn = DbHelper.NewConnection();
 				conn.Open();
 
 				OracleCommand cmd = new OracleCommand();

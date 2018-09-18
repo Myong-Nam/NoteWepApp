@@ -15,11 +15,7 @@ namespace NoteWebApp
 			//
 			// Database setting
 			//
-			//bHelper.Oracle.DbHelper dbHelper = new DbHelper.Oracle.DbHelper();
-
-			//DbHelper.ConnectionString = ConfigurationManager.ConnectionStrings["MainDB"].ToString();
-			DbHelper dbhelper = new DbHelper();
-			var conn = dbhelper.Connection;
+			DbHelper.ConnectionString = ConfigurationManager.ConnectionStrings["MainDB"].ToString();
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 				return View("PageNotFound");
 			}
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 			conn.Open();
 
 			string sql = $"select * from binary_file where binary_file_id = {id}";
@@ -95,7 +95,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 				Debug.WriteLine("Debug.WriteLine: " + sql);
 				Console.WriteLine("Console.WriteLine: " + sql);
 
-				OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+				OracleConnection conn = DbHelper.NewConnection();
 				conn.Open();
 
 				OracleCommand cmd = new OracleCommand();

@@ -21,7 +21,7 @@ namespace NoteWebApp.Models
 		{
 			List<NoteBookVO> noteBooks = new List<NoteBookVO>();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 
 			conn.Open();
 
@@ -43,7 +43,6 @@ namespace NoteWebApp.Models
 				noteBooks.Add(noteBook);
 			}
 
-
 			reader.Close();
 			conn.Close();
 
@@ -61,7 +60,7 @@ namespace NoteWebApp.Models
 		{
 			int NewNoteBookId = GetNewNoteBookId();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -93,7 +92,7 @@ namespace NoteWebApp.Models
 		{
 			int NewNoteBookId = new int();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -131,7 +130,7 @@ namespace NoteWebApp.Models
 		{
 			NoteBookVO noteBook = new NoteBookVO();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 
 			conn.Open();
 
@@ -170,7 +169,7 @@ namespace NoteWebApp.Models
 		{
 			int defaultNoteBook = DefaultNoteBook();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -206,7 +205,7 @@ namespace NoteWebApp.Models
 
 		public static void Update(int noteBookId, string name, int isdefault)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -245,7 +244,7 @@ namespace NoteWebApp.Models
 		public static int DefaultNoteBook()
 		{
 			int defaultNoteBook = 0;
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -274,7 +273,7 @@ namespace NoteWebApp.Models
 		private static Boolean IsDefaultNoteBook(int noteBookId)
 		{
 			int isDefault = 0;
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 

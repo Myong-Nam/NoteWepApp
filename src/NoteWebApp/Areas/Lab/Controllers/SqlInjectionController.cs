@@ -30,7 +30,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 
 			sb.AppendLine($"SQL: {sql}");
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -72,7 +72,7 @@ namespace NoteWebApp.Areas.Lab.Controllers
 
 			sb.AppendLine($"SQL: {sql}");
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 

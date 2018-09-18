@@ -26,7 +26,7 @@ namespace NoteWebApp.Models
 		{
 			List<NoteVO> noteList = new List<NoteVO>();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 
 			conn.Open();
 
@@ -147,12 +147,12 @@ namespace NoteWebApp.Models
 
 			String sql = "select * from Note where noteId = " + noteId.ToString();
 
-			using (var conn = new OracleConnection(DataBase.ConnectionString))
+			using (var conn = DbHelper.NewConnection())
 			{
 				note = conn.QuerySingle<NoteVO>(sql);
 			}
 
-			//OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			//OracleConnection conn = DbHelper.NewConnection();
 
 			//conn.Open();
 
@@ -201,7 +201,7 @@ namespace NoteWebApp.Models
 			int NewBookId = int.Parse(notebookid);
 			
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -231,7 +231,7 @@ namespace NoteWebApp.Models
 		{
 			int NewNoteId = new int();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -265,7 +265,7 @@ namespace NoteWebApp.Models
 		*/
 		public static void preDelete(int noteId)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -290,7 +290,7 @@ namespace NoteWebApp.Models
 		*/
 		public static int Delete(int noteId)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -319,7 +319,7 @@ namespace NoteWebApp.Models
 		{
 			int id = int.Parse(noteBookId);
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -343,7 +343,7 @@ namespace NoteWebApp.Models
 		*/
 		public static void RecoverNote(int noteId)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -361,7 +361,7 @@ namespace NoteWebApp.Models
 
 		public static void ToShortCut(int noteid)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -382,7 +382,7 @@ namespace NoteWebApp.Models
 		{
 			string NewestNote = "";
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -414,7 +414,7 @@ namespace NoteWebApp.Models
 
 		public static void NotToShortCut(int noteid)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 

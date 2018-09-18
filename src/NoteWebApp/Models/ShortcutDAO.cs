@@ -15,7 +15,7 @@ namespace NoteWebApp.Models
 			//키값으론 order를 넣는다. 리스트에는 Note or Notebook을 넣고 각각 id, title을 넣는다. 
 
 			//shortcut에서 orderby order로 모든 데이터를 긁어온 후 order를 키값으로 넣고 type과 id를 해당 value 넣는다.
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -82,7 +82,7 @@ namespace NoteWebApp.Models
 		{
 			List<object> shortcuts = new List<object>();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -136,7 +136,7 @@ namespace NoteWebApp.Models
 			string isshortcut = "false";
 			String sql = "";
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -208,7 +208,7 @@ namespace NoteWebApp.Models
 				sql = $"Insert into shortcut (notebookid, orders) values ( {id}, {0} )";
 			}
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 

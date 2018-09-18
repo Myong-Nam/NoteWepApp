@@ -12,7 +12,7 @@ namespace NoteWebApp.Areas.Lab.Models
 		public static List<BinaryFileVO> GetVOList()
 		{
 			List<BinaryFileVO> binaryFileVOList = new List<BinaryFileVO>();
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 			conn.Open();
 			string sql = "SELECT * FROM BINARY_FILE order by binary_file_id desc";
 			OracleCommand cmd = new OracleCommand { Connection = conn, CommandText = sql };
