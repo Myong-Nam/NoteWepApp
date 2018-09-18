@@ -66,15 +66,7 @@ namespace NoteWebApp.Models
 				return shortcutDic;
 			}
 
-
-
-
-
 		}
-
-
-
-
 
 
 		//노트북 이나 노트가 0이 아닌 것을 찾아서 title을 따온다.
