@@ -80,10 +80,13 @@
 
 <style>
     .partViewList {
-        margin-top: 15px;
-        overflow-y: scroll;
-        height: calc(100% - 120px);
+        margin-top: 0px;   
+        height: calc(100%);
         overflow-x: hidden;
+    }
+
+    #noteListTable {
+        overflow-y: scroll;
     }
 
     #noteOrderBy {
@@ -429,30 +432,10 @@
     }
     <img src=@Info class="noteSetting" id="openInfo" width="25px">
 </div>
-<div class="noteList">
-    <div id="pageTitle">노트</div>
-    <div id="countNotes">@noteList.Count 개의 노트</div>
-    <div class="configContainer"></div>
-    <div id="noteOrderBy">
-        @using (Html.BeginForm("ShowNoteList", "Note", FormMethod.Post, new { id = "noteOrderForm" }))
-        {
-            @Html.DropDownList("orderColumn", new SelectListItem[]{
-
-            new SelectListItem() { Text = "만든날짜", Value = OrderColumn.Notedate.ToString(), Selected = true },
-            new SelectListItem() { Text = "제목", Value = OrderColumn.Title.ToString()},
-            })
-
-            @Html.DropDownList("orderType", new SelectListItem[]{
-
-            new SelectListItem() { Text = "내림차순", Value = OrderType.Desc.ToString(), Selected = true },
-            new SelectListItem() { Text = "오름차순", Value = OrderType.Asc.ToString()}
-            })
-        }
-    </div>
     <div class="partViewList">
         @{ Html.RenderAction("ShowNoteList", "Note", new { orderColumn = OrderColumn.Notedate, orderType = OrderType.Desc }); }
     </div>
-</div>
+
 
 
 <div id="noteDetailForm">

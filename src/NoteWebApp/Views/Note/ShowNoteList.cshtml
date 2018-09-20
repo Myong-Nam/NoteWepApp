@@ -1,11 +1,32 @@
-﻿
+﻿@using NoteWebApp.Models
 
+
+<div id="pageTitle">노트</div>
+<div id="countNotes">@Model.Count 개의 노트</div>
+<div class="configContainer"></div>
+<div id="noteOrderBy">
+    @using (Html.BeginForm("ShowNoteList", "Note", FormMethod.Post, new { id = "noteOrderForm" }))
+    {
+        @Html.DropDownList("orderColumn", new SelectListItem[]{
+
+        new SelectListItem() { Text = "만든날짜", Value = OrderColumn.Notedate.ToString(), Selected = true },
+        new SelectListItem() { Text = "제목", Value = OrderColumn.Title.ToString()},
+        })
+
+        @Html.DropDownList("orderType", new SelectListItem[]{
+
+        new SelectListItem() { Text = "내림차순", Value = OrderType.Desc.ToString(), Selected = true },
+        new SelectListItem() { Text = "오름차순", Value = OrderType.Asc.ToString()}
+        })
+    }
+</div>
 <div class="alarm">알리미</div>
+
 <table id="noteListTable">
 
     @foreach (var item in Model)
     {
-        <tr class="individualListTr"onclick="notedetail(@item.NoteId)">
+        <tr class="individualListTr" onclick="notedetail(@item.NoteId)">
             <th>
                 <div class="listTitle">@item.Title</div>
                 <div id="noteListDate">  @item.NoteDate</div>
