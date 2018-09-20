@@ -23,7 +23,7 @@
         padding-right: 5px;
         margin-right: 10px;
     }
-    .countNoteTag {
+    .countNoteTagList {
         font-family: gotham, helvetica, arial, sans-serif;
         font-size: 13px;
         font-weight: 400;
@@ -67,8 +67,8 @@
             <li>
                 <div class="tagList">
                     <span class="tag" onclick="showNoteByTag(@item.Tag_Id)">
-                        <span class="tagName">@item.Tag_Name</span>
-                        <span class="countNoteTag"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
+                        <span class="tagNameList">@item.Tag_Name</span>
+                        <span class="countNoteTagList"> @TagDAO.GetNoteListByTagId(item.Tag_Id).Count</span>
 
                     </span>
                     <span>
@@ -83,7 +83,7 @@
                         {
                             @Html.TextBox("tagName", "", new { placeholder = item.Tag_Name});
                             @Html.Hidden("tagId", (int)item.Tag_Id);
-                            <input type="image" class="btn" alt="submit" src="~/Content/tag/check_green.png" />
+                            <img class="modifySubmit btn" src="~/Content/tag/check_green.png" onclick="submit(this)"/>
                         }
 
                     </span>
@@ -111,6 +111,7 @@
     function showNoteByTag(TagId) {
             window.location.href = '/Tag/List/?tagid=' + TagId;
     }
+
 
     //클릭한 태그 수정하는 칸 열고 다른 버튼 숨기기
     function openEditMode(tag) {
@@ -140,7 +141,5 @@
         }
         
     });
-
-   
 
 </script>
