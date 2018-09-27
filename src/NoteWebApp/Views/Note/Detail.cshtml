@@ -1,188 +1,16 @@
-﻿
-
-@using NoteWebApp.Models
+﻿@using NoteWebApp.Models
 @using System.Text.RegularExpressions
-@using System.Web;
-@model NoteVO
-@{
-    ViewBag.Title = "Detail";
-    String name = ViewBag.name;
-    var noteBookList = ViewBag.noteBookList;
-    var noteBookId = ViewBag.noteBookId;
-    var isShortcut = ViewBag.isShortCut;
-}
-@{
-    var DeleteButton = "";
-    var DeleteText = "";
-    var UpdateOrRecover = "";
-    var UpdateOrRecoverText = "";
-    var NoteListText = "";
-    var NoteList = "";
-    var Star = "";
-    var Save = "true";
-    var Info = "../../Content/menu/info.png";
-}
-@{
-    if (Model.IsDeleted == 0) //삭제된 노트가 아닐경우
-    {
-        DeleteButton = "preDelete";
-        DeleteText = "삭제";
-        UpdateOrRecover = "Update";
-        UpdateOrRecoverText = "수정";
-        NoteList = "Index";
-        if (isShortcut == "false")
-        {
-            Star = "../../Content/shortcut_stroke.png";
-            Save = "true";
+@using System.Web
+@model NoteWebApp.ViewModels.NoteIndexVM
 
-        }
-        else if (isShortcut == "true")
-        {
-            Star = "../../Content/shortcut_fill.png";
-            Save = "false";
-        }
-
-
-        NoteListText = "<< 노트 리스트로 돌아가기";
-
-    }
-    else if (Model.IsDeleted == 1) //삭제된 노트일 경우
-    {
-        DeleteButton = "Delete";
-        DeleteText = "영구삭제";
-        UpdateOrRecover = "RecoverNote";
-        UpdateOrRecoverText = "복원";
-        NoteList = "Deleted";
-        Star = "none";
-        NoteListText = "<< 휴지통 리스트로 돌아가기";
-    }
-}
-@{
-    //글자수 구하는 로직
-
-    int contentsLength = 0;
-
-    if (Model.Contents != null)
-    {
-        string Regexresult = Regex.Replace(Model.Contents, "\\r|\\n|\\t|<(.|\n)*?>", string.Empty); //태그제거
-        string finalResult = WebUtility.HtmlDecode(Regexresult); //특수문자 처리
-        contentsLength = finalResult.Length;
-    }
-
-}
 <style>
-
-    #none {
-        display: none;
+    /*1. 노트상세*/
+    #noteDetailForm {
+        width: calc(100% - 400px);
+        height: 90%;
+        float: right;
     }
-
-    /*modal*/
-    .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgba(255,255,255,0.8); /* Black w/ opacity */
-    }
-
-    /* Modal Content/Box */
-    .modal-content {
-        background-color: #fefefe;
-        margin: auto; /* 15% from the top and centered */
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255,255,255,0.7);
-        /* Could be more or less, depending on screen size */
-    }
-
-    /* Modal design */
-    .modal-info {
-        margin: auto;
-        width: 450px;
-    }
-
-    .modal-Icon {
-        vertical-align: middle;
-        text-align: center;
-    }
-
-    #modal-noteInfo {
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-        letter-spacing: 1px;
-        text-align: center;
-    }
-
-    #modal-seperater {
-        width: 124px;
-        margin: 18px auto 54px;
-        border-bottom: 1px solid #d9d9d9;
-        text-align: center;
-    }
-
-    #modal-title-data {
-        color: #383838;
-        word-break: break-word;
-        word-wrap: break-word;
-        font-size: 32px;
-        font-weight: 300;
-        line-height: 44px;
-        font-family: caecilia, times, serif;
-        text-align: center;
-    }
-
-    #modal-summary {
-        margin-bottom: 16px;
-        color: #4a4a4a;
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-    }
-
-    .modal-list {
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 11px;
-        font-weight: 400;
-        text-transform: uppercase;
-        margin-right: 8px;
-        color: #878787;
-    }
-
-    .modal-data {
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 400;
-        color: #4a4a4a;
-    }
-
-    .modal-btn {
-        text-align: center;
-    }
-
-    .modal-button {
-        color: WHITE;
-        background-color: #2dbe60;
-        border: 1px solid #2dbe60;
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        border-radius: 5px;
-        display: inline-block;
-        padding: 9px 14px;
-        min-width: 160px;
-    }
-
-        .modal-button:hover {
-            background-color: #299e52;
-        }
-
+    /*1-1. 자동저장 상태 이미지*/
     .img_loader {
         position: absolute;
         right: 30px;
@@ -192,53 +20,210 @@
     .img_loader_hidden {
         display: none;
     }
-
-    .grayscale {
-        -webkit-filter: grayscale(100%);
-        filter: gray;
-    }
-
-    .noteHeader form {
+    .noteHeader form, .TagContainer form {
         display: inline;
     }
-</style>
-<!-- The Modal -->
-<div id="myModal" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-        <div class="modal-info">
-            <div class="modal-Icon"><img src=@Info width="34px"></div>
-            <p id="modal-noteInfo">노트 정보</p>
-            <div id="modal-seperater"></div> <!--가로선-->
-            <p id="modal-title-data">@Model.Title</p>
-            <p id="modal-summary">개요</p>
-            <p class="modal-list">만든날짜 : <span class="modal-data">@Model.NoteDate</span></p>
-            <p class="modal-list">수정날짜 : <span class="modal-data">@Model.UpdatedDate</span></p>
-            <p class="modal-list">글자 수 : <span class="modal-data">@contentsLength 자</span>
-            <p class="modal-btn"><button class="modal-button">확인</button></p>
-        </div>
-    </div>
-</div>
-<br />
-<div class="noteHeader">
-    @using (Html.BeginForm("ChangeNote", "Shortcut"))
-    {
-        @Html.Hidden("id", Model.NoteId)
-        @Html.Hidden("isShortcut", @Save)
-        <input class="noteSetting" id="star" type="image" src=@Star alt="Submit" width="25px">//만약 삭제된 노트면 display = none으로
-
+    /*1-2. 태그*/
+    .TagContainer {
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
-    <img src=@Info class="noteSetting" id="openInfo" width="25px">
+
+    .Tag {
+        display: inline-block;
+        color: #606060;
+        background-color: #f8f8f8;
+        vertical-align: top;
+        border: 1px solid #d1d1d1;
+        padding: 1px 8px 1px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .Tag:hover, .tagSelected {
+        color: #ffffff;
+        background-color: #2dbe60;
+    }
+
+    .hideTags {
+        display: none;
+    }
+    /*2. 노트리스트*/
+    .partViewList {
+        margin-top: 0px;
+        height: calc(100%);
+        overflow-x: hidden;
+        border-right: 1px solid #ececec;
+    }
+
+    #noteListTable {
+        border-top: 1px solid rgb(225, 222, 222);
+        margin-top: 10px;
+    }
+
+    #noteListTable tr th {
+        width: 350px;
+        text-align: left;
+        border-bottom: 1px solid rgb(225, 222, 222);
+        padding-left: 20px;
+        padding-top: 7px;
+        height: 50px;
+        color: #707070;
+        overflow-y: visible;
+    }
+
+    #noteListTable tr th:hover {
+        background-color: #2dbe60;
+        color: #fff;
+    }
+
+    #pageTitle { /*노트리스트의 제목 : '노트'*/
+        color: #878787;
+        display: block;
+        vertical-align: top;
+        font-size: 21px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-weight: 300;
+        line-height: 26px;
+        padding: 24px 20px 0 24px;
+        border-top: 1px solid #ececec;
+    }
+
+    #countNotes { /*노트리스트의 항목*/
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #ababab;
+        padding: 24px 20px 0 24px;
+        display: inline-block;
+    }
+
+    .preview-container {
+        width: 100%;
+        overflow-x: no-display;
+        padding-right: 2px;
+    }
+
+    .listTitle {
+        font-family: sans-serif;
+        font-size: 18px;
+        font-weight: 400;
+    }
+
+    #noteListDate {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .preContents {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 10px;
+        height: 50px;
+        overflow: hidden;
+    }
+    /*2-1드롭다운리스트*/
+    .listConfig {
+        margin-left: 150px;
+        cursor: pointer;
+        display: inline;
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        color: #878787;
+    }
+
+    .select-hide {
+        display: none;
+    }
+
+    .customOption {
+        padding: 9px 54px 10px 20px;
+        background-size: 12px 12px
+    }
+
+    .select-items {
+        font-family: gotham, helvetica, arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        z-index: 100;
+        background: #fff;
+        border: 3px solid rgba(217, 217, 217, 0.4);
+        border-top: 1px solid rgba(217, 217, 217, 0.4);
+        border-left: 1px solid rgba(217, 217, 217, 0.4);
+        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04), -6px 8px 15px rgba(0, 0, 0, 0.04), 6px 8px 15px rgba(0, 0, 0, 0.04);
+        padding: 12px 0;
+        margin-top: 4px;
+        color: #606060;
+        position: fixed;
+        box-sizing: border-box;
+        margin-left: 130px;
+        min-width: 200px;
+    }
+
+    .select-items .customOption:hover {
+        background: no-repeat;
+        background-color: #2dbe60;
+        color: #fff;
+        padding: 9px 54px 10px 20px;
+        background-size: 12px 12px;
+    }
+
+    .same-as-selected {
+        background: right center no-repeat;
+        background-image: url('../../Content/greenCheck_selected.png');
+        padding: 9px 54px 10px 20px;
+    }
+
+    .configContainer {
+        display: inline;
+    }
+
+    #noteOrderForm {
+        display: none;
+    }
+    /*드롭다운리스트 끝*/
+    /*노트리스트 끝*/
+
+</style>
+
+<div class="partViewList">
+    @{ Html.RenderAction("ShowNoteList", "Note", new { noteList = Model.NoteList }); }
 </div>
+
 <div id="noteDetailForm">
-    <div>테스트</div>
-    @using (Html.BeginForm(UpdateOrRecover, "Note"))
+    @using (Html.BeginForm("AddTagToNote", "Tag"))
+    {
+        <div>
+            @Html.TextBox("tagName", "", new { placeholder = "태그 추가" })
+            @Html.Hidden("noteId", Model.SelectedNote.NoteId)
+        </div>
+    }
+    <div class="TagContainer">
+        @foreach (var item in Model.SelectedNote.TagList)
+        {
+            <div class="Tag" id="@item.Tag_Id" onmouseenter="mouseOver(this)">@item.Tag_Name</div>
+            using (Html.BeginForm("Delete", "Tag"))
+            {
+                <input type="hidden" value="@item.Tag_Id" name="tagId" />
+                <input type="image" class="deleteTagBtn select-hide" src="~/Content/tag/tag_delete.png" width="16px">
+            }
+        }
+    </div>
+    @using (Html.BeginForm("Update", "Note"))
     {
         @Html.DropDownList("noteBookId")
-        <div id="noteid">@Html.Hidden("noteId", Model.NoteId)</div><hr />
+        <div id="noteid">@Html.Hidden("noteId", Model.SelectedNote.NoteId)</div><hr />
 
         <div class="title">
-            @Html.TextBox("title", Model.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
+            @Html.TextBox("title", Model.SelectedNote.Title, new { placeholder = "노트 제목 지정", maxlength = 15, onkeyUp = "lengthAlert()" })
+
         </div>
         <div id="msg"></div>
 
@@ -246,20 +231,52 @@
             <br />
             <img class="img_loader grayscale img_loader_hidden" id="img_saving" src="~/Content/greenCheck_selected.png" width=30px />
             <img class="img_loader img_loader_hidden" id="img_loading" src="~/Content/ajax_loader_green_512.gif" width=30px />
-            @Html.TextArea("contents", Model.Contents, new { id = "noteContents" })
+            @Html.TextArea("contents", Model.SelectedNote.Contents, new { id = "noteContents" })
         </div>
-        <input type="submit" value=@UpdateOrRecoverText />
+        <input type="submit" value="수정" />
     }
-    @using (Html.BeginForm(@DeleteButton, "Note"))
+
+    @using (Html.BeginForm("Delete", "Note"))
     {
-        @Html.Hidden("noteId", Model.NoteId)
-        <input type="submit" value="@DeleteText" />
+        @Html.Hidden("noteId", Model.SelectedNote.NoteId)
+        <input type="submit" value="삭제" />
     }
 
 </div>
 <script>
-    //리스트 제목에 저장이 필요하다는 표시 하는 함수
+    //태그위에 마우스오버하면 태그 삭제 버튼 보여줌
+    function mouseOver(tag) {
+        var tags = document.getElementsByClassName("Tag");
+        for (var i = 0; i < tags.length; i++) {
+            if (tags[i].innerHTML == tag.innerHTML) {
+                var deleteTagBtn = document.getElementsByClassName("deleteTagBtn");
+                deleteTagBtn[i].classList.remove("select-hide");
+                tags[i].classList.add("tagSelected");
+                mouseOutOfTag(i);
+            }
+        }
 
+    }
+    //태그영역 이외 마우스 오버하면 태그 삭제 버튼 숨김
+    function mouseOutOfTag(index) {
+        var tags = document.getElementsByClassName("Tag");
+        var deleteTagBtn = document.getElementsByClassName("deleteTagBtn")[index];
+        var tagGroup = document.getElementsByClassName("TagContainer")[0];
+        document.addEventListener("mouseover", function (e) {
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+            if (target == tagGroup || target == deleteTagBtn) {
+                deleteTagBtn.classList.remove("select-hide");
+                tags[index].classList.add("tagSelected");
+            } else {
+                deleteTagBtn.classList.add("select-hide");
+                tags[index].classList.remove("tagSelected");
+            }
+        })
+    }
+
+
+    //리스트 제목에 저장이 필요하다는 표시 하는 함수
     $(document).ready(function () {
         CKEDITOR.replace('contents',
             {
@@ -272,20 +289,17 @@
                     data: {
                         title: document.getElementsByName('title')[0].value,
                         contents: this.getData(),
-                        noteBookId: @Model.NoteBookId,
-                        noteid: @Model.NoteId
+                        noteBookId: @Model.SelectedNote.NoteBookId,
+                        noteid: @Model.SelectedNote.NoteId
                     }
-                }).done(function () {
-                });
+                }).done(function () { /*nothing */ });
 
-                if (@Model.IsDeleted == 1) {
+                if (@Model.SelectedNote.IsDeleted == 1) {
                     document.getElementById("star").setAttribute("id", "none");
                 }
 
             });
-
     });
-
 
     function lengthAlert() {
         var length = document.getElementById("title").value.length;
@@ -325,4 +339,114 @@
 
 
 
+</script>
+
+<script>
+
+    ////드롭다운 커스터마이징
+    ////[1] 오리지널 드롭다운에서 이미 선택된 값을 보여주는 엘리먼트를 만든다.
+
+    ////1. 오리지널 드롭다운을 찾기
+    ////2. 오리지널 옵션을 따옴
+    ////3. 오리지널 드롭다운 아래에 child로 selected value를 넣음.
+
+
+    var originListOrder = document.getElementById("noteOrderBy"); //원본 드롭다운
+    var originSelect = originListOrder.getElementsByTagName("select")[0]; //원본의 옵션을넣음
+    var originOrderType = originListOrder.getElementsByTagName("select")[1];//원본의 오더타입 select객체
+
+    var originContainer = document.getElementsByClassName("configContainer")[0];
+
+    var listConfig = document.createElement("DIV"); //새로운 엘리먼트를 만듬
+    listConfig.setAttribute("class", "listConfig"); // 드롭다운을 보여줄 버튼을 만듬
+    listConfig.innerHTML = "설정 ∨";
+    //새로운 엘리먼트를 원본 자식으로 넣음.
+    originContainer.appendChild(listConfig);
+
+    //[2] 다른 옵션 값을 넣어준다.
+
+    //1. 옵션들을 감싸줄 container를 만들되, 사용하지않을 땐 숨겨야하므로 숨길수 있는 클래스도 넣는다.
+    var optionContainer = document.createElement("DIV");
+    optionContainer.setAttribute("class", "select-items select-hide");
+
+    ////2. container에 다른 옵션들을 넣어준다.
+    for (i = 0; i < originSelect.length; i++) {
+        var customOption = document.createElement("DIV");
+        customOption.setAttribute("class", "customOption");
+        customOption.innerHTML = originSelect[i].innerHTML;
+
+        if (customOption.innerHTML == originSelect[originSelect.selectedIndex].innerHTML) {
+            customOption.setAttribute("class", "customOption same-as-selected")
+        }
+        optionContainer.appendChild(customOption);
+
+
+        customOption.addEventListener("click", function (e) {
+
+            for (j = 0; j < originSelect.length; j++) {
+                if (this.innerHTML == originSelect[j].innerHTML) {//선택한 옵션의 내용으로 원본의 해당 인덱스를 찾아서
+                    originSelect.options[j].selected = true;
+                    //노트리스트에 선택을 반영하는 로직
+
+                    y = this.parentNode.getElementsByClassName("same-as-selected");
+                    for (k = 0; k < y.length; k++) {
+                        y[k].classList.remove("same-as-selected");
+                    }
+                    this.setAttribute("class", "customOption same-as-selected");
+                    $("#noteOrderForm").submit();
+                    break;
+                };
+            };
+        });
+    };
+    //메뉴 구분선 만들기
+    var menuDivider = document.createElement("DIV");
+    menuDivider.setAttribute("class", "menuDiver");
+    optionContainer.appendChild(menuDivider);
+
+    //2-1정렬기준 내림오름 만들어주기
+    for (i = 0; i < originOrderType.length; i++) {
+        var customOption = document.createElement("DIV");
+        customOption.setAttribute("class", "customOption");
+        customOption.innerHTML = originOrderType[i].innerHTML;
+
+        if (customOption.innerHTML == originOrderType[originOrderType.selectedIndex].innerHTML) {
+            customOption.setAttribute("class", "customOption same-as-selected")
+        }
+        optionContainer.appendChild(customOption);
+        customOption.addEventListener("click", function (e) {
+
+            for (j = 0; j < originOrderType.length; j++) {
+                if (this.innerHTML == originOrderType[j].innerHTML) {//선택한 옵션의 내용으로 원본의 해당 인덱스를 찾아서
+                    originOrderType.options[j].selected = true;
+                    //노트리스트에 선택을 반영하는 로직
+
+                    y = this.parentNode.getElementsByClassName("same-as-selected");
+                    for (k = 0; k < y.length; k++) {
+                        y[k].classList.remove("same-as-selected");
+                    }
+                    this.setAttribute("class", "customOption same-as-selected");
+                    $("#noteOrderForm").submit();
+                    break;
+                };
+            };
+        });
+    };
+
+
+
+
+    //4. container를 원본 드롭다운의 자식으로 넣는다.
+    originContainer.appendChild(optionContainer);
+
+    //다른곳클릭하면 닫는 메소드
+    document.addEventListener("click", function (e) {
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+        if (target == listConfig) {
+            optionContainer.classList.toggle("select-hide");
+        } else {
+            optionContainer.classList.add("select-hide");
+        }
+    })
 </script>

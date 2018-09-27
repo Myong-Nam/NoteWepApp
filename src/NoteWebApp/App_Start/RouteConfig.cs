@@ -7,17 +7,31 @@ using System.Web.Routing;
 
 namespace NoteWebApp
 {
-    public class RouteConfig
-    {
-        public static void RegisterRoutes(RouteCollection routes)
-        {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+	public class RouteConfig
+	{
+		public static void RegisterRoutes(RouteCollection routes)
+		{
+			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Note", action = "Index", id = UrlParameter.Optional }
-            );
-        }
-    }
+			routes.MapRoute(
+			name: "Create Note Route",
+			url: "Note/Create",
+			defaults: new { controller = "Note", action = "Create" }
+			);
+
+			routes.MapRoute(
+				name: "Note Route",
+				url: "Note/{id}",
+				defaults: new { controller = "Note", action = "Detail", id = UrlParameter.Optional }
+			);
+
+			routes.MapRoute(
+				name: "Default",
+				url: "{controller}/{action}/{id}",
+				defaults: new { controller = "Note", action = "Detail", id = UrlParameter.Optional }
+			);
+		}
+
+
+	}
 }

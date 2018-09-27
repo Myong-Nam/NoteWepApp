@@ -164,10 +164,12 @@ namespace NoteWebApp.Models
 					NoteId = int.Parse(reader["NOTEID"].ToString()),
 					Title = reader["TITLE"].ToString(),
 					IsDeleted = int.Parse(reader["ISDELETED"].ToString()),
+					IsShortcut = Convert.ToBoolean(int.Parse(reader["ISSHORTCUT"].ToString())),
 					Contents = reader["CONTENTS"] as String,
 					NoteDate = reader["NOTEDATE"].ToString(),
 					UpdatedDate = reader["UpdatedDate"].ToString(),
-					NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString())
+					NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString()),
+					TagList = TagDAO.GetTagListByNote(noteId)
 				};
 
 				note = newNote;
