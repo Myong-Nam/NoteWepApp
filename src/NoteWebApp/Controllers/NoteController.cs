@@ -55,9 +55,9 @@ namespace NoteWebApp.Controllers
 			string selectedNoteId = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
 
 
-			//특정 노트 아이디가 있을떄AbsolutePath = "/"
+			//특정 노트 아이디가 있을떄
 
-			if (selectedNoteId != "")
+			if (selectedNoteId != "" || selectedNoteId != null)
 			{
 				id = int.Parse(selectedNoteId);
 
@@ -180,7 +180,9 @@ namespace NoteWebApp.Controllers
 			}
 
 			//var noteList = NoteDAO.GetNoteList((OrderColumn)Session["OrderColumn"], (OrderType)Session["OrderType"], defaultNoteBookId);
-			Response.Redirect(Request.UrlReferrer.ToString());
+			
+			
+
 			return View();
 
 		}
@@ -296,7 +298,7 @@ namespace NoteWebApp.Controllers
 		{
 			NoteDAO.Update(noteId, title, contents, noteBookId);
 
-			return RedirectToAction("detail");
+			return RedirectToAction(noteId.ToString());
 		}
 
 		public ActionResult Deleted()
