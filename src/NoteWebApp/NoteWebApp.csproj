@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Oracle.DataAccess, Version=4.112.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=AMD64" />
     <Reference Include="System.Web.DynamicData" />
@@ -486,8 +489,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\App.cs" />
-    <Compile Include="Models\DataBase.cs" />
+    <Compile Include="Models\DbHelper.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\NoteVO.cs" />
     <Compile Include="Models\NoteBookVO.cs" />
@@ -542,12 +544,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Handler\Image\" />
     <Folder Include="Views\Test_View\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DbHelper\DbHelper.csproj">
-      <Project>{d029bf47-a4ad-4dd0-8972-9a4112f7e2e9}</Project>
-      <Name>DbHelper</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

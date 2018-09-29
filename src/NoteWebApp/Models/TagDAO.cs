@@ -16,7 +16,7 @@ namespace NoteWebApp.Models
 		{
 			List<TagVO> TagList = new List<TagVO>();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 
 			conn.Open();
 
@@ -50,7 +50,7 @@ namespace NoteWebApp.Models
 		/// <param name="name">태그 이름</param>
 		public static string Create(String name)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -115,7 +115,7 @@ namespace NoteWebApp.Models
 		{
 			List<TagVO> TagList = new List<TagVO>();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 
 			conn.Open();
 
@@ -150,7 +150,7 @@ namespace NoteWebApp.Models
 		{
 			int NewTagId = new int();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -180,7 +180,7 @@ namespace NoteWebApp.Models
 		{
 			TagVO newTag = new TagVO();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -249,7 +249,7 @@ namespace NoteWebApp.Models
 		{
 			List<TagVO> tagList = new List<TagVO>();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -288,7 +288,7 @@ namespace NoteWebApp.Models
 		{
 			string tagname = "";
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -325,7 +325,7 @@ namespace NoteWebApp.Models
 		{
 			List<NoteVO> noteList = new List<NoteVO>();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -358,7 +358,7 @@ namespace NoteWebApp.Models
 
 		public static void DeleteTag(int tagId)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -401,7 +401,7 @@ namespace NoteWebApp.Models
 		/// </summary>
 		public static string ModifyTagName(int tagId, string newTagName)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 				//빈칸 or 아무변화없을 경우

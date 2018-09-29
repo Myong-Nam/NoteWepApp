@@ -1,5 +1,4 @@
-﻿using DbHelper;
-using NoteWebApp.Models;
+﻿using NoteWebApp.Models;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -16,11 +15,7 @@ namespace NoteWebApp
 			//
 			// Database setting
 			//
-			Database database = new Database();
-			database.ConnectionString = ConfigurationManager.ConnectionStrings["MainDB"].ToString();
-			App.Database = database;
-
-
+			DbHelper.ConnectionString = ConfigurationManager.ConnectionStrings["MainDB"].ToString();
 		}
 	}
 }

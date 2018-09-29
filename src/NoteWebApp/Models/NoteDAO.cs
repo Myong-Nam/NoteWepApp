@@ -1,4 +1,5 @@
 ﻿
+using Dapper;
 using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace NoteWebApp.Models
 		{
 			List<NoteVO> noteList = new List<NoteVO>();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
+			OracleConnection conn = DbHelper.NewConnection();
 
 			conn.Open();
 
@@ -144,18 +145,15 @@ namespace NoteWebApp.Models
 		{
 			NoteVO note = new NoteVO();
 
-			OracleConnection conn = new OracleConnection(DataBase.ConnectionString);
-
-			conn.Open();
-
 			String sql = "select * from Note where noteId = " + noteId.ToString();
 
-			OracleCommand cmd = new OracleCommand
+			using (var conn = DbHelper.NewConnection())
 			{
-				Connection = conn,
-				CommandText = sql
-			};
+				note = conn.QuerySingle<NoteVO>(sql);
+			}
 
+
+			
 			OracleDataReader reader = cmd.ExecuteReader();
 			while (reader.Read())
 			{
@@ -172,10 +170,35 @@ namespace NoteWebApp.Models
 					TagList = TagDAO.GetTagListByNote(noteId)
 				};
 
-				note = newNote;
-			}
-			reader.Close();
-			conn.Close();
+
+			//conn.Open();
+
+			//String sql = "select * from Note where noteId = " + noteId.ToString();
+
+			//OracleCommand cmd = new OracleCommand
+			//{
+			//	Connection = conn,
+			//	CommandText = sql
+			//};
+
+			//OracleDataReader reader = cmd.ExecuteReader();
+			//while (reader.Read())
+			//{
+			//	NoteVO newNote = new NoteVO
+			//	{
+			//		NoteId = int.Parse(reader["NOTEID"].ToString()),
+			//		Title = reader["TITLE"].ToString(),
+			//		IsDeleted = int.Parse(reader["ISDELETED"].ToString()),
+			//		Contents = reader["CONTENTS"] as String,
+			//		NoteDate = reader["NOTEDATE"].ToString(),
+			//		UpdatedDate = reader["UpdatedDate"].ToString(),
+			//		NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString())
+			//	};
+
+			//	note = newNote;
+			//}
+			//reader.Close();
+			//conn.Close();
 
 
 			return note;  
@@ -195,7 +218,7 @@ namespace NoteWebApp.Models
 			int NewBookId = int.Parse(notebookid);
 			
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -225,7 +248,7 @@ namespace NoteWebApp.Models
 		{
 			int NewNoteId = new int();
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -259,7 +282,7 @@ namespace NoteWebApp.Models
 		*/
 		public static void preDelete(int noteId)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -284,7 +307,7 @@ namespace NoteWebApp.Models
 		*/
 		public static int Delete(int noteId)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -313,7 +336,7 @@ namespace NoteWebApp.Models
 		{
 			int id = int.Parse(noteBookId);
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -337,7 +360,7 @@ namespace NoteWebApp.Models
 		*/
 		public static void RecoverNote(int noteId)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -355,7 +378,7 @@ namespace NoteWebApp.Models
 
 		public static void ToShortCut(int noteid)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -376,7 +399,7 @@ namespace NoteWebApp.Models
 		{
 			string NewestNote = "";
 
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 
@@ -408,7 +431,7 @@ namespace NoteWebApp.Models
 
 		public static void NotToShortCut(int noteid)
 		{
-			using (OracleConnection conn = new OracleConnection(DataBase.ConnectionString))
+			using (OracleConnection conn = DbHelper.NewConnection())
 			{
 				conn.Open();
 

@@ -1,5 +1,5 @@
-﻿using NoteWebApp.Models;
-using System.Data.Common;
+﻿using Dapper;
+using Oracle.DataAccess.Client;
 using System.Web.Mvc;
 
 namespace NoteWebApp.Areas.Lab.Controllers
@@ -9,11 +9,14 @@ namespace NoteWebApp.Areas.Lab.Controllers
 		// GET: Lab/Dapper
 		public ActionResult Index()
 		{
-			DbConnection conn = App.Database.NewConnection;
+			string connectionString = "Data Source = XE; USER ID = Note; PASSWORD = note;";
 
+			using (var conn = new OracleConnection(connectionString))
+			{
+				int result = conn.ExecuteScalar<int>("select count(*) from note");
 
-			//Database.
-
+				ViewBag.Result = result;
+			}
 
 			return View();
 		}
