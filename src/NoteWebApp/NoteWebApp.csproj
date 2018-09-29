@@ -514,7 +514,7 @@
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Note\Index.cshtml" />
+    <Content Include="Views\Note\Detail.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Note\Create.cshtml" />
     <Content Include="Views\Note\Deleted.cshtml" />
@@ -529,9 +529,10 @@
     <Content Include="Views\Tag\Index.cshtml" />
     <Content Include="Views\Tag\Create.cshtml" />
     <Content Include="Views\Tag\List.cshtml" />
-    <Content Include="Views\Note\Detail.cshtml" />
     <Content Include="Views\Tag\Modify.cshtml" />
     <Content Include="Views\Tag\Edit.cshtml" />
+    <Content Include="Views\Note\Ind.cshtml" />
+    <Content Include="Views\Note\SaveNoteListInSession.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -15,7 +15,7 @@ namespace NoteWebApp.Models
 		public string UpdatedDate { get; set; }
 		public int IsDeleted { get; set; }
 		public int NoteBookId { get; set; }
-		public int IsShortcut { get; set; }
+		public Boolean IsShortcut { get; set; }
 		public List<TagVO> TagList { get; set; }
 	}
 }

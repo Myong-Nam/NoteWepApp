@@ -2,6 +2,7 @@
 using NoteWebApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 
 namespace NoteWebApp.Controllers
@@ -10,15 +11,20 @@ namespace NoteWebApp.Controllers
 	{
 		// GET: Note
 
-		[HttpGet]
 		public ActionResult Index()
 		{
-			NoteVO selected = new NoteVO();
+			return View();
+		}
+
+		[HttpGet]
+		public ActionResult Detail()
+		{
+			NoteIndexVM model = new NoteIndexVM();
+
 			int id; //노트아이디
 
 			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
 			OrderType defaultOrderType = OrderType.Desc;
-			int defaultNoteBookId = 0;
 
 			OrderColumn selectedOrderColumn;
 			OrderType selectedOrderType;	
@@ -31,7 +37,6 @@ namespace NoteWebApp.Controllers
 			{
 				// use default value
 				selectedOrderColumn = defaultOrderColumn;
-
 			}
 
 			if (Session["OrderType"] != null)
@@ -44,71 +49,66 @@ namespace NoteWebApp.Controllers
 				selectedOrderType = defaultOrderType;
 			}
 
+			model.NoteList = NoteDAO.GetNoteList((OrderColumn)selectedOrderColumn, (OrderType)selectedOrderType, 0);
 
-			List<NoteVO> noteList = NoteDAO.GetNoteList((OrderColumn)selectedOrderColumn, selectedOrderType, defaultNoteBookId);
-			ViewBag.noteList = noteList;
+			var uri = Request.Url;
+			string selectedNoteId = Path.GetFileNameWithoutExtension(uri.AbsolutePath);
+
 
 			//특정 노트 아이디가 있을떄
-			if (Request.QueryString["id"] != null)
-			{	
-				id = int.Parse(Request.QueryString["id"]);
 
-				selected = NoteDAO.GetNotebyId(id);
+			if (selectedNoteId != "" || selectedNoteId != null)
+			{
+				id = int.Parse(selectedNoteId);
+
+				model.SelectedNote = NoteDAO.GetNotebyId(id);
 
 			} else //노트 아이디 없을 때는 가장 최근 노트 가져오기
 			{
-				selected = NoteDAO.GetNotebyId(noteList[0].NoteId);
-				id = selected.NoteId;
+				model.SelectedNote = NoteDAO.GetNotebyId(model.NoteList[0].NoteId);
+				id = model.SelectedNote.NoteId;
 				
 			}
-
-			NoteIndexVM model = new NoteIndexVM();
-			model.SelectedNote = selected;
-			model.SelectedNote.TagList = TagDAO.GetTagListByNote(selected.NoteId);
-
-			//바로가기 여부 보여줌(노트면 0, 노트북이면 1)
-			ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 0);
-
 
 			//노트북선택 
 			SelectNoteBook(id);
 
 			//노트 아이디로 노트북 얻어옴
-			int noteBookId = selected.NoteBookId;
-			model.NoteBook = NoteBookDAO.GetNoteBookbyId(noteBookId);
+			model.NoteBook = NoteBookDAO.GetNoteBookbyId(model.SelectedNote.NoteBookId);
 
 			return View(model);
 		}
 
 		//노트 상세 partial view
-		public PartialViewResult Detail(int selectedNoteid)
-		{
-			NoteVO selected = new NoteVO();
 
-			if (selectedNoteid != 0)
-			{
-				selected = NoteDAO.GetNotebyId(selectedNoteid);
-			}
-			else
-			{
-				selected = NoteDAO.GetNotebyId(40);
-			}
+		//public PartialViewResult Detail(int selectedNoteid)
+		//{
+		//	NoteVO selected = new NoteVO();
 
-			//바로가기 여부 보여줌(노트면 0, 노트북이면 1)
-			ViewBag.isShortCut = ShortcutManager.IsShorcut(selectedNoteid, 0);
+		//	if (selectedNoteid != 0)
+		//	{
+		//		selected = NoteDAO.GetNotebyId(selectedNoteid);
+		//	}
+		//	else
+		//	{
+		//		selected = NoteDAO.GetNotebyId(40);
+		//	}
+
+		//	//바로가기 여부 보여줌(노트면 0, 노트북이면 1)
+		//	ViewBag.isShortCut = ShortcutManager.IsShorcut(selectedNoteid, 0);
 
 
-			//노트북선택 
-			SelectNoteBook(selectedNoteid);
+		//	//노트북선택 
+		//	SelectNoteBook(selectedNoteid);
 
-			//노트 아이디로 노트북 얻어옴
-			int noteBookId = selected.NoteBookId;
-			NoteBookVO notebook = NoteBookDAO.GetNoteBookbyId(noteBookId);
-			int NoteBookId = notebook.NoteBookId;
-			ViewBag.name = notebook.Name;
+		//	//노트 아이디로 노트북 얻어옴
+		//	int noteBookId = selected.NoteBookId;
+		//	NoteBookVO notebook = NoteBookDAO.GetNoteBookbyId(noteBookId);
+		//	int NoteBookId = notebook.NoteBookId;
+		//	ViewBag.name = notebook.Name;
 
-			return PartialView(selected);
-		}
+		//	return PartialView(selected);
+		//}
 
 		//노트 정보 가져오는 modal partial view
 		[HttpPost]
@@ -118,14 +118,18 @@ namespace NoteWebApp.Controllers
 			return PartialView(note);
 		}
 
+		public PartialViewResult ShowNoteList(List<NoteVO> noteList)
+		{
+			return PartialView(noteList);
+		}
 
 
-		//노트 리스트 보여주는 partial view
-		
-		public PartialViewResult ShowNoteList(OrderColumn orderColumn, OrderType orderType)
+		//노트 리스트
+		public ActionResult NoteListByOrder(OrderColumn orderColumn, OrderType orderType)
 		{
 			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
 			OrderType defaultOrderType = OrderType.Desc;
+			int defaultNoteBookId = 0;
 
 			OrderColumn selectedOrderColumn;
 			OrderType selectedOrderType;
@@ -173,17 +177,14 @@ namespace NoteWebApp.Controllers
 				// parameter is delivered by user
 				selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), orderType.ToString());
 				Session["OrderType"] = selectedOrderType;
-			}	
+			}
 
-			var noteList = NoteDAO.GetNoteList((OrderColumn)Session["OrderColumn"], (OrderType)Session["OrderType"], 0);
+			//var noteList = NoteDAO.GetNoteList((OrderColumn)Session["OrderColumn"], (OrderType)Session["OrderType"], defaultNoteBookId);
+			
+			
 
-			// 리스트 정렬 정보 (column, asc|desc)
+			return View();
 
-
-			//바로가기 여부 보여줌
-			//ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);
-
-			return PartialView(noteList);
 		}
 
 		//새노트에서 노트북 선택하는 selectitem
@@ -266,7 +267,7 @@ namespace NoteWebApp.Controllers
 		{
 			NoteDAO.Create(title, contents, noteBookId);
 
-			return RedirectToAction("index");
+			return RedirectToAction("detail");
 		}
 
 		public ActionResult Create(String title, String contents)
@@ -280,7 +281,7 @@ namespace NoteWebApp.Controllers
 		{
 			NoteDAO.preDelete(noteId);
 
-			return RedirectToAction("index");
+			return RedirectToAction("detail");
 		}
 
 		[HttpPost]
@@ -297,7 +298,7 @@ namespace NoteWebApp.Controllers
 		{
 			NoteDAO.Update(noteId, title, contents, noteBookId);
 
-			return RedirectToAction("index");
+			return RedirectToAction(noteId.ToString());
 		}
 
 		public ActionResult Deleted()
