@@ -197,6 +197,8 @@
     @{ Html.RenderAction("ShowNoteList", "Note", new { noteList = Model.NoteList }); }
 </div>
 
+@if ( Model.SelectedNote.NoteId != 0)
+{
 <div id="noteDetailForm">
     @using (Html.BeginForm("AddTagToNote", "Tag"))
     {
@@ -243,6 +245,9 @@
     }
 
 </div>
+}
+
+
 <script>
     //태그위에 마우스오버하면 태그 삭제 버튼 보여줌
     function mouseOver(tag) {
@@ -276,12 +281,17 @@
     }
 
 
+    CKEDITOR.editorConfig = function (config) {
+
+
+    }
+
     //리스트 제목에 저장이 필요하다는 표시 하는 함수
     $(document).ready(function () {
         CKEDITOR.replace('contents',
             {
                 fullPage: true,
-                filebrowserImageUploadUrl: '../Handler/Upload.ashx',
+                filebrowserUploadUrl: '../UploadToDatabase',
                 height: '450px'
             }).on('change', function () {
 
@@ -360,7 +370,7 @@
 
     var listConfig = document.createElement("DIV"); //새로운 엘리먼트를 만듬
     listConfig.setAttribute("class", "listConfig"); // 드롭다운을 보여줄 버튼을 만듬
-    listConfig.innerHTML = "설정 ∨";
+    listConfig.innerHTML = "@Resources.Label.ListViewOption";
     //새로운 엘리먼트를 원본 자식으로 넣음.
     originContainer.appendChild(listConfig);
 

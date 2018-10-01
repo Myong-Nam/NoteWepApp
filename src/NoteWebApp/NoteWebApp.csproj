@@ -470,6 +470,26 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Label.en.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Label.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Label.en-US.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Label.ko-KR.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.ko-KR.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Lab\Controllers\ControlController.cs" />
     <Compile Include="Areas\Lab\Controllers\DapperController.cs" />
@@ -544,6 +564,30 @@
     <Folder Include="App_Data\" />
     <Folder Include="Handler\Image\" />
     <Folder Include="Views\Test_View\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.ko-KR.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.ko-KR.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.en.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.en.designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

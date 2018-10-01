@@ -147,13 +147,21 @@ namespace NoteWebApp.Models
 
 			String sql = "select * from Note where noteId = " + noteId.ToString();
 
-			using (var conn = DbHelper.NewConnection())
+			OracleConnection conn = DbHelper.NewConnection();
+
+			conn.Open();
+
+			//using (conn = DbHelper.NewConnection())
+			//{
+			//	note = conn.QuerySingle<NoteVO>(sql);
+			//}
+
+			OracleCommand cmd = new OracleCommand
 			{
-				note = conn.QuerySingle<NoteVO>(sql);
-			}
+				Connection = conn,
+				CommandText = sql
+			};
 
-
-			
 			OracleDataReader reader = cmd.ExecuteReader();
 			while (reader.Read())
 			{
@@ -170,38 +178,11 @@ namespace NoteWebApp.Models
 					TagList = TagDAO.GetTagListByNote(noteId)
 				};
 
-
-			//conn.Open();
-
-			//String sql = "select * from Note where noteId = " + noteId.ToString();
-
-			//OracleCommand cmd = new OracleCommand
-			//{
-			//	Connection = conn,
-			//	CommandText = sql
-			//};
-
-			//OracleDataReader reader = cmd.ExecuteReader();
-			//while (reader.Read())
-			//{
-			//	NoteVO newNote = new NoteVO
-			//	{
-			//		NoteId = int.Parse(reader["NOTEID"].ToString()),
-			//		Title = reader["TITLE"].ToString(),
-			//		IsDeleted = int.Parse(reader["ISDELETED"].ToString()),
-			//		Contents = reader["CONTENTS"] as String,
-			//		NoteDate = reader["NOTEDATE"].ToString(),
-			//		UpdatedDate = reader["UpdatedDate"].ToString(),
-			//		NoteBookId = int.Parse(reader["NOTEBOOKID"].ToString())
-			//	};
-
-			//	note = newNote;
-			//}
-			//reader.Close();
-			//conn.Close();
-
+				note = newNote;
+			}
 
 			return note;  
+
 		}
 
 		// 새 노트 작성 : /Create

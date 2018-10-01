@@ -1,7 +1,7 @@
 ﻿@using NoteWebApp.Models
 
 
-<div id="pageTitle">노트</div>
+<div id="pageTitle">@Resources.Label.Note</div>
 <div id="countNotes">@Model.Count 개의 노트</div>
 <div class="configContainer"></div>
 <div id="noteOrderBy">
@@ -57,6 +57,6 @@
 
     });
     function noteDetail(id) {
-         window.location.href = '/Note/' + id;
+         window.location.href = '/Note/Detail/' + id;
     }
 </script>
