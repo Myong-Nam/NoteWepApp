@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace NoteWebApp.Controllers
 {
-	public class TagController : Controller
+	public class TagController : BaseController
 	{
 		// GET: Tag
 		public ActionResult Index()
@@ -20,6 +20,9 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Create(string tagName)
 		{
+			var logger = NLog.LogManager.GetCurrentClassLogger();
+			logger.Info($"tagName: {tagName}");
+
 			string msg = TagDAO.Create(tagName);
 			ViewBag.msg = msg;
 

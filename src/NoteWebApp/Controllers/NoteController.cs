@@ -2,17 +2,21 @@
 using NoteWebApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Resources;
 using System.Web.Mvc;
 
 namespace NoteWebApp.Controllers
 {
-	public class NoteController : Controller
+	public class NoteController : BaseController
 	{
 		// GET: Note
 
 		[HttpGet]
 		public ActionResult Index()
 		{
+			var logger = NLog.LogManager.GetCurrentClassLogger();
+			logger.Info("");
+
 			NoteVO selected = new NoteVO();
 			int id; //노트아이디
 
@@ -114,6 +118,9 @@ namespace NoteWebApp.Controllers
 		[HttpPost]
 		public PartialViewResult Info(int noteid)
 		{
+			var logger = NLog.LogManager.GetCurrentClassLogger();
+			logger.Info($"note id: {noteid}");
+
 			NoteVO note = NoteDAO.GetNotebyId(noteid);
 			return PartialView(note);
 		}

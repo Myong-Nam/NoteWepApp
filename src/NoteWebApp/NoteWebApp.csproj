@@ -48,7 +48,14 @@
       <HintPath>..\packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="Oracle.DataAccess, Version=4.112.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=AMD64" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -157,6 +164,13 @@
     <Content Include="Areas\Lab\Views\SqlInjection\Index.cshtml" />
     <Content Include="Areas\Lab\Views\SqlInjection\SecuredLogin.cshtml" />
     <Content Include="Areas\Lab\Views\Dapper\Index.cshtml" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Lab\Views\MultiLanguage\Index.cshtml" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -470,18 +484,40 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\Label.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Label.en-US.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Label.en.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Label.ko-KR.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Label.ko-KR.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Lab\Controllers\ControlController.cs" />
     <Compile Include="Areas\Lab\Controllers\DapperController.cs" />
     <Compile Include="Areas\Lab\Controllers\DragDropFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
     <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
+    <Compile Include="Areas\Lab\Controllers\MultiLanguageController.cs" />
     <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\SqlInjectionController.cs" />
     <Compile Include="Areas\Lab\LabAreaRegistration.cs" />
     <Compile Include="Areas\Lab\Models\BinaryFile.cs" />
     <Compile Include="Areas\Lab\Models\BinaryFileVO.cs" />
     <Compile Include="Areas\Lab\Models\memory_structure.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\NoteBookController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\ShortcutController.cs" />
@@ -542,7 +578,32 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Handler\Image\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Test_View\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.ko-KR.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.ko-KR.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Label.en.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Label.en.designer.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

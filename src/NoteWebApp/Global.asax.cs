@@ -9,13 +9,23 @@ namespace NoteWebApp
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+			var logger = NLog.LogManager.GetCurrentClassLogger();
+
+			logger.Info(System.Environment.NewLine);
+			logger.Info(System.Environment.NewLine);
+			logger.Info(System.Environment.NewLine);
+			logger.Info(System.Environment.NewLine);
+			logger.Info("================================ Application Start ======================================");
+
+			AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
 			//
 			// Database setting
 			//
 			DbHelper.ConnectionString = ConfigurationManager.ConnectionStrings["MainDB"].ToString();
+
+
 		}
 	}
 }
