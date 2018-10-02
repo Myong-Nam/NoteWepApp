@@ -8,14 +8,7 @@
     ViewBag.Title = "Index";
 
 }
-@{
 
-    String name = ViewBag.name;
-    var noteBookList = ViewBag.noteBookList;
-    var noteBookId = ViewBag.noteBookId;
-    var isShortcut = ViewBag.isShortCut;
-    var noteList = ViewBag.noteList;
-}
 @{
     var DeleteButton = "";
     var DeleteText = "";
@@ -36,13 +29,13 @@
         UpdateOrRecover = "Update";
         UpdateOrRecoverText = "수정";
         NoteList = "Index";
-        if (isShortcut == "false")
+        if (Model.SelectedNote.IsShortcut == false)
         {
             Star = "../../Content/shortcut_stroke.png";
             Save = "true";
 
         }
-        else if (isShortcut == "true")
+        else
         {
             Star = "../../Content/shortcut_fill.png";
             Save = "false";
@@ -76,176 +69,173 @@
     }
 }
 
-
-
 <style>
-    .partViewList {
-        margin-top: 0px;   
-        height: calc(100%);
-        overflow-x: hidden;
-    }
-
-    #noteListTable {
-        overflow-y: scroll;
-    }
+        .partViewList {
+            margin-top: 0px;
+            height: calc(100%);
+            overflow-x: hidden;
+            overflow-y: visible;
+        }
 
     #noteOrderBy {
         margin-bottom: 5px;
     }
 
-    #pageTitle {
-        color: #878787;
-        display: block;
-        vertical-align: top;
-        font-size: 21px;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-weight: 300;
-        line-height: 26px;
-        padding: 24px 20px 0 24px;
-    }
+        #pageTitle {
+            color: #878787;
+            display: block;
+            vertical-align: top;
+            font-size: 21px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: gotham, helvetica, arial, sans-serif;
+            font-weight: 300;
+            line-height: 26px;
+            padding: 24px 20px 0 24px;
+        }
 
-    #countNotes, .alarm {
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 400;
-        color: #ababab;
-        padding: 24px 20px 0 24px;
-        display: inline-block;
-    }
+        #countNotes, .alarm {
+            font-family: gotham, helvetica, arial, sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            color: #ababab;
+            padding: 24px 20px 0 24px;
+            display: inline-block;
+        }
 
-    .listConfig {
-        margin-left: 150px;
-        cursor: pointer;
-        display: inline;
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 400;
-        color: #878787;
-    }
+        .listConfig {
+            margin-left: 150px;
+            cursor: pointer;
+            display: inline;
+            font-family: gotham, helvetica, arial, sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            color: #878787;
+        }
 
-    .select-hide {
-        display: none;
-    }
+        .select-hide {
+            display: none;
+        }
 
-    .customOption {
-        padding: 9px 54px 10px 20px;
-        background-size: 12px 12px
-    }
+        .customOption {
+            padding: 9px 54px 10px 20px;
+            background-size: 12px 12px
+        }
 
-    .select-items {
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-        z-index: 100;
-        background: #fff;
-        border: 3px solid rgba(217, 217, 217, 0.4);
-        border-top: 1px solid rgba(217, 217, 217, 0.4);
-        border-left: 1px solid rgba(217, 217, 217, 0.4);
-        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04), -6px 8px 15px rgba(0, 0, 0, 0.04), 6px 8px 15px rgba(0, 0, 0, 0.04);
-        padding: 12px 0;
-        margin-top: 4px;
-        color: #606060;
-        position: fixed;
-        box-sizing: border-box;
-        margin-left: 130px;
-        min-width: 200px;
-    }
+        .select-items {
+            font-family: gotham, helvetica, arial, sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            z-index: 100;
+            background: #fff;
+            border: 3px solid rgba(217, 217, 217, 0.4);
+            border-top: 1px solid rgba(217, 217, 217, 0.4);
+            border-left: 1px solid rgba(217, 217, 217, 0.4);
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.04), -6px 8px 15px rgba(0, 0, 0, 0.04), 6px 8px 15px rgba(0, 0, 0, 0.04);
+            padding: 12px 0;
+            margin-top: 4px;
+            color: #606060;
+            position: fixed;
+            box-sizing: border-box;
+            margin-left: 130px;
+            min-width: 200px;
+        }
 
-    .select-items .customOption:hover {
-        background: no-repeat;
-        background-color: #2dbe60;
-        color: #fff;
-        padding: 9px 54px 10px 20px;
-        background-size: 12px 12px;
-    }
+        .select-items .customOption:hover {
+            background: no-repeat;
+            background-color: #2dbe60;
+            color: #fff;
+            padding: 9px 54px 10px 20px;
+            background-size: 12px 12px;
+        }
 
-    .same-as-selected {
-        background: right center no-repeat;
-        background-image: url('../../Content/greenCheck_selected.png');
-        padding: 9px 54px 10px 20px;
-    }
+        .same-as-selected {
+            background: right center no-repeat;
+            background-image: url('../../Content/greenCheck_selected.png');
+            padding: 9px 54px 10px 20px;
+        }
 
-    .configContainer {
-        display: inline;
-    }
+        .configContainer {
+            display: inline;
+        }
 
     #noteDetail, #noteHeader {
         width: calc(100% - 400px);
         height: 90%
     }
 
-    .preview-container {
-        width: 100%;
-        overflow: hidden;
-        padding: 0;
-    }
+        .preview-container {
+            width: 100%;
+            overflow: hidden;
+            padding: 0;
+        }
 
-    .listTitle {
-        font-family: sans-serif;
-        font-size: 18px;
-        font-weight: 400;
-    }
+        .listTitle {
+            font-family: sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+        }
 
-    #noteListDate {
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 11px;
-        font-weight: 400;
-        letter-spacing: 1px;
-        margin-bottom: 8px;
-    }
+        #noteListDate {
+            font-family: gotham, helvetica, arial, sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
 
-    .preContents {
-        font-family: gotham, helvetica, arial, sans-serif;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 10px;
-        height: 50px;
-        overflow: hidden;
-    }
+        .preContents {
+            font-family: gotham, helvetica, arial, sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 10px;
+            height: 50px;
+            overflow: hidden;
+        }
 
-    .alarm {
-        border-top: 3px solid rgb(225, 222, 222);
-        border-bottom: 3px solid rgb(225, 222, 222);
-        display: block;
-        padding: 10px 10px 10px 28px;
-        margin-top: 0px;
-    }
+        .alarm {
+            border-top: 3px solid rgb(225, 222, 222);
+            border-bottom: 3px solid rgb(225, 222, 222);
+            display: block;
+            padding: 10px 10px 10px 28px;
+            margin-top: 0px;
+        }
 
-    #noteListTable tr th:hover {
-        background-color: #2dbe60;
-        color: #fff;
-    }
+        #noteListTable tr th:hover {
+            background-color: #2dbe60;
+            color: #fff;
+        } 
 
-    #noteListTable tr th {
-        width: 100%;
-        text-align: left;
-        border-bottom: 1px solid rgb(225, 222, 222);
-        padding-left: 20px;
-        padding-top: 7px;
-        height: 50px;
-        color: #707070
-    }
+        #noteListTable tr th {
+            width: 100%;
+            text-align: left;
+            border-bottom: 1px solid rgb(225, 222, 222);
+            padding-left: 20px;
+            padding-top: 7px;
+            height: 50px;
+            color: #707070
+        }
 
-    #noteOrderForm {
-        display: none;
-    }
+        #noteOrderForm {
+            display: none;
+        }
 
     .menuDiver {
         border-top: 1px solid #ececec;
         margin: 15px 15px 23px;
     }
     /*detail*/
-    #noteDetailForm {
-        width: calc(100% - 400px);
-        height: 90%;
-        float: right;
-    }
+        #noteDetailForm {
+            width: calc(100% - 400px);
+            height: 90%;
+            float: right;
+        }
+
     .noteHeader {
         width: calc(100% - 400px);
         float: right;
     }
+
     #none {
         display: none;
     }
@@ -352,9 +342,9 @@
         min-width: 160px;
     }
 
-   .modal-button:hover {
-        background-color: #299e52;
-    }
+        .modal-button:hover {
+            background-color: #299e52;
+        }
 
     .noteHeader form {
         display: inline;
@@ -375,13 +365,15 @@
         filter: gray;
     }
 
-    .noteHeader form, .TagContainer form{
+    .noteHeader form, .TagContainer form {
         display: inline;
     }
-    .TagContainer{
-        margin-top:2px;
-        margin-bottom:2px;
+
+    .TagContainer {
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
+
     .Tag {
         display: inline-block;
         color: #606060;
@@ -390,16 +382,17 @@
         border: 1px solid #d1d1d1;
         padding: 1px 8px 1px;
         border-radius: 4px;
-        cursor:pointer;
-    }
-    .Tag:hover, .tagSelected {
-        color: #ffffff;
-        background-color:#2dbe60;
-    }
-    .hideTags {
-        display:none;
+        cursor: pointer;
     }
 
+    .Tag:hover, .tagSelected {
+        color: #ffffff;
+        background-color: #2dbe60;
+    }
+
+    .hideTags {
+        display: none;
+    }
 </style>
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -432,19 +425,19 @@
     }
     <img src=@Info class="noteSetting" id="openInfo" width="25px">
 </div>
-    <div class="partViewList">
-        @{ Html.RenderAction("ShowNoteList", "Note", new { orderColumn = OrderColumn.Notedate, orderType = OrderType.Desc }); }
-    </div>
+<div class="partViewList">
+    @{ Html.RenderAction("ShowNoteList", "Note", new { orderColumn = OrderColumn.Notedate, orderType = OrderType.Desc }); }
+</div>
 
 
 
 <div id="noteDetailForm">
     @using (Html.BeginForm("AddTagToNote", "Tag"))
     {
-    <div>
-        @Html.TextBox("tagName", "", new { placeholder = "태그 추가" })
-        @Html.Hidden("noteId", Model.SelectedNote.NoteId)
-    </div>
+        <div>
+            @Html.TextBox("tagName", "", new { placeholder = "태그 추가" })
+            @Html.Hidden("noteId", Model.SelectedNote.NoteId)
+        </div>
     }
 
     <div class="TagContainer">
@@ -474,7 +467,7 @@
             <br />
             <img class="img_loader grayscale img_loader_hidden" id="img_saving" src="~/Content/greenCheck_selected.png" width=30px />
             <img class="img_loader img_loader_hidden" id="img_loading" src="~/Content/ajax_loader_green_512.gif" width=30px />
-            @Html.TextArea("contents", Model.SelectedNote.Contents, new { id = "noteContents"})
+            @Html.TextArea("contents", Model.SelectedNote.Contents, new { id = "noteContents" })
         </div>
         <input type="submit" value=@UpdateOrRecoverText />
     }
@@ -485,7 +478,6 @@
         <input type="submit" value="@DeleteText" />
     }
 
-    @Html.ActionLink(NoteListText, NoteList)
 
 </div>
 
@@ -501,7 +493,7 @@
                 mouseOutOfTag(i);
             }
         }
-        
+
     }
     //태그영역 이외 마우스 오버하면 태그 삭제 버튼 숨김
     function mouseOutOfTag(index) {

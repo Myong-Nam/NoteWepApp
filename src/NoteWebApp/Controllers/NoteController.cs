@@ -1,8 +1,14 @@
 ﻿using NoteWebApp.Models;
 using NoteWebApp.ViewModels;
+using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Resources;
+using System.Data;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Threading;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NoteWebApp.Controllers
@@ -11,7 +17,6 @@ namespace NoteWebApp.Controllers
 	{
 		// GET: Note
 
-		[HttpGet]
 		public ActionResult Index()
 		{
 			var logger = NLog.LogManager.GetCurrentClassLogger();
@@ -20,9 +25,18 @@ namespace NoteWebApp.Controllers
 			NoteVO selected = new NoteVO();
 			int id; //노트아이디
 
+			return View();
+		}
+
+		[HttpGet]
+		public ActionResult Detail(string id)
+		{
+			NoteIndexVM model = new NoteIndexVM();
+			
+			//int id; //노트아이디
+
 			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
 			OrderType defaultOrderType = OrderType.Desc;
-			int defaultNoteBookId = 0;
 
 			OrderColumn selectedOrderColumn;
 			OrderType selectedOrderType;	
@@ -35,7 +49,6 @@ namespace NoteWebApp.Controllers
 			{
 				// use default value
 				selectedOrderColumn = defaultOrderColumn;
-
 			}
 
 			if (Session["OrderType"] != null)
@@ -48,73 +61,27 @@ namespace NoteWebApp.Controllers
 				selectedOrderType = defaultOrderType;
 			}
 
+			model.NoteList = NoteDAO.GetNoteList((OrderColumn)selectedOrderColumn, (OrderType)selectedOrderType, 0);
 
-			List<NoteVO> noteList = NoteDAO.GetNoteList((OrderColumn)selectedOrderColumn, selectedOrderType, defaultNoteBookId);
-			ViewBag.noteList = noteList;
-
-			//특정 노트 아이디가 있을떄
-			if (Request.QueryString["id"] != null)
-			{	
-				id = int.Parse(Request.QueryString["id"]);
-
-				selected = NoteDAO.GetNotebyId(id);
-
-			} else //노트 아이디 없을 때는 가장 최근 노트 가져오기
+			if (String.IsNullOrEmpty(id))
 			{
-				selected = NoteDAO.GetNotebyId(noteList[0].NoteId);
-				id = selected.NoteId;
-				
+				model.SelectedNote = NoteDAO.GetNotebyId(model.NoteList[0].NoteId);
+				id = model.SelectedNote.NoteId.ToString();
+
+				return RedirectToAction("detail", new { id = id });
 			}
 
-			NoteIndexVM model = new NoteIndexVM();
-			model.SelectedNote = selected;
-			model.SelectedNote.TagList = TagDAO.GetTagListByNote(selected.NoteId);
-
-			//바로가기 여부 보여줌(노트면 0, 노트북이면 1)
-			ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 0);
-
-
+			model.SelectedNote = NoteDAO.GetNotebyId(int.Parse(id));
+			
 			//노트북선택 
-			SelectNoteBook(id);
+			SelectNoteBook(int.Parse(id));
 
 			//노트 아이디로 노트북 얻어옴
-			int noteBookId = selected.NoteBookId;
-			model.NoteBook = NoteBookDAO.GetNoteBookbyId(noteBookId);
+			model.NoteBook = NoteBookDAO.GetNoteBookbyId(model.SelectedNote.NoteBookId);
 
 			return View(model);
 		}
 
-		//노트 상세 partial view
-		public PartialViewResult Detail(int selectedNoteid)
-		{
-			NoteVO selected = new NoteVO();
-
-			if (selectedNoteid != 0)
-			{
-				selected = NoteDAO.GetNotebyId(selectedNoteid);
-			}
-			else
-			{
-				selected = NoteDAO.GetNotebyId(40);
-			}
-
-			//바로가기 여부 보여줌(노트면 0, 노트북이면 1)
-			ViewBag.isShortCut = ShortcutManager.IsShorcut(selectedNoteid, 0);
-
-
-			//노트북선택 
-			SelectNoteBook(selectedNoteid);
-
-			//노트 아이디로 노트북 얻어옴
-			int noteBookId = selected.NoteBookId;
-			NoteBookVO notebook = NoteBookDAO.GetNoteBookbyId(noteBookId);
-			int NoteBookId = notebook.NoteBookId;
-			ViewBag.name = notebook.Name;
-
-			return PartialView(selected);
-		}
-
-		//노트 정보 가져오는 modal partial view
 		[HttpPost]
 		public PartialViewResult Info(int noteid)
 		{
@@ -125,14 +92,26 @@ namespace NoteWebApp.Controllers
 			return PartialView(note);
 		}
 
+		public PartialViewResult ShowNoteList(List<NoteVO> noteList)
+		{
+			CultureInfo cultureEN_US = new CultureInfo("en-US");
+			CultureInfo cultureEN = new CultureInfo("en");
+			CultureInfo cultureKO_KR = new CultureInfo("ko-KR");
+			CultureInfo culturezh_CN = new CultureInfo("zh-CN");
+
+			Thread.CurrentThread.CurrentCulture = cultureEN;
+			Thread.CurrentThread.CurrentUICulture = cultureEN;
+
+			return PartialView(noteList);
+		}
 
 
-		//노트 리스트 보여주는 partial view
-		
-		public PartialViewResult ShowNoteList(OrderColumn orderColumn, OrderType orderType)
+		//노트 리스트
+		public ActionResult NoteListByOrder(OrderColumn orderColumn, OrderType orderType)
 		{
 			OrderColumn defaultOrderColumn = OrderColumn.Notedate;
 			OrderType defaultOrderType = OrderType.Desc;
+			int defaultNoteBookId = 0;
 
 			OrderColumn selectedOrderColumn;
 			OrderType selectedOrderType;
@@ -180,17 +159,14 @@ namespace NoteWebApp.Controllers
 				// parameter is delivered by user
 				selectedOrderType = (OrderType)Enum.Parse(typeof(OrderType), orderType.ToString());
 				Session["OrderType"] = selectedOrderType;
-			}	
+			}
 
-			var noteList = NoteDAO.GetNoteList((OrderColumn)Session["OrderColumn"], (OrderType)Session["OrderType"], 0);
+			//var noteList = NoteDAO.GetNoteList((OrderColumn)Session["OrderColumn"], (OrderType)Session["OrderType"], defaultNoteBookId);
+			
+			
 
-			// 리스트 정렬 정보 (column, asc|desc)
+			return View();
 
-
-			//바로가기 여부 보여줌
-			//ViewBag.isShortCut = ShortcutManager.IsShorcut(id, 1);
-
-			return PartialView(noteList);
 		}
 
 		//새노트에서 노트북 선택하는 selectitem
@@ -273,7 +249,7 @@ namespace NoteWebApp.Controllers
 		{
 			NoteDAO.Create(title, contents, noteBookId);
 
-			return RedirectToAction("index");
+			return RedirectToAction("detail");
 		}
 
 		public ActionResult Create(String title, String contents)
@@ -287,7 +263,7 @@ namespace NoteWebApp.Controllers
 		{
 			NoteDAO.preDelete(noteId);
 
-			return RedirectToAction("index");
+			return RedirectToAction("detail");
 		}
 
 		[HttpPost]
@@ -300,13 +276,15 @@ namespace NoteWebApp.Controllers
 
 		//노트 수정
 		[ValidateInput(false)]
+		[HttpPost]
 		public ActionResult Update(int noteId, String title, String contents, string noteBookId)
 		{
 			NoteDAO.Update(noteId, title, contents, noteBookId);
 
-			return RedirectToAction("index");
+			return RedirectToAction("Detail", new { id = noteId });
 		}
 
+		[HttpPost]
 		public ActionResult Deleted()
 		{
 			var noteList = NoteDAO.GetNoteList(OrderColumn.Notedate, OrderType.Desc, noteBookId: -1); //-1은 휴지통
@@ -328,6 +306,70 @@ namespace NoteWebApp.Controllers
 			NoteDAO.RecoverNote(noteid);
 
 			return RedirectToAction("Deleted");
+		}
+
+		public void UploadToDatabase()
+		{
+			var files = Request.Files;
+
+			foreach (string uploadedFiles in Request.Files)
+			{
+				//1) 업로드된 파일 받음
+				HttpPostedFileBase file = Request.Files["upload"];
+				byte[] imageData = new byte[file.ContentLength];
+
+				string CKEditorFuncNum = Request["CKEditorFuncNum"];
+
+				file.InputStream.Read(imageData, 0, Convert.ToInt32(file.ContentLength));
+
+				//2) 데이터 베이스에 업로드
+				string sql = $"INSERT INTO BINARY_FILE (BINARY_FILE_ID, FILE_NAME, MIME_TYPE, BINARY_DATA, FILE_SIZE ) VALUES (binary_file_seq.nextval, '{file.FileName}', '{file.ContentType}', :BINARY_DATA, {file.ContentLength.ToString()})";
+
+				OracleConnection conn = DbHelper.NewConnection();
+				conn.Open();
+
+				OracleCommand cmd = new OracleCommand();
+				cmd.CommandText = sql;
+				cmd.Connection = conn;
+				//cmd.CommandType = CommandType.Text;
+
+				OracleParameter param = cmd.Parameters.Add("BINARY_DATA", OracleDbType.Blob);
+				param.Direction = ParameterDirection.Input;
+				param.Value = imageData;
+
+				cmd.ExecuteNonQuery();
+
+				file.InputStream.Close();  // close를 하면 file의 속성값도 같이 날라가는 것 같다.
+
+				cmd.Dispose();
+
+				//3) 업로드된 파일의 url을 에디터에 전달
+				string idSql = $"SELECT BINARY_FILE_ID FROM BINARY_FILE WHERE FILE_NAME = '{file.FileName}'";
+
+				OracleCommand idCmd = new OracleCommand();
+				cmd.CommandText = idSql;
+				cmd.Connection = conn;
+
+
+				OracleDataReader reader = cmd.ExecuteReader();
+
+				if (reader.HasRows)
+				{
+					string fileId = reader["BINARY_FILE_ID"].ToString();
+					string url = "http://localhost:7223/Lab/SimpleFileUpload/download/" + fileId;
+
+					Response.Write("<script>window.parent.CKEDITOR.tools.callFunction( " + CKEditorFuncNum + ", \"" + url + "\");</script>");
+
+					Response.End();
+
+				} else
+				{
+					Debug.Print("파일이 없다.");
+				}
+
+				conn.Close();
+			}
+
 		}
 
 	}

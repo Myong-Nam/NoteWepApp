@@ -61,11 +61,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   {Hello}과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   {Options}과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
-        internal static string Hello {
+        internal static string ListViewOption {
             get {
-                return ResourceManager.GetString("Hello", resourceCulture);
+                return ResourceManager.GetString("ListViewOption", resourceCulture);
             }
         }
         

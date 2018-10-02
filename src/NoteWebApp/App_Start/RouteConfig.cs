@@ -7,17 +7,21 @@ using System.Web.Routing;
 
 namespace NoteWebApp
 {
-    public class RouteConfig
-    {
-        public static void RegisterRoutes(RouteCollection routes)
-        {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+	public class RouteConfig
+	{
+		public static void RegisterRoutes(RouteCollection routes)
+		{
+			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Note", action = "Index", id = UrlParameter.Optional }
-            );
-        }
-    }
+
+			//기본 
+			routes.MapRoute(
+				name: "Default",
+				url: "{controller}/{action}/{id}",
+				defaults: new { controller = "Note", action = "Detail", id = UrlParameter.Optional }
+			);
+		}
+
+
+	}
 }

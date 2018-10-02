@@ -1,11 +1,11 @@
 ﻿@using NoteWebApp.Models
 
 
-<div id="pageTitle">노트</div>
+<div id="pageTitle">@Resources.Label.Note</div>
 <div id="countNotes">@Model.Count 개의 노트</div>
 <div class="configContainer"></div>
 <div id="noteOrderBy">
-    @using (Html.BeginForm("ShowNoteList", "Note", FormMethod.Post, new { id = "noteOrderForm" }))
+    @using (Html.BeginForm("NoteListByOrder", "Note", FormMethod.Post, new { id = "noteOrderForm" }))
     {
         @Html.DropDownList("orderColumn", new SelectListItem[]{
 
@@ -20,20 +20,21 @@
         })
     }
 </div>
-<div class="alarm">알리미</div>
 
 <table id="noteListTable">
 
     @foreach (var item in Model)
     {
-        <tr class="individualListTr" onclick="notedetail(@item.NoteId)">
+        <tr class="individualListTr" value=@item.NoteId>
             <th>
                 <div class="listTitle">@item.Title</div>
                 <div id="noteListDate">  @item.NoteDate</div>
                 <div class="preContents">@item.Contents</div>
             </th>
         </tr>
+
     }
+
 </table>
 
 <script>
@@ -50,7 +51,12 @@
         }
     }
 
-    function notedetail(noteId) {
-        window.location.href = '/Note/Index/?id=' + noteId;
+
+    $('.individualListTr').click(function (event) {
+        noteDetail(this.getAttribute('value'));
+
+    });
+    function noteDetail(id) {
+         window.location.href = '/Note/Detail/' + id;
     }
 </script>
