@@ -1,0 +1,28 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SHAencoding</title>
+</head>
+<body>
+
+    @using (Html.BeginForm())
+    {
+        <div>
+            비밀번호: <br />
+            @Html.TextBox("password", "")
+        </div>
+
+        <input type="submit" value="저장" />
+    }
+
+    <div class="encodedPW">@ViewBag.Password</div>
+</body>
+</html>
+
