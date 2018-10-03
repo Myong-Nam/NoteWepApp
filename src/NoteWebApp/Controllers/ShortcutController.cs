@@ -7,7 +7,7 @@ using NoteWebApp.Models;
 
 namespace NoteWebApp.Controllers
 {
-	public class ShortcutController : Controller
+	public class ShortcutController : BaseController
 	{
 		// GET: Shortcut
 		public PartialViewResult Index()

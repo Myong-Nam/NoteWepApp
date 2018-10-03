@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace NoteWebApp.Controllers
 {
-	public class NoteBookController : Controller
+	public class NoteBookController : BaseController
 	{
 		// 노트북 리스트 보여줌
 		/*
