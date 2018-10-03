@@ -281,10 +281,6 @@
     }
 
 
-    CKEDITOR.editorConfig = function (config) {
-
-
-    }
 
     //리스트 제목에 저장이 필요하다는 표시 하는 함수
     $(document).ready(function () {
@@ -292,6 +288,7 @@
             {
                 fullPage: true,
                 filebrowserUploadUrl: '../UploadToDatabase',
+                filebrowserBrowseUrl: '../UploadToDatabase',
                 height: '450px'
             }).on('change', function () {
 
@@ -311,6 +308,8 @@
 
             });
     });
+
+
 
     function lengthAlert() {
         var length = document.getElementById("title").value.length;
