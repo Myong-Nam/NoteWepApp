@@ -1,0 +1,9 @@
+diff a/src/NoteWebApp/NoteWebApp.csproj b/src/NoteWebApp/NoteWebApp.csproj	(rejected hunks)
+@@ -175,6 +175,7 @@
+ 
+     <Content Include="Areas\Lab\Views\login\Index.cshtml" />
+     <Content Include="Areas\Lab\Views\login\register.cshtml" />
++<<<<<<< HEAD
+     <Content Include="Areas\Lab\Views\login\SHAencoding.cshtml" />
+ =======
+ 

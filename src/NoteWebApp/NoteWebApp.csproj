@@ -175,11 +175,8 @@
 
     <Content Include="Areas\Lab\Views\login\Index.cshtml" />
     <Content Include="Areas\Lab\Views\login\register.cshtml" />
-<<<<<<< HEAD
     <Content Include="Areas\Lab\Views\login\SHAencoding.cshtml" />
-=======
 
->>>>>>> 2491e9d3fcc844d65b4c51a31ea07469fe341c4a
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
