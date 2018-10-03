@@ -164,6 +164,7 @@
     <Content Include="Areas\Lab\Views\SqlInjection\Index.cshtml" />
     <Content Include="Areas\Lab\Views\SqlInjection\SecuredLogin.cshtml" />
     <Content Include="Areas\Lab\Views\Dapper\Index.cshtml" />
+
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -171,6 +172,10 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+
+    <Content Include="Areas\Lab\Views\login\Index.cshtml" />
+    <Content Include="Areas\Lab\Views\login\register.cshtml" />
+
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -510,7 +515,11 @@
     <Compile Include="Areas\Lab\Controllers\DragDropFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
     <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
+
     <Compile Include="Areas\Lab\Controllers\MultiLanguageController.cs" />
+
+    <Compile Include="Areas\Lab\Controllers\LoginController.cs" />
+
     <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\SqlInjectionController.cs" />
     <Compile Include="Areas\Lab\LabAreaRegistration.cs" />

@@ -36,4 +36,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserUploadMethod = 'form'
     config.height = '400px';
 
+    config.pasteFilter = 'p; a[!href]';
+
 };
