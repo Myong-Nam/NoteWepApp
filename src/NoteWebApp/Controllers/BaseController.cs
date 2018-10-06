@@ -42,7 +42,7 @@ namespace NoteWebApp.Controllers
 			}
 
 			var logger = NLog.LogManager.GetCurrentClassLogger();
-			logger.Info(sb.ToString());
+			//logger.Info(sb.ToString());
 
 			// Time recording
 			_actionTime_Begin = DateTime.Now;
@@ -53,7 +53,7 @@ namespace NoteWebApp.Controllers
 			_actionTime_End = DateTime.Now;
 
 			var logger = NLog.LogManager.GetCurrentClassLogger();
-			logger.Info($"[{filterContext.HttpContext.Request.HttpMethod}] End of Action. {(_actionTime_End - _actionTime_Begin).TotalSeconds.ToString("f")} seconds elapsed.");
+			//logger.Info($"[{filterContext.HttpContext.Request.HttpMethod}] End of Action. {(_actionTime_End - _actionTime_Begin).TotalSeconds.ToString("f")} seconds elapsed.");
 
 			base.OnActionExecuted(filterContext);
 		}
@@ -63,7 +63,7 @@ namespace NoteWebApp.Controllers
 			base.OnResultExecuting(filterContext);
 
 			var logger = NLog.LogManager.GetCurrentClassLogger();
-			logger.Info("[View] Beginning of rendering.");
+			//logger.Info("[View] Beginning of rendering.");
 
 			// Time recording
 			_resultTime_Begin = DateTime.Now;
@@ -74,7 +74,7 @@ namespace NoteWebApp.Controllers
 			_resultTime_End = DateTime.Now;
 
 			var logger = NLog.LogManager.GetCurrentClassLogger();
-			logger.Info($"[View] End of rendering. {(_actionTime_End - _actionTime_Begin).TotalSeconds.ToString("f")} seconds elapsed.");
+			//logger.Info($"[View] End of rendering. {(_actionTime_End - _actionTime_Begin).TotalSeconds.ToString("f")} seconds elapsed.");
 
 			base.OnResultExecuted(filterContext);
 		}
@@ -84,7 +84,7 @@ namespace NoteWebApp.Controllers
 			base.OnException(filterContext);
 
 			var logger = NLog.LogManager.GetCurrentClassLogger();
-			logger.Info(filterContext.Exception.ToString());
+			//logger.Info(filterContext.Exception.ToString());
 		}
 	}
 }

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace NoteWebApp.Areas.Lab.Controllers
 {
-    public class LoginController : Controller
+    public class Login2Controller : Controller
     {
         // GET: Lab/Login
         public ActionResult Index()

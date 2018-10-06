@@ -107,6 +107,7 @@
     <Content Include="Areas\Lab\Content\style\reset.css" />
     <Content Include="Content\ajax_loader_green_512.gif" />
     <Content Include="Content\greenCheck_selected.png" />
+    <Content Include="Content\login\logo.png" />
     <Content Include="Content\menu\add_fill.png" />
     <Content Include="Content\menu\add_stroke.png" />
     <Content Include="Content\menu\book_fill.png" />
@@ -164,19 +165,13 @@
     <Content Include="Areas\Lab\Views\SqlInjection\Index.cshtml" />
     <Content Include="Areas\Lab\Views\SqlInjection\SecuredLogin.cshtml" />
     <Content Include="Areas\Lab\Views\Dapper\Index.cshtml" />
-
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Areas\Lab\Views\MultiLanguage\Index.cshtml" />
-    <None Include="NLog.xsd">
-      <SubType>Designer</SubType>
-    </None>
-
     <Content Include="Areas\Lab\Views\login\Index.cshtml" />
     <Content Include="Areas\Lab\Views\login\register.cshtml" />
     <Content Include="Areas\Lab\Views\login\SHAencoding.cshtml" />
-
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\build-config.js" />
@@ -516,11 +511,8 @@
     <Compile Include="Areas\Lab\Controllers\DragDropFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\HomeController.cs" />
     <Compile Include="Areas\Lab\Controllers\Html5Controller.cs" />
-
     <Compile Include="Areas\Lab\Controllers\MultiLanguageController.cs" />
-
-    <Compile Include="Areas\Lab\Controllers\LoginController.cs" />
-
+    <Compile Include="Areas\Lab\Controllers\Login2Controller.cs" />
     <Compile Include="Areas\Lab\Controllers\SimpleFileUploadController.cs" />
     <Compile Include="Areas\Lab\Controllers\SqlInjectionController.cs" />
     <Compile Include="Areas\Lab\LabAreaRegistration.cs" />
@@ -528,6 +520,7 @@
     <Compile Include="Areas\Lab\Models\BinaryFileVO.cs" />
     <Compile Include="Areas\Lab\Models\memory_structure.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\NoteBookController.cs" />
     <Compile Include="Controllers\NoteController.cs" />
     <Compile Include="Controllers\ShortcutController.cs" />
@@ -545,6 +538,8 @@
     <Compile Include="Models\ShortcutDAO.cs" />
     <Compile Include="Models\TagVO.cs" />
     <Compile Include="Models\TagDAO.cs" />
+    <Compile Include="Models\UserDAO.cs" />
+    <Compile Include="Models\UserVO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handler\Upload.ashx.cs">
       <DependentUpon>Upload.ashx</DependentUpon>
@@ -579,6 +574,7 @@
     <Content Include="Views\Tag\Edit.cshtml" />
     <Content Include="Views\Note\Ind.cshtml" />
     <Content Include="Views\Note\SaveNoteListInSession.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

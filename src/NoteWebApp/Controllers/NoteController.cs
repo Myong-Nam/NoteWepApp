@@ -19,8 +19,6 @@ namespace NoteWebApp.Controllers
 
 		public ActionResult Index()
 		{
-			var logger = NLog.LogManager.GetCurrentClassLogger();
-			logger.Info("");
 
 			NoteVO selected = new NoteVO();
 			int id; //노트아이디
@@ -31,6 +29,9 @@ namespace NoteWebApp.Controllers
 		[HttpGet]
 		public ActionResult Detail(string id)
 		{
+			var logger = NLog.LogManager.GetCurrentClassLogger();
+			logger.Info("로그 테스트입니다.");
+
 			NoteIndexVM model = new NoteIndexVM();
 			
 			//int id; //노트아이디

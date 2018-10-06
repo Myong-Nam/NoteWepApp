@@ -1,0 +1,106 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Londrina+Outline|Open+Sans+Condensed:300" rel="stylesheet">
+    <style>
+        body {
+            background-color: #dae7d9;
+        }
+
+        .loginFormContainer {
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 10px 0;
+            font-style: normal;
+            font-weight: 400;
+            background-color: #ffffff;
+            width: 512px;
+            padding-bottom: 100px;
+        }
+
+        .container {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .titleText {
+            text-align: center;
+            color: #414040;
+            font-size: xx-large;
+            font-family: 'Indie Flower', cursive;
+        }
+        input[type="text"], input[type="submit"] {
+            border-radius: 7px;
+            padding: 12px 16px;
+        }
+        input[type="text"] {
+            color: #333333;
+            border: 1px solid #e6e6e6;
+            width: 200px;
+            margin-top: 4px;
+        }
+        input[type="submit"] {
+            background-color: #00a82d;
+            color: #ffffff;
+            margin-top: 8px;
+            width: 245px;
+            border: none;
+        }
+        .loginBtn:hover {
+            background-color: #008f26;
+
+        }
+        .tosText {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            color: #737373;
+        }
+        .registerLinkText {
+            color: #00751f;
+            font-weight: 400;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 0px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="loginFormContainer">
+        <div class="container">
+            <img src="~/Content/login/logo.png" />
+            <div class="titleText">NOTE WEB APP</div>
+            <h5>중요한 모든 것을 기록하세요.</h5>
+            @using (Html.BeginForm("Login", "User"))
+            {
+                <div>
+                    @Html.TextBox("loginId", "", new { placeholder = "아이디" })
+                </div>
+                <div>
+                    @Html.TextBox("password", "", new { placeholder = "비밀번호" })
+                </div>
+
+                <input class="loginBtn" type="submit" value="로그인" />
+            }
+
+            <div class="tosContainer">
+                <p class="tosText">계정이 없으세요?</p>
+                <a href="#" class="registerLinkText">계정 만들기</a>
+            </div>
+            <div class="GoogleOAuthContainer">
+                <a href="#" class="GoogleOAuth registerLinkText">구글로 로그인 하기</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
